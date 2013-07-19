@@ -50,6 +50,15 @@
 				var $tag = $(event.target).closest('.tag');
 				this.remove($tag.data('item'));
 			}, this));
+		},
+
+		destroy: function() {
+			// Bnbind events
+			this.$container.off('keypress', 'input');
+			this.$container.off('click', '[data-role=remove]');
+
+			this.$container.remove();
+			this.$element.show();
 		}
 	};
 
