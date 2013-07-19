@@ -3,7 +3,6 @@
 
 	var tagTemplate = '<span class="tag label"><span class="text"></span><i class="icon-white icon-remove" data-role="remove"></i></span>';
 
-
 	function TagsInput(element, options) {
 
 		this.options = {};
@@ -24,6 +23,20 @@
 		} else {
 			return '';
 		}
+	}
+
+	// Source: http://flightschool.acylt.com/devnotes/caret-position-woes/
+	function doGetCaretPosition (oField) {
+		var iCaretPos = 0;
+		if (document.selection) {
+			oField.focus ();
+			var oSel = document.selection.createRange();
+			oSel.moveStart ('character', -oField.value.length);
+			iCaretPos = oSel.text.length;
+		} else if (oField.selectionStart || oField.selectionStart == '0') {
+			iCaretPos = oField.selectionStart;
+		}
+		return (iCaretPos);
 	}
 
 	TagsInput.prototype = {
@@ -74,11 +87,23 @@
 		},
 
 		build: function() {
-			this.$container.on('keypress', 'input', $.proxy(function(event) {
+			this.$container.on('keydown', 'input', $.proxy(function(event) {
 				var $input = $(event.target);
-				if(event.which == '13') {
-					this.addItem($input.val());
-					$input.val('');
+				switch (event.which) {
+					// BACKSPACE
+					case 8:
+						if (doGetCaretPosition($input[0]) === 0) {
+							var items = this.getItems();
+							if (items[0])
+								this.removeItem(items[items.length-1]);
+						}
+						break;
+					// ENTER
+					case 13:
+						this.addItem($input.val());
+						$input.val('');
+						break;
+
 				}
 
 				$input.attr('size', $input.val().length);
@@ -101,51 +126,36 @@
 		}
 	};
 
-	// Register as a JQuery plugin
-	$.fn.tagsinput = function(option, arg) {
+	// Register JQuery plugin
+	$.fn.tagsinput = function(arg1, arg2) {
 		var results = [];
 
 		this.each(function() {
-			var tagsinput = $(this).data('tagsinput'),
-				options = typeof option == 'object' && option;
+			var tagsinput = $(this).data('tagsinput');
 
 			// Initialize a new tags input
 			if (!tagsinput) {
-				$(this).data('tagsinput', ( tagsinput = new TagsInput(this, options)));
+				$(this).data('tagsinput', ( tagsinput = new TagsInput(this, arg1)));
 				results.push(tagsinput);
 				return;
 			}
 
 			// Invoke function on existing tags input
 			var retVal;
-			switch (option) {
-				case 'add':
-					retVal = tagsinput.addItem(arg);
-					break;
-				case 'remove':
-					retVal = tagsinput.removeItem(arg);
-					break;
-				case 'destroy':
-					retVal = tagsinput.destroy();
-					break;
-				case 'value':
-					if (arg)
-						retVal = tagsinput.setValue(arg);
-					else
-						retVal = tagsinput.getValueFromElement();
-					break;
-				case 'items':
-					retVal = tagsinput.getItems();
-					break;
-				default:
-					break;
+			switch (arg1) {
+				case 'add'    : retVal = tagsinput.addItem(arg2); break;
+				case 'remove' : retVal = tagsinput.removeItem(arg2); break;
+				case 'destroy': retVal = tagsinput.destroy(); break;
+				case 'value'  : retVal = (arg2 ? tagsinput.setValue(arg2) : tagsinput.getValueFromElement()); break;
+				case 'items'  : retVal = tagsinput.getItems(); break;
+				default: break;
 			}
 
 			if (retVal !== undefined)
 				results.push(retVal);
 		});
 
-		if ( typeof option == 'string') {
+		if ( typeof arg1 == 'string') {
 			// Return the results from the invoked function calls
 			return results.length > 1 ? results : results[0];
 		} else {
