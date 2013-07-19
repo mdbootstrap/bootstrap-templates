@@ -2,7 +2,7 @@
 {
 	"name": "bootstrap-tagsinput",
 	"version": "0.0.1",
-	"description": "A JQuery based plugin providing an Twitter Bootstrap-like user interface for adding tags.",
+	"description": "A JQuery based plugin providing a Twitter Bootstrap-like user interface for adding tags.",
 	"scripts": {
 		"test": "karma start --single-run --no-auto-watch"
 	},
