@@ -51,12 +51,26 @@
 			this.$element.val(this.getValueFromTags());
 		},
 
+		// Returns the value's from the items
 		getValueFromTags: function() {
 			return $.map($('.tag', this.$container), function(tag) { return $(tag).data('item'); });
 		},
 
+		// Returns the original elements's val()
 		getValueFromElement: function() {
 			return this.$element.val();
+		},
+
+		// Returns the items added as tags
+		getItems: function() {
+			return $.map($('.tag', this.$container), function(tag) { return $(tag).data('item'); });
+		},
+
+		setValue: function(value) {
+			var tagsinput = this;
+			$.each(value.split(','), function(index, item) {
+				tagsinput.addItem(item);
+			});
 		},
 
 		build: function() {
@@ -119,6 +133,9 @@
 						retVal = tagsinput.setValue(arg);
 					else
 						retVal = tagsinput.getValueFromElement();
+					break;
+				case 'items':
+					retVal = tagsinput.getItems();
 					break;
 				default:
 					break;

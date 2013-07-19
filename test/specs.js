@@ -7,7 +7,7 @@ afterEach(function() {
 	$sandbox.empty();
 });
 
-describe('invoking tagsinput() on <input type="text" />', function() {
+describe('invoke tagsinput() on <input type="text" />', function() {
 
 	beforeEach(function() {
 		$element = $('<input type="text" />').appendTo($sandbox);
@@ -51,9 +51,54 @@ describe('invoking tagsinput() on <input type="text" />', function() {
 			});
 		});
 	});
+
+	describe("containing a comma", function() {
+
+		beforeEach(function() {
+			$element.tagsinput('add', 'before,after');
+		});
+
+		it("'value', should return 'before,after'", function() {
+			expect($element.tagsinput('value')).toBe('before,after');
+		});
+
+		it("val() should return 'before,after'", function() {
+			expect($element.val()).toBe('before,after');
+		});
+	});
+
+	describe("invoke 'value'", function() {
+		describe("with 'some_tag'", function() {
+			beforeEach(function() {
+				$element.tagsinput('value', 'some_tag');
+			});
+
+			it("val() should return 'some_tag'", function() {
+				expect($element.val()).toBe('some_tag');
+			});
+
+			it("'items' should return 1 item", function() {
+				expect($element.tagsinput('items').length).toBe(1);
+			});
+		});
+
+		describe("with a string containing a comma", function() {
+			beforeEach(function() {
+				$element.tagsinput('value', 'before,after');
+			});
+
+			it("val() should return same string", function() {
+				expect($element.val()).toBe('before,after');
+			});
+
+			it("'items' should return 2 item", function() {
+				expect($element.tagsinput('items').length).toBe(2);
+			});
+		});
+	});
 });
 
-describe('invoking tagsinput() on <select multiple="multiple"/>', function() {
+describe('invoke tagsinput() on <select multiple="multiple"/>', function() {
 
 	beforeEach(function() {
 		$element = $('<select multiple="multiple" />').appendTo($sandbox);
@@ -90,6 +135,51 @@ describe('invoking tagsinput() on <select multiple="multiple"/>', function() {
 
 			it("val() should should return null", function() {
 				expect($element.val()).toBeNull();
+			});
+		});
+	});
+
+	describe("when added item containing a comma", function() {
+
+		beforeEach(function() {
+			$element.tagsinput('add', 'before,after');
+		});
+
+		it("'value', should return array containing 1 item", function() {
+			expect($element.tagsinput('value')[0]).toBe('before,after');
+		});
+
+		it("val() should return array containing 1 item", function() {
+			expect($element.val()[0]).toBe('before,after');
+		});
+	});
+
+	describe("invoke 'value'", function() {
+		describe("with 'some_tag'", function() {
+			beforeEach(function() {
+				$element.tagsinput('value', 'some_tag');
+			});
+
+			it("val() should return 'some_tag'", function() {
+				expect($element.val()[0]).toBe('some_tag');
+			});
+
+			it("'items' should return 1 item", function() {
+				expect($element.tagsinput('items').length).toBe(1);
+			});
+		});
+
+		describe("with a string containing a comma", function() {
+			beforeEach(function() {
+				$element.tagsinput('value', 'before,after');
+			});
+
+			it("val() should return an array containing 2 values", function() {
+				expect($element.val().length).toBe(2);
+			});
+
+			it("'items' should return 2 item", function() {
+				expect($element.tagsinput('items').length).toBe(2);
 			});
 		});
 	});
