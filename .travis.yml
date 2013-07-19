@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - 0.8
+
+before_script:
+  - npm install -g karma
+
+script:
+  - karma start --no-auto-watch --single-run --reporters dots --browsers Firefox

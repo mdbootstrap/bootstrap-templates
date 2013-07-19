@@ -1,0 +1,19 @@
+
+{
+	"name": "Bootstrap Tags Input",
+	"version": "0.0.1",
+	"description": "A JQuery based plugin providing an Twitter Bootstrap-like user interface for adding tags.",
+	"scripts": {
+		"test": "karma start --single-run --no-auto-watch"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/timschlechter/bootstrap-tagsinput.git"
+	},
+	"author": "Tim Schlechter",
+	"license": "MIT",
+	"readmeFilename": "README.md",
+	"devDependencies": {
+		"karma": "~0.8"
+	}
+}
