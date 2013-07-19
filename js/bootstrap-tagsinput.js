@@ -17,6 +17,15 @@
 		this.build();
 	}
 
+	var htmlEncodeContainer = $('<div />');
+	function htmlEncode (value) {
+		if (value) {
+			return htmlEncodeContainer.text(value).html();
+		} else {
+			return '';
+		}
+	}
+
 	TagsInput.prototype = {
 		constructor: TagsInput,
 
@@ -27,6 +36,10 @@
 
 			$('input', this.$container).before($tag);
 
+			if (this.$element[0].tagName === 'SELECT') {
+				this.$element.append($('<option value="' + htmlEncode(item) + '" selected>' + htmlEncode(item) + '</option>'));
+			}
+
 			this.$element.val(this.getValueFromTags());
 		},
 
@@ -34,6 +47,8 @@
 			$('.tag', this.$container).filter(function(index) {
 				return $(this).data('item') === item;
 			}).remove();
+
+			this.$element.val(this.getValueFromTags());
 		},
 
 		getValueFromTags: function() {
