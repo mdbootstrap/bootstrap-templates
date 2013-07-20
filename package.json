@@ -1,19 +1,24 @@
-
 {
-	"name": "bootstrap-tagsinput",
-	"version": "0.0.1",
-	"description": "A JQuery based plugin providing a Twitter Bootstrap-like user interface for adding tags.",
-	"scripts": {
-		"test": "karma start --single-run --no-auto-watch"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/timschlechter/bootstrap-tagsinput.git"
-	},
-	"author": "Tim Schlechter",
-	"license": "MIT",
-	"readmeFilename": "README.md",
-	"devDependencies": {
-		"karma": "~0.8"
-	}
+  "name": "bootstrap-tagsinput",
+  "version": "0.0.1",
+  "description": "A JQuery based plugin providing a Twitter Bootstrap-like user interface for adding tags.",
+  "scripts": {
+    "test": "karma start --single-run --no-auto-watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/timschlechter/bootstrap-tagsinput.git"
+  },
+  "author": "Tim Schlechter",
+  "license": "MIT",
+  "licenseUrl": "https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "karma": "~0.8",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-karma": "~0.4.5"
+  }
 }
