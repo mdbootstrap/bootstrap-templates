@@ -1,10 +1,12 @@
 (function ($) {
 	"use strict";
 
-	var tagTemplate = '<span class="tag label"><span class="text"></span><i class="icon-white icon-remove" data-role="remove"></i></span>';
+	var defaultOptions = {
+		tagClass: 'label'
+	};
 
 	function TagsInput(element, options) {
-		this.options = {};
+		this.options = $.extend({}, defaultOptions, options);
 		this.$element = $(element);
 		this.multiple = (element.tagName === 'SELECT' && element.getAttribute('multiple'));
 
@@ -31,7 +33,7 @@
 			if ($.inArray(item, this.getItems()) !== -1)
 				return;
 
-			var $tag = $(tagTemplate);
+			var $tag = $('<span class="tag ' + htmlEncode(this.options.tagClass) + '"><span class="text"></span><i class="icon-white icon-remove" data-role="remove"></i></span>');
 			$(".text", $tag).text(item);
 			$tag.data('item', item);
 

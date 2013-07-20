@@ -11,6 +11,9 @@
 		<script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap-2.3.2.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap-tagsinput.js"></script>
+		<style>
+			.bootstrap-tagsinput { width: 100%; }
+		</style>
 	</head>
 	<body>
 		<a href="https://github.com/timschlechter/bootstrap-tagsinput"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
@@ -28,10 +31,22 @@
 				<tbody>
 					<tr>
 						<td>
-							<input type="text" value="The Netherlands,Belgium,Germany,France,Spain" data-role="tagsinput" />
+							<input id="example1" type="text" value="The Netherlands,Belgium,Germany,France,Spain" data-role="tagsinput" />
 						<td>
 						<td>
 							Default tags input
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input id="example2" type="text" value="The Netherlands,Belgium,Germany,France,Spain" />
+							<script>
+								$('#example2').tagsinput({ tagClass: 'badge badge-info'});
+							</script>
+						<td>
+						<td>
+							Alternative tag style in options:
+							<code>{ tagClass: 'badge badge-info' }</code>
 						</td>
 					</tr>
 				</tbody>
