@@ -9,7 +9,7 @@
 
 		this.$element = $(element);
 
-		this.$container = $('<div class="bootstrap-tagsinput"><input type="text" /></div>');
+		this.$container = $('<div class="bootstrap-tagsinput"><input size="1" type="text" /></div>');
 		this.$element.hide();
 		this.$element.after(this.$container);
 
