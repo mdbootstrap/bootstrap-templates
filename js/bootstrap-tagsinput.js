@@ -88,6 +88,15 @@
 							$input.focus();
 						}
 						break;
+					// LEFT ARROW
+					case 39:
+						// Try to move the input before the previous tag
+						var $nextTag = $input.next();
+						if ($input.val().length === 0 && $nextTag[0]) {
+							$nextTag.after($input);
+							$input.focus();
+						}
+						break;
 					// ENTER
 					case 13:
 						this.addItem($input.val());
