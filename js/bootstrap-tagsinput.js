@@ -19,6 +19,9 @@
 		constructor: TagsInput,
 
 		addItem: function(item, dontUpdateElementVal) {
+			if ($.inArray(item, this.getItems()) !== -1)
+				return;
+
 			var $tag = $(tagTemplate);
 			$(".text", $tag).text(item);
 			$tag.data('item', item);

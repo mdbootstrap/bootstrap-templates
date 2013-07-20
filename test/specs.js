@@ -22,6 +22,12 @@ describe('invoke tagsinput() on <input type="text" />', function() {
 		expect($element.css('display')).toBe('none');
 	});
 
+	it("add same item twice, should not add tag second time", function() {
+		$element.tagsinput('add', 'some_tag');
+		$element.tagsinput('add', 'some_tag');
+		expect($element.val()).toBe('some_tag');
+	});
+
 	describe("when added 1 item", function() {
 
 		beforeEach(function() {
