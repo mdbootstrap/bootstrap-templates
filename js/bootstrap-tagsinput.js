@@ -42,7 +42,7 @@
 				this.$element.val(this.getValueFromTags());
 		},
 
-		// Returns the value's from the items
+		// Returns the values from the items
 		getValueFromTags: function() {
 			return this.getItems();
 		},
@@ -93,7 +93,7 @@
 		},
 
 		destroy: function() {
-			// Bnbind events
+			// Unbind events
 			this.$container.off('keypress', 'input');
 			this.$container.off('click', '[data-role=remove]');
 
@@ -145,30 +145,25 @@
 	// it when setting value's not present yet.
 	var $val = $.fn.val;
 	$.fn.val = function(value) {
-		// Get value
 		if (!arguments.length)
 			return $val.call(this);
-
-		// Set value
 		this.each(function() {
 			var tagsinput = $(this).data('tagsinput'),
 				val = value;
-
 			if (tagsinput) {
 				if (typeof val === "string" && !this.multiple)
 					val = val.split(',');
-
 				$.each($.makeArray(val), function(index, item) {
 					tagsinput.addItem(item, true);
 				});
 			}
 		});
-
 		return $val.call(this, value);
 	};
 
+	// HtmlEncodes the given value
 	var htmlEncodeContainer = $('<div />');
-	function htmlEncode (value) {
+	function htmlEncode(value) {
 		if (value) {
 			return htmlEncodeContainer.text(value).html();
 		} else {
@@ -176,8 +171,9 @@
 		}
 	}
 
-	// Source: http://flightschool.acylt.com/devnotes/caret-position-woes/
-	function doGetCaretPosition (oField) {
+	// Returns the position of the caret in the given input field
+	// http://flightschool.acylt.com/devnotes/caret-position-woes/
+	function doGetCaretPosition(oField) {
 		var iCaretPos = 0;
 		if (document.selection) {
 			oField.focus ();
