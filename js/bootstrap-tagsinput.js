@@ -98,6 +98,16 @@
 								this.removeItem(items[items.length-1]);
 						}
 						break;
+
+					// LEFT ARROW
+					case 37:
+						// Try to move the input before the previous tag
+						var $prevTag = $input.prev();
+						if ($input.val().length === 0 && $prevTag[0]) {
+							$prevTag.before($input);
+							$input.focus();
+						}
+						break;
 					// ENTER
 					case 13:
 						this.addItem($input.val());
@@ -106,7 +116,7 @@
 
 				}
 
-				$input.attr('size', $input.val().length);
+				$input.attr('size', Math.max(1, $input.val().length));
 			}, this));
 
 			// Remove icon clicked
