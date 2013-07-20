@@ -19,6 +19,15 @@
 		constructor: TagsInput,
 
 		addItem: function(item, dontUpdateElementVal) {
+			// Ignore falsey values, except false
+			if (item !== false && !item)
+				return;
+
+			// Ignore strings only containg whitespace
+			if (item.toString().match(/^\s*$/))
+				return;
+
+			// Ignore items allready added
 			if ($.inArray(item, this.getItems()) !== -1)
 				return;
 

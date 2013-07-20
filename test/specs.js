@@ -28,6 +28,31 @@ describe('invoke tagsinput() on <input type="text" />', function() {
 		expect($element.val()).toBe('some_tag');
 	});
 
+	it("add empty string, should not add tag", function() {
+		$element.tagsinput('add', '');
+		expect($element.tagsinput('items').length).toBe(0);
+	});
+
+	it("add whitespace string, should not add tag", function() {
+		$element.tagsinput('add', ' ');
+		expect($element.tagsinput('items').length).toBe(0);
+	});
+
+	it("add undefined, should not add tag", function() {
+		$element.tagsinput('add', undefined);
+		expect($element.tagsinput('items').length).toBe(0);
+	});
+
+	it("add null, should not add tag", function() {
+		$element.tagsinput('add', null);
+		expect($element.tagsinput('items').length).toBe(0);
+	});
+
+	it("add false, should add tag", function() {
+		$element.tagsinput('add', false);
+		expect($element.tagsinput('items').length).toBe(1);
+	});
+
 	describe("when added 1 item", function() {
 
 		beforeEach(function() {
