@@ -4,10 +4,9 @@
 	var tagTemplate = '<span class="tag label"><span class="text"></span><i class="icon-white icon-remove" data-role="remove"></i></span>';
 
 	function TagsInput(element, options) {
-
 		this.options = {};
-
 		this.$element = $(element);
+		this.multiple = (element.tagName === 'SELECT' && element.getAttribute('multiple'));
 
 		this.$container = $('<div class="bootstrap-tagsinput"><input size="1" type="text" /></div>');
 		this.$element.hide();
@@ -16,33 +15,10 @@
 		this.build();
 	}
 
-	var htmlEncodeContainer = $('<div />');
-	function htmlEncode (value) {
-		if (value) {
-			return htmlEncodeContainer.text(value).html();
-		} else {
-			return '';
-		}
-	}
-
-	// Source: http://flightschool.acylt.com/devnotes/caret-position-woes/
-	function doGetCaretPosition (oField) {
-		var iCaretPos = 0;
-		if (document.selection) {
-			oField.focus ();
-			var oSel = document.selection.createRange();
-			oSel.moveStart ('character', -oField.value.length);
-			iCaretPos = oSel.text.length;
-		} else if (oField.selectionStart || oField.selectionStart == '0') {
-			iCaretPos = oField.selectionStart;
-		}
-		return (iCaretPos);
-	}
-
 	TagsInput.prototype = {
 		constructor: TagsInput,
 
-		addItem: function(item) {
+		addItem: function(item, dontUpdateElementVal) {
 			var $tag = $(tagTemplate);
 			$(".text", $tag).text(item);
 			$tag.data('item', item);
@@ -53,37 +29,27 @@
 				this.$element.append($('<option value="' + htmlEncode(item) + '" selected>' + htmlEncode(item) + '</option>'));
 			}
 
-			this.$element.val(this.getValueFromTags());
+			if (!dontUpdateElementVal)
+				this.$element.val(this.getValueFromTags());
 		},
 
-		removeItem: function(item) {
+		removeItem: function(item, dontUpdateElementVal) {
 			$('.tag', this.$container).filter(function(index) {
 				return $(this).data('item') === item;
 			}).remove();
 
-			this.$element.val(this.getValueFromTags());
+			if (!dontUpdateElementVal)
+				this.$element.val(this.getValueFromTags());
 		},
 
 		// Returns the value's from the items
 		getValueFromTags: function() {
-			return $.map($('.tag', this.$container), function(tag) { return $(tag).data('item'); });
-		},
-
-		// Returns the original elements's val()
-		getValueFromElement: function() {
-			return this.$element.val();
+			return this.getItems();
 		},
 
 		// Returns the items added as tags
 		getItems: function() {
 			return $.map($('.tag', this.$container), function(tag) { return $(tag).data('item'); });
-		},
-
-		setValue: function(value) {
-			var tagsinput = this;
-			$.each(value.split(','), function(index, item) {
-				tagsinput.addItem(item);
-			});
 		},
 
 		build: function() {
@@ -156,7 +122,6 @@
 				case 'add'    : retVal = tagsinput.addItem(arg2); break;
 				case 'remove' : retVal = tagsinput.removeItem(arg2); break;
 				case 'destroy': retVal = tagsinput.destroy(); break;
-				case 'value'  : retVal = (arg2 ? tagsinput.setValue(arg2) : tagsinput.getValueFromElement()); break;
 				case 'items'  : retVal = tagsinput.getItems(); break;
 				default: break;
 			}
@@ -175,7 +140,57 @@
 
 	$.fn.tagsinput.Constructor = TagsInput;
 
+	// HACK: Intercept global JQuery's val(): when a <select multiple /> is
+	// used as tags input element, we need to add an <option /> element to
+	// it when setting value's not present yet.
+	var $val = $.fn.val;
+	$.fn.val = function(value) {
+		// Get value
+		if (!arguments.length)
+			return $val.call(this);
+
+		// Set value
+		this.each(function() {
+			var tagsinput = $(this).data('tagsinput'),
+				val = value;
+
+			if (tagsinput) {
+				if (typeof val === "string" && !this.multiple)
+					val = val.split(',');
+
+				$.each($.makeArray(val), function(index, item) {
+					tagsinput.addItem(item, true);
+				});
+			}
+		});
+
+		return $val.call(this, value);
+	};
+
+	var htmlEncodeContainer = $('<div />');
+	function htmlEncode (value) {
+		if (value) {
+			return htmlEncodeContainer.text(value).html();
+		} else {
+			return '';
+		}
+	}
+
+	// Source: http://flightschool.acylt.com/devnotes/caret-position-woes/
+	function doGetCaretPosition (oField) {
+		var iCaretPos = 0;
+		if (document.selection) {
+			oField.focus ();
+			var oSel = document.selection.createRange();
+			oSel.moveStart ('character', -oField.value.length);
+			iCaretPos = oSel.text.length;
+		} else if (oField.selectionStart || oField.selectionStart == '0') {
+			iCaretPos = oField.selectionStart;
+		}
+		return (iCaretPos);
+	}
+
 	$(function() {
-		$("input[data-role=tagsinput]").tagsinput();
+		$("input[data-role=tagsinput], select[data-role=tagsinput]").tagsinput();
 	});
 })(window.jQuery);

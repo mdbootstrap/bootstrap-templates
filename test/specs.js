@@ -28,11 +28,7 @@ describe('invoke tagsinput() on <input type="text" />', function() {
 			$element.tagsinput('add', 'some_tag');
 		});
 
-		it("'value', should return array containing 1 item", function() {
-			expect($element.tagsinput('value')).toBe('some_tag');
-		});
-
-		it("val() should return array containing 1 item", function() {
+		it("val() should return 'some_tag'", function() {
 			expect($element.val()).toBe('some_tag');
 		});
 
@@ -40,10 +36,6 @@ describe('invoke tagsinput() on <input type="text" />', function() {
 
 			beforeEach(function() {
 				$element.tagsinput('remove', 'some_tag');
-			});
-
-			it("'value', should return null", function() {
-				expect($element.tagsinput('value')).toBe('');
 			});
 
 			it("val() should should return null", function() {
@@ -58,19 +50,15 @@ describe('invoke tagsinput() on <input type="text" />', function() {
 			$element.tagsinput('add', 'before,after');
 		});
 
-		it("'value', should return 'before,after'", function() {
-			expect($element.tagsinput('value')).toBe('before,after');
-		});
-
 		it("val() should return 'before,after'", function() {
 			expect($element.val()).toBe('before,after');
 		});
 	});
 
-	describe("invoke 'value'", function() {
+	describe("invoke val()", function() {
 		describe("with 'some_tag'", function() {
 			beforeEach(function() {
-				$element.tagsinput('value', 'some_tag');
+				$element.val('some_tag');
 			});
 
 			it("val() should return 'some_tag'", function() {
@@ -84,7 +72,7 @@ describe('invoke tagsinput() on <input type="text" />', function() {
 
 		describe("with a string containing a comma", function() {
 			beforeEach(function() {
-				$element.tagsinput('value', 'before,after');
+				$element.val('before,after');
 			});
 
 			it("val() should return same string", function() {
@@ -115,10 +103,6 @@ describe('invoke tagsinput() on <select multiple="multiple"/>', function() {
 			$element.tagsinput('add', 'some_tag');
 		});
 
-		it("'value', should return array containing 1 item", function() {
-			expect($element.tagsinput('value')[0]).toBe('some_tag');
-		});
-
 		it("val() should return array containing 1 item", function() {
 			expect($element.val()[0]).toBe('some_tag');
 		});
@@ -127,10 +111,6 @@ describe('invoke tagsinput() on <select multiple="multiple"/>', function() {
 
 			beforeEach(function() {
 				$element.tagsinput('remove', 'some_tag');
-			});
-
-			it("'value', should return null", function() {
-				expect($element.tagsinput('value')).toBeNull();
 			});
 
 			it("val() should should return null", function() {
@@ -145,22 +125,18 @@ describe('invoke tagsinput() on <select multiple="multiple"/>', function() {
 			$element.tagsinput('add', 'before,after');
 		});
 
-		it("'value', should return array containing 1 item", function() {
-			expect($element.tagsinput('value')[0]).toBe('before,after');
-		});
-
 		it("val() should return array containing 1 item", function() {
 			expect($element.val()[0]).toBe('before,after');
 		});
 	});
 
-	describe("invoke 'value'", function() {
+	describe("invoke val()", function() {
 		describe("with 'some_tag'", function() {
 			beforeEach(function() {
-				$element.tagsinput('value', 'some_tag');
+				$element.val('some_tag');
 			});
 
-			it("val() should return 'some_tag'", function() {
+			it("val() should return an array containing 'some_tag'", function() {
 				expect($element.val()[0]).toBe('some_tag');
 			});
 
@@ -171,15 +147,15 @@ describe('invoke tagsinput() on <select multiple="multiple"/>', function() {
 
 		describe("with a string containing a comma", function() {
 			beforeEach(function() {
-				$element.tagsinput('value', 'before,after');
+				$element.val('before,after');
 			});
 
-			it("val() should return an array containing 2 values", function() {
-				expect($element.val().length).toBe(2);
+			it("val() should return an array containing 1 value", function() {
+				expect($element.val().length).toBe(1);
 			});
 
-			it("'items' should return 2 item", function() {
-				expect($element.tagsinput('items').length).toBe(2);
+			it("'items' should return 1 item", function() {
+				expect($element.tagsinput('items').length).toBe(1);
 			});
 		});
 	});
