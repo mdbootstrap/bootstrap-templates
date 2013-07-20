@@ -123,8 +123,11 @@
 
 			// Initialize a new tags input
 			if (!tagsinput) {
-				$(this).data('tagsinput', ( tagsinput = new TagsInput(this, arg1)));
+				tagsinput = new TagsInput(this, arg1);
+				$(this).data('tagsinput', tagsinput);
 				results.push(tagsinput);
+				// Init tags from $(this).val()
+				$(this).val($(this).val());
 				return;
 			}
 
