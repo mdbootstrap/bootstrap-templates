@@ -2,7 +2,7 @@
 	"use strict";
 
 	var defaultOptions = {
-		tagClass: 'label',
+		tagClass: 'badge badge-info',
 		itemId: function(item) {
 			return item ? item.toString() : item;
 		},
