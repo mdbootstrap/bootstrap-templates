@@ -49,6 +49,24 @@
 							<code>{ tagClass: 'badge badge-info' }</code>
 						</td>
 					</tr>
+					<tr>
+						<td>
+							<input id="example3" type="text" />
+							<script>
+								$('#example3').tagsinput({ itemId: 'id', itemLabel: 'label' });
+								$('#example3').tagsinput('add', { id: 1, label: 'The Netherlands' });
+								$('#example3').tagsinput('add', { id: 2, label: 'Belgium'         });
+								$('#example3').tagsinput('add', { id: 3, label: 'Germany'         });
+								$('#example3').tagsinput('add', { id: 4, label: 'France'          });
+								$('#example3').tagsinput('add', { id: 5, label: 'Spain'           });
+							</script>
+						<td>
+						<td>
+							Supports using objects as tags
+
+							<code>{ itemId: 'id', itemLabel: 'label' }</code>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
