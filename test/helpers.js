@@ -7,7 +7,7 @@ function testTagsInput(elementHtml, options, tests) {
 		options = undefined;
 	}
 
-	describe(elementHtml, function() {
+	describe(elementHtml + ' (options: ' + JSON.stringify(options, function(name, value) { return (typeof value === "function") ? value.toString() : value; }) + ')', function() {
 		var $sandbox;
 
 		beforeEach(function() {
