@@ -23,39 +23,47 @@ describe('invoke tagsinput() on', function() {
 			expect($element.css('display')).toBe('none');
 		});
 
-		it("add same item twice, should not add tag second time", function() {
-			$element.tagsinput('add', 'some_tag');
-			$element.tagsinput('add', 'some_tag');
-			expect($element.val()).toBe('some_tag');
+		describe("should not add tag", function() {
+			it("when adding same item twice", function() {
+				$element.tagsinput('add', 'some_tag');
+				$element.tagsinput('add', 'some_tag');
+				expect($element.val()).toBe('some_tag');
+			});
+
+			it("when adding empty string", function() {
+				$element.tagsinput('add', '');
+				expect($element.tagsinput('items').length).toBe(0);
+			});
+
+			it("when adding whitespace string", function() {
+				$element.tagsinput('add', ' ');
+				expect($element.tagsinput('items').length).toBe(0);
+			});
+
+			it("when adding undefined", function() {
+				$element.tagsinput('add', undefined);
+				expect($element.tagsinput('items').length).toBe(0);
+			});
+
+			it("when adding null", function() {
+				$element.tagsinput('add', null);
+				expect($element.tagsinput('items').length).toBe(0);
+			});
 		});
 
-		it("add empty string, should not add tag", function() {
-			$element.tagsinput('add', '');
-			expect($element.tagsinput('items').length).toBe(0);
-		});
+		describe("should add tag", function() {
+			it("when adding boolean false", function() {
+				$element.tagsinput('add', false);
+				expect($element.tagsinput('items').length).toBe(1);
+			});
 
-		it("add whitespace string, should not add tag", function() {
-			$element.tagsinput('add', ' ');
-			expect($element.tagsinput('items').length).toBe(0);
-		});
-
-		it("add undefined, should not add tag", function() {
-			$element.tagsinput('add', undefined);
-			expect($element.tagsinput('items').length).toBe(0);
-		});
-
-		it("add null, should not add tag", function() {
-			$element.tagsinput('add', null);
-			expect($element.tagsinput('items').length).toBe(0);
-		});
-
-		it("add false, should add tag", function() {
-			$element.tagsinput('add', false);
-			expect($element.tagsinput('items').length).toBe(1);
+			it("when adding boolean true", function() {
+				$element.tagsinput('add', false);
+				expect($element.tagsinput('items').length).toBe(1);
+			});
 		});
 
 		describe("when added 1 item", function() {
-
 			beforeEach(function() {
 				$element.tagsinput('add', 'some_tag');
 			});
@@ -77,7 +85,6 @@ describe('invoke tagsinput() on', function() {
 		});
 
 		describe("containing a comma", function() {
-
 			beforeEach(function() {
 				$element.tagsinput('add', 'before,after');
 			});
@@ -130,7 +137,6 @@ describe('invoke tagsinput() on', function() {
 	});
 
 	describe('<select multiple="multiple"/>', function() {
-
 		beforeEach(function() {
 			$element = $('<select multiple="multiple" />').appendTo($sandbox);
 			$element.tagsinput();
@@ -141,7 +147,6 @@ describe('invoke tagsinput() on', function() {
 		});
 
 		describe("when added 1 item", function() {
-
 			beforeEach(function() {
 				$element.tagsinput('add', 'some_tag');
 			});
@@ -163,7 +168,6 @@ describe('invoke tagsinput() on', function() {
 		});
 
 		describe("when added item containing a comma", function() {
-
 			beforeEach(function() {
 				$element.tagsinput('add', 'before,after');
 			});

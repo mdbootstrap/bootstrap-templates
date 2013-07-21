@@ -7,7 +7,7 @@ files = [
   JASMINE_ADAPTER,
   'js/jquery-2.0.3.min.js',
   'js/bootstrap-tagsinput.js',
-  'test/specs.js'
+  { pattern: 'test/*.tests.js' }
 ];
 
 // list of files to exclude
