@@ -80,6 +80,10 @@
 			makeFunctionOption(this.options, 'itemId');
 			makeFunctionOption(this.options, 'itemLabel');
 
+			this.$container.on('click', $.proxy(function(event) {
+				$('input', this.$container).focus();
+			}, this));
+
 			this.$container.on('keydown', 'input', $.proxy(function(event) {
 				var $input = $(event.target);
 				switch (event.which) {
