@@ -35,6 +35,9 @@ describe("bootstrap-tagsinput", function() {
 				it("'items' should return the item", function() {
 					expect(this.$element.tagsinput('items')[0]).toBe(item);
 				});
+				it("'items' should returns exactly 1 item", function() {
+					expect(this.$element.tagsinput('items').length).toBe(1);
+				});
 				it("val() should return the item's id", function() {
 					expect(this.$element.val()).toBe("1");
 				});

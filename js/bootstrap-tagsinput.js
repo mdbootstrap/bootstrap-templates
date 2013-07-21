@@ -25,7 +25,7 @@
 	TagsInput.prototype = {
 		constructor: TagsInput,
 
-		addItem: function(item, dontUpdateElementVal) {
+		addItem: function(item) {
 			// Ignore falsey values, except false
 			if (item !== false && !item)
 				return;
@@ -52,17 +52,15 @@
 				this.$element.append($('<option value="' + htmlEncode(this.options.itemId(item)) + '" selected>' + htmlEncode(item) + '</option>'));
 			}
 
-			if (!dontUpdateElementVal)
-				this.$element.val(this.getValueFromTags());
+			this.$element.val(this.getValueFromTags(), true);
 		},
 
-		removeItem: function(item, dontUpdateElementVal) {
+		removeItem: function(item) {
 			$('.tag', this.$container).filter(function(index) {
 				return $(this).data('item') === item;
 			}).remove();
 
-			if (!dontUpdateElementVal)
-				this.$element.val(this.getValueFromTags());
+			this.$element.val(this.getValueFromTags(), true);
 		},
 
 		// Returns the values from the items
@@ -185,20 +183,24 @@
 	// used as tags input element, we need to add an <option /> element to
 	// it when setting value's not present yet.
 	var $val = $.fn.val;
-	$.fn.val = function(value) {
+	$.fn.val = function(value, dontUpdateTagsInput) {
 		if (!arguments.length)
 			return $val.call(this);
-		this.each(function() {
-			var tagsinput = $(this).data('tagsinput'),
-				val = value;
-			if (tagsinput) {
-				if (typeof val === "string" && !this.multiple)
-					val = val.split(',');
-				$.each($.makeArray(val), function(index, item) {
-					tagsinput.addItem(item, true);
-				});
-			}
-		});
+
+		if (!dontUpdateTagsInput) {
+			this.each(function() {
+				var tagsinput = $(this).data('tagsinput'),
+					val = value;
+				if (tagsinput) {
+					if (typeof val === "string" && !this.multiple)
+						val = val.split(',');
+					$.each($.makeArray(val), function(index, item) {
+						tagsinput.addItem(item);
+					});
+				}
+			});
+		}
+
 		return $val.call(this, value);
 	};
 
