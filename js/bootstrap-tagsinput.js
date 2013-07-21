@@ -2,7 +2,13 @@
 	"use strict";
 
 	var defaultOptions = {
-		tagClass: 'label'
+		tagClass: 'label',
+		itemId: function(item) {
+			return item ? item.toString() : item;
+		},
+		itemLabel: function(item) {
+			return this.itemId(item);
+		}
 	};
 
 	function TagsInput(element, options) {
@@ -25,6 +31,10 @@
 			if (item !== false && !item)
 				return;
 
+			// Throw an error when trying to add an object while the itemId option was not set
+			if (typeof item === "object" && this.options.itemId === defaultOptions.itemId)
+				throw("Can't add objects when itemId option is not set");
+
 			// Ignore strings only containg whitespace
 			if (item.toString().match(/^\s*$/))
 				return;
@@ -34,13 +44,13 @@
 				return;
 
 			var $tag = $('<span class="tag ' + htmlEncode(this.options.tagClass) + '"><span class="text"></span><i class="icon-white icon-remove" data-role="remove"></i></span>');
-			$(".text", $tag).text(item);
+			$(".text", $tag).text(this.options.itemLabel(item));
 			$tag.data('item', item);
 
 			$('input', this.$container).before($tag);
 
 			if (this.$element[0].tagName === 'SELECT') {
-				this.$element.append($('<option value="' + htmlEncode(item) + '" selected>' + htmlEncode(item) + '</option>'));
+				this.$element.append($('<option value="' + htmlEncode(this.options.itemId(item)) + '" selected>' + htmlEncode(item) + '</option>'));
 			}
 
 			if (!dontUpdateElementVal)
@@ -58,7 +68,8 @@
 
 		// Returns the values from the items
 		getValueFromTags: function() {
-			return this.getItems();
+			var options = this.options;
+			return $.map(this.getItems(), function(item) { return options.itemId(item); });
 		},
 
 		// Returns the items added as tags
