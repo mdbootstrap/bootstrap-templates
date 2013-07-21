@@ -12,7 +12,6 @@
 	};
 
 	function TagsInput(element, options) {
-		this.options = $.extend({}, defaultOptions, options);
 		this.$element = $(element);
 		this.multiple = (element.tagName === 'SELECT' && element.getAttribute('multiple'));
 
@@ -20,7 +19,7 @@
 		this.$element.hide();
 		this.$element.after(this.$container);
 
-		this.build();
+		this.build(options);
 	}
 
 	TagsInput.prototype = {
@@ -77,7 +76,12 @@
 			return $.map($('.tag', this.$container), function(tag) { return $(tag).data('item'); });
 		},
 
-		build: function() {
+		build: function(options) {
+			this.options = $.extend({}, defaultOptions, options);
+
+			makeFunctionOption(this.options, 'itemId');
+			makeFunctionOption(this.options, 'itemLabel');
+
 			this.$container.on('keydown', 'input', $.proxy(function(event) {
 				var $input = $(event.target);
 				switch (event.which) {
@@ -198,6 +202,15 @@
 		return $val.call(this, value);
 	};
 
+	// Most options support both a string or number as well as a function as 
+	// option value. This function makes sure that the option with the given
+	// key in the given options is wrapped in a function
+	function makeFunctionOption(options, key) {
+		if (typeof options[key] !== 'function') {
+			var propertyName = options[key];
+			options[key] = function(item) { return item[propertyName]; };
+		}
+	}
 	// HtmlEncodes the given value
 	var htmlEncodeContainer = $('<div />');
 	function htmlEncode(value) {
