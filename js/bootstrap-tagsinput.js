@@ -3,11 +3,11 @@
 
 	var defaultOptions = {
 		tagClass: 'badge badge-info',
-		itemId: function(item) {
+		itemValue: function(item) {
 			return item ? item.toString() : item;
 		},
-		itemLabel: function(item) {
-			return this.itemId(item);
+		itemText: function(item) {
+			return this.itemValue(item);
 		}
 	};
 
@@ -30,9 +30,9 @@
 			if (item !== false && !item)
 				return;
 
-			// Throw an error when trying to add an object while the itemId option was not set
-			if (typeof item === "object" && this.options.itemId === defaultOptions.itemId)
-				throw("Can't add objects when itemId option is not set");
+			// Throw an error when trying to add an object while the itemValue option was not set
+			if (typeof item === "object" && this.options.itemValue === defaultOptions.itemValue)
+				throw("Can't add objects when itemValue option is not set");
 
 			// Ignore strings only containg whitespace
 			if (item.toString().match(/^\s*$/))
@@ -43,13 +43,13 @@
 				return;
 
 			var $tag = $('<span class="tag ' + htmlEncode(this.options.tagClass) + '"><span class="text"></span><i class="icon-white icon-remove" data-role="remove"></i></span>');
-			$(".text", $tag).text(this.options.itemLabel(item));
+			$(".text", $tag).text(this.options.itemText(item));
 			$tag.data('item', item);
 
 			$('input', this.$container).before($tag);
 
 			if (this.$element[0].tagName === 'SELECT') {
-				this.$element.append($('<option value="' + htmlEncode(this.options.itemId(item)) + '" selected>' + htmlEncode(item) + '</option>'));
+				this.$element.append($('<option value="' + htmlEncode(this.options.itemValue(item)) + '" selected>' + htmlEncode(item) + '</option>'));
 			}
 
 			this.$element.val(this.getValueFromTags(), true);
@@ -66,7 +66,7 @@
 		// Returns the values from the items
 		getValueFromTags: function() {
 			var options = this.options;
-			return $.map(this.getItems(), function(item) { return options.itemId(item); });
+			return $.map(this.getItems(), function(item) { return options.itemValue(item); });
 		},
 
 		// Returns the items added as tags
@@ -77,8 +77,8 @@
 		build: function(options) {
 			this.options = $.extend({}, defaultOptions, options);
 
-			makeFunctionOption(this.options, 'itemId');
-			makeFunctionOption(this.options, 'itemLabel');
+			makeFunctionOption(this.options, 'itemValue');
+			makeFunctionOption(this.options, 'itemText');
 
 			this.$container.on('click', $.proxy(function(event) {
 				$('input', this.$container).focus();
