@@ -2,6 +2,9 @@
 Bootstrap Tags Input is a JQuery based plugin providing a Twitter 
 Bootstrap-like user interface for adding tags.
 
+## Usage
+Examples can be found [here](http://timschlechter.github.com/bootstrap-tagsinput/).
+
 ## What makes this tags input different
 
 ### Objects as tags
@@ -21,10 +24,7 @@ Bootstrap Tags Input provides true multivalue support. Just use a
 form, an array of values will be sent with the request.
 
 ### Typeahead support
-Not yet, but coming soon...
-
-## Usage
-Examples can be found [here](http://timschlechter.github.com/bootstrap-tagsinput/).
+Integrates with Twitter Bootstraps's typeahead.
 
 ## The MIT License (MIT)
 Copyright (c) 2013 Tim Schlechter
