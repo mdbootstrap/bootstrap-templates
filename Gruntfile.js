@@ -19,11 +19,21 @@ module.exports = function(grunt) {
 				singleRun: true,
 				browsers: ['PhantomJS']
 			}
+		},
+		watch: {
+			scripts: {
+				files: ['js/**/*.js', 'test/**/*.js'],
+				tasks: ['uglify', 'karma'],
+				options: {
+					spawn: false
+				}
+			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-karma');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	grunt.registerTask('default', ['uglify','karma']);
 };
