@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 		copy: {
 			main: {
 				files: [
-					{expand: true, flatten: true, src: ['src/*'], dest: 'build/', filter: 'isFile'}
+					{expand: true, flatten: true, src: ['src/*.js'], dest: 'build/', filter: 'isFile'}
 				]
 			}
 		},
@@ -20,6 +20,13 @@ module.exports = function(grunt) {
 			build: {
 				files: {
 					'build/<%= pkg.name %>.min.js': 'src/<%= pkg.name %>.js'
+				}
+			}
+		},
+		sass: {
+			build: {
+				files: {
+					'build/<%= pkg.name %>.css' : 'src/<%= pkg.name %>.scss'
 				}
 			}
 		},
@@ -46,8 +53,9 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-	grunt.registerTask('default', ['copy', 'uglify', 'karma']);
+	grunt.registerTask('default', ['copy', 'uglify', 'sass', 'karma']);
 };

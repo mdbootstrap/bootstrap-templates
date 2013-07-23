@@ -86,8 +86,10 @@
 
 			makeOptionItemFunction(self.options, 'itemValue');
 			makeOptionItemFunction(self.options, 'itemText');
-			makeOptionFunction(self.options, 'source');
+			
 			if (self.options.source) {
+				makeOptionFunction(self.options, 'source');
+				
 				$('input', self.$container).typeahead({
 					source: function (query, process) {
 						this.map = {};
