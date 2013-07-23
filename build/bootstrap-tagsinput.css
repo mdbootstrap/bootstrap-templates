@@ -23,6 +23,7 @@
       border: none;
       box-shadow: none; }
   .bootstrap-tagsinput .tag {
-    margin-right: 5px; }
+    margin-right: 5px;
+    color: white; }
   .bootstrap-tagsinput .icon-white {
     margin-left: 5px; }

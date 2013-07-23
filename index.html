@@ -5,87 +5,157 @@
 		<meta name="robots" content="index, nofollow" />
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		
-		<link rel="stylesheet" href="lib/bootstrap/css/bootstrap-2.3.2.min.css" type="text/css">
-		<link rel="stylesheet" href="build/bootstrap-tagsinput.css" type="text/css">
+		<link rel="stylesheet" href="lib/bootstrap/css/bootstrap-2.3.2.min.css">
+		<link rel="stylesheet" href="lib/bootstrap/css/docs.css">
+		<link rel="stylesheet" href="lib/google-code-prettify/prettify.css">
+		<link rel="stylesheet" href="build/bootstrap-tagsinput.css">
 		
-		<script type="text/javascript" src="lib/jquery-2.0.3.min.js"></script>
-		<script type="text/javascript" src="lib/bootstrap/bootstrap-2.3.2.min.js"></script>
-		<script type="text/javascript" src="src/bootstrap-tagsinput.js"></script>
+		<script src="lib/jquery-2.0.3.min.js"></script>
+		<script src="lib/bootstrap/bootstrap-2.3.2.min.js"></script>
+		<script src="lib/google-code-prettify/prettify.js"></script>
+		<script src="build/bootstrap-tagsinput.min.js"></script>
 
 		<style>
 			.bootstrap-tagsinput { width: 100%; }
 		</style>
 	</head>
 	<body>
-		<a href="https://github.com/timschlechter/bootstrap-tagsinput"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
-		<header class="container-fluid" style="background:#F5F5F5;border-bottom:1px solid #DDDDDD;margin-bottom:16px;">
-			<h1 style="font-size:300%;margin: 26px 0px;">Bootstrap Tags Input</h1>
-			<p class="lead">
-				Bootstrap Tags Input is a JQuery based plugin providing a Twitter Bootstrap-like user interface for adding tags.
-			</p>
+		<header class="jumbotron subhead">
+			<div class="container">
+				<h1>Bootstrap Tags Input</h1>
+
+				<p>JQuery based plugin providing a Twitter Bootstrap-like user interface for adding tags.</p>
+
+				<p class="btn-group text-center span12">
+					<a class="btn" href="https://github.com/timschlechter/bootstrap-tagsinput"><i class="icon-github"></i> Code on Github</a>
+				</p>
+			</div>
 		</header>
 		<div class="container">
-			<div class="page-header">
-				<h1>Examples</h1>
-			</div>
-			<table class="table table-striped">
-				<tbody>
-					<tr>
-						<td>
-							<input id="example1" type="text" value="The Netherlands,Belgium,Germany,France,Spain" data-role="tagsinput" />
-						</td>
-						<td>
-							Default tags input
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input id="example2" type="text" value="The Netherlands,Belgium,Germany,France,Spain" />
-							<script>
-								$('#example2').tagsinput({ tagClass: 'label label-success'});
-							</script>
-						</td>
-						<td>
-							Alternative tag style in options:
-							<code>{ tagClass: 'label label-success' }</code>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input id="example3" type="text" />
-							<script>
-								$('#example3').tagsinput({
-									itemValue: 'value',
-									itemText: 'text',
-									source: [
-										{ value: 1, text: 'The Netherlands' },
-										{ value: 2, text: 'Belgium'         },
-										{ value: 3, text: 'Germany'         },
-										{ value: 4, text: 'France'          },
-										{ value: 5, text: 'Spain'           }
-									]
-								});
-								$('#example3').tagsinput('add', { value: 1, text: 'The Netherlands' });
-								$('#example3').tagsinput('add', { value: 2, text: 'Belgium'         });
-							</script>
-						</td>
-						<td>
-							Supports using objects as tags
-							<code>{
-									itemValue: 'value',
-									itemText: 'text',
-									typeahead: [
-										{ value: 1, text: 'The Netherlands' },
-										{ value: 2, text: 'Belgium'         },
-										{ value: 3, text: 'Germany'         },
-										{ value: 4, text: 'France'          },
-										{ value: 5, text: 'Spain'           }
-									]
-								}</code>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<section id="examples">
+				<div class="page-header">
+					<h1>Examples</h1>
+				</div>
+
+				<div id="example_markup">
+					<h2>Markup</h2>
+					Just add <code>data-role="tagsinput"</code> to your input field to automatically change it to a tags input field.
+					<div class="bs-docs-example">
+						<input type="text" value="Amsterdam,New York,Sydney,Caïro,Beijing" data-role="tagsinput" />
+					</div>
+					<pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,New York,Sydney,Caïro,Beijing&quot; data-role=&quot;tagsinput&quot; /&gt;</pre>
+				</div>
+
+				<div id="example_objects_as_tags">
+					<h2>Objects as tags</h2>
+					Instead of just adding strings as tags, bind objects to your tags. This makes it possible to set id values in your input field's value, instead of just
+					the tag's text.
+					<div class="bs-docs-example">
+						<input type="text" />
+					</div>
+						<pre class="prettyprint linenums">&lt;input type=&quot;text&quot; /&gt;
+&lt;script&gt;
+$('input').tagsinput({
+    itemValue: 'value',
+    itemText: 'text',
+    source: [
+        { value: 1, text: 'Amsterdam' },
+        { value: 2, text: 'New York'  },
+        { value: 3, text: 'Sydney'    },
+        { value: 4, text: 'Caïro'     },
+        { value: 5, text: 'Beijing'   }
+    ]
+});
+$('input').tagsinput('add', { value: 1, text: 'Amsterdam' });
+$('input').tagsinput('add', { value: 2, text: 'New York'         });
+&lt;/script&gt;</pre>
+
+					<script>
+						$('#example_objects_as_tags > > input').tagsinput({
+							itemValue: 'value',
+							itemText: 'text',
+							source: [
+								{ value: 1, text: 'Amsterdam' },
+								{ value: 2, text: 'New York'  },
+								{ value: 3, text: 'Sydney'    },
+								{ value: 4, text: 'Caïro'     },
+								{ value: 5, text: 'Beijing'   }
+							]
+						});
+						$('#example_objects_as_tags > > input').tagsinput('add', { value: 1, text: 'Amsterdam' });
+						$('#example_objects_as_tags > > input').tagsinput('add', { value: 2, text: 'New York'  });
+					</script>
+				</div>
+
+				<div id="example_tagclass">
+					<h2>Tag styling</h2>
+					You can set a fixed css class for your tags, or determine dynamically by provinding a custom function.
+					<div class="bs-docs-example">
+						<input type="text" />
+					</div>
+						<pre class="prettyprint linenums">&lt;input type=&quot;text&quot; /&gt;
+&lt;script&gt;
+$('input').tagsinput({
+    itemValue: 'value',
+    itemText: 'text',
+    source: [
+        { value: 1, text: 'Amsterdam', continent: 'Europe'    },
+        { value: 2, text: 'New York' , continent: 'America'   },
+        { value: 3, text: 'Sydney'   , continent: 'Australia' },
+        { value: 4, text: 'Caïro'    , continent: 'Africa'    },
+        { value: 5, text: 'Beijing'  , continent: 'Asia'      }
+    ],
+    tagClass: function(item) {
+        // No offense intended, just using the colors of the Olympic Rings here ;-)
+        switch (item.continent) {
+            case 'Europe'   : return 'label label-info';
+            case 'America'  : return 'label label-important';
+            case 'Australia': return 'label label-success';
+            case 'Africa'   : return 'badge badge-inverse';
+            case 'Asia'     : return 'badge badge-warning';
+        }
+    }
+});
+$('input').tagsinput('add', { value: 1, text: 'Amsterdam' });
+$('input').tagsinput('add', { value: 2, text: 'New York'  });
+&lt;/script&gt;</pre>
+
+					<script>
+						$('#example_tagclass > > input').tagsinput({
+							itemValue: 'value',
+							itemText: 'text',
+							source: [
+								{ value: 1, text: 'Amsterdam', continent: 'Europe'    },
+								{ value: 2, text: 'New York' , continent: 'America'   },
+								{ value: 3, text: 'Sydney'   , continent: 'Australia' },
+								{ value: 4, text: 'Caïro'    , continent: 'Africa'    },
+								{ value: 5, text: 'Beijing'  , continent: 'Asia'      }
+							],
+							tagClass: function(item) {
+								// No offense intended, just using the colors of the Olympic Rings here ;-)
+								switch (item.continent) {
+									case 'Europe'   : return 'badge badge-info';
+									case 'America'  : return 'label label-important';
+									case 'Australia': return 'badge badge-success';
+									case 'Africa'   : return 'label label-inverse';
+									case 'Asia'     : return 'badge badge-warning';
+								}
+							}
+						});
+						$('#example_tagclass > > input').tagsinput('add', { value: 2, text: 'New York', continent: 'America'   });
+						$('#example_tagclass > > input').tagsinput('add', { value: 3, text: 'Sydney'  , continent: 'Australia' });
+					</script>
+				</div>
+			</section>
 		</div>
+	    <footer class="footer">
+			<p>By Tim Schlechter</p>
+			<p>Code licensed under <a href="https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE" target="_blank">MIT License</a></p>
+		</footer>
+
+		<script>
+			// make code pretty
+			window.prettyPrint && prettyPrint()
+		</script>
 	</body>
 </html>

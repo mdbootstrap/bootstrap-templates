@@ -2,7 +2,9 @@
 	"use strict";
 
 	var defaultOptions = {
-		tagClass: 'badge badge-info',
+		tagClass: function(item) {
+			return 'badge badge-info';
+		},
 		itemValue: function(item) {
 			return item ? item.toString() : item;
 		},
@@ -44,7 +46,7 @@
 			if ($.inArray(item, self.items()) !== -1)
 				return;
 
-			var $tag = $('<span class="tag ' + htmlEncode(self.options.tagClass) + '"><span class="text"></span><i class="icon-white icon-remove" data-role="remove"></i></span>');
+			var $tag = $('<span class="tag ' + htmlEncode(self.options.tagClass(item)) + '"><span class="text"></span><i class="icon-white icon-remove" data-role="remove"></i></span>');
 			$(".text", $tag).text(self.options.itemText(item));
 			$tag.data('item', item);
 
@@ -93,6 +95,7 @@
 
 			makeOptionItemFunction(self.options, 'itemValue');
 			makeOptionItemFunction(self.options, 'itemText');
+			makeOptionItemFunction(self.options, 'tagClass');
 
 			if (self.options.source) {
 				makeOptionFunction(self.options, 'source');
@@ -165,8 +168,10 @@
 						break;
 					// ENTER
 					case 13:
-						self.add($input.val());
-						$input.val('');
+						if (!self.options.source) {
+							self.add($input.val());
+							$input.val('');
+						}
 						break;
 
 				}
