@@ -6,6 +6,7 @@ files = [
   JASMINE,
   JASMINE_ADAPTER,
   'js/jquery-2.0.3.min.js',
+  'js/bootstrap-2.3.2.min.js',
   'js/bootstrap-tagsinput.js',
 
   'test/helpers.js',

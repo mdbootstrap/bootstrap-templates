@@ -26,12 +26,14 @@
 		constructor: TagsInput,
 
 		addItem: function(item) {
+			var self = this;
+
 			// Ignore falsey values, except false
 			if (item !== false && !item)
 				return;
 
 			// Throw an error when trying to add an object while the itemValue option was not set
-			if (typeof item === "object" && this.options.itemValue === defaultOptions.itemValue)
+			if (typeof item === "object" && self.options.itemValue === defaultOptions.itemValue)
 				throw("Can't add objects when itemValue option is not set");
 
 			// Ignore strings only containg whitespace
@@ -39,60 +41,98 @@
 				return;
 
 			// Ignore items allready added
-			if ($.inArray(item, this.getItems()) !== -1)
+			if ($.inArray(item, self.getItems()) !== -1)
 				return;
 
-			var $tag = $('<span class="tag ' + htmlEncode(this.options.tagClass) + '"><span class="text"></span><i class="icon-white icon-remove" data-role="remove"></i></span>');
-			$(".text", $tag).text(this.options.itemText(item));
+			var $tag = $('<span class="tag ' + htmlEncode(self.options.tagClass) + '"><span class="text"></span><i class="icon-white icon-remove" data-role="remove"></i></span>');
+			$(".text", $tag).text(self.options.itemText(item));
 			$tag.data('item', item);
 
-			$('input', this.$container).before($tag);
+			$('input', self.$container).before($tag);
 
-			if (this.$element[0].tagName === 'SELECT') {
-				this.$element.append($('<option value="' + htmlEncode(this.options.itemValue(item)) + '" selected>' + htmlEncode(item) + '</option>'));
+			if (self.$element[0].tagName === 'SELECT') {
+				self.$element.append($('<option value="' + htmlEncode(self.options.itemValue(item)) + '" selected>' + htmlEncode(item) + '</option>'));
 			}
 
-			this.$element.val(this.getValueFromTags(), true);
+			self.$element.val(self.getValueFromTags(), true);
 		},
 
 		removeItem: function(item) {
-			$('.tag', this.$container).filter(function(index) {
+			var self = this;
+
+			$('.tag', self.$container).filter(function(index) {
 				return $(this).data('item') === item;
 			}).remove();
 
-			this.$element.val(this.getValueFromTags(), true);
+			self.$element.val(self.getValueFromTags(), true);
 		},
 
 		// Returns the values from the items
 		getValueFromTags: function() {
-			var options = this.options;
-			return $.map(this.getItems(), function(item) { return options.itemValue(item); });
+			var self = this;
+			return $.map(self.getItems(), function(item) { return self.options.itemValue(item); });
 		},
 
 		// Returns the items added as tags
 		getItems: function() {
-			return $.map($('.tag', this.$container), function(tag) { return $(tag).data('item'); });
+			var self = this;
+			return $.map($('.tag', self.$container), function(tag) { return $(tag).data('item'); });
 		},
 
 		build: function(options) {
-			this.options = $.extend({}, defaultOptions, options);
+			var self = this;
 
-			makeFunctionOption(this.options, 'itemValue');
-			makeFunctionOption(this.options, 'itemText');
+			self.options = $.extend({}, defaultOptions, options);
 
-			this.$container.on('click', $.proxy(function(event) {
-				$('input', this.$container).focus();
-			}, this));
+			makeOptionItemFunction(self.options, 'itemValue');
+			makeOptionItemFunction(self.options, 'itemText');
+			makeOptionFunction(self.options, 'source');
+			if (self.options.source) {
+				$('input', self.$container).typeahead({
+					source: function (query, process) {
+						this.map = {};
 
-			this.$container.on('keydown', 'input', $.proxy(function(event) {
+						var data = self.options.source(),
+							texts = [],
+							map = this.map;
+
+						$.each(data, function (i, item) {
+							var text = self.options.itemText(item);
+							map[text] = item;
+							texts.push(text);
+						});
+
+						process(texts);
+					},
+					updater: function (item) {
+						self.addItem(this.map[item]);
+					},
+					matcher: function (item) {
+						return (item.toLowerCase().indexOf(this.query.trim().toLowerCase()) !== -1);
+					},
+					sorter: function (items) {
+						return items.sort();
+					},
+					highlighter: function (item) {
+						var regex = new RegExp( '(' + this.query + ')', 'gi' );
+						return item.replace( regex, "<strong>$1</strong>" );
+					}
+				});
+			}
+
+			self.$container.on('click', $.proxy(function(event) {
+				$('input', self.$container).focus();
+			}, self));
+
+			self.$container.on('keydown', 'input', $.proxy(function(event) {
 				var $input = $(event.target);
 				switch (event.which) {
 					// BACKSPACE
 					case 8:
 						if (doGetCaretPosition($input[0]) === 0) {
-							var items = this.getItems();
+							var items = self.getItems();
 							if (items[0])
-								this.removeItem(items[items.length-1]);
+								self.removeItem(items[items.length-1]);
 						}
 						break;
 
@@ -116,29 +156,31 @@
 						break;
 					// ENTER
 					case 13:
-						this.addItem($input.val());
+						self.addItem($input.val());
 						$input.val('');
 						break;
 
 				}
 
 				$input.attr('size', Math.max(1, $input.val().length));
-			}, this));
+			}, self));
 
 			// Remove icon clicked
-			this.$container.on('click', '[data-role=remove]', $.proxy(function(event) {
+			self.$container.on('click', '[data-role=remove]', $.proxy(function(event) {
 				var $tag = $(event.target).closest('.tag');
-				this.removeItem($tag.data('item'));
-			}, this));
+				self.removeItem($tag.data('item'));
+			}, self));
 		},
 
 		destroy: function() {
-			// Unbind events
-			this.$container.off('keypress', 'input');
-			this.$container.off('click', '[data-role=remove]');
+			var self = this;
 
-			this.$container.remove();
-			this.$element.show();
+			// Unbind events
+			self.$container.off('keypress', 'input');
+			self.$container.off('click', '[data-role=remove]');
+
+			self.$container.remove();
+			self.$element.show();
 		}
 	};
 
@@ -211,10 +253,16 @@
 	// Most options support both a string or number as well as a function as 
 	// option value. This function makes sure that the option with the given
 	// key in the given options is wrapped in a function
-	function makeFunctionOption(options, key) {
+	function makeOptionItemFunction(options, key, fn) {
 		if (typeof options[key] !== 'function') {
-			var propertyName = options[key];
-			options[key] = function(item) { return item[propertyName]; };
+			var value = options[key];
+			options[key] = function(item) { return item[value]; };
+		}
+	}
+	function makeOptionFunction(options, key, fn) {
+		if (typeof options[key] !== 'function') {
+			var value = options[key];
+			options[key] = function() { return value; };
 		}
 	}
 	// HtmlEncodes the given value
