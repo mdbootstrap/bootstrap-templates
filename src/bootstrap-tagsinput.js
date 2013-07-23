@@ -64,6 +64,12 @@
 				return $(this).data('item') === item;
 			}).remove();
 
+			if (self.$element[0].tagName === 'SELECT') {
+				$("option", self.$element).filter(function(index) {
+					return $(this).val() === self.options.itemValue(item);
+				}).remove();
+			}
+
 			self.pushVal();
 		},
 

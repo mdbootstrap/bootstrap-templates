@@ -21,6 +21,10 @@ describe("bootstrap-tagsinput", function() {
 					it("val() should should return null", function() {
 						expect(this.$element.val()).toBeNull();
 					});
+
+					it("there should be no <option /> elements", function() {
+						expect($("option", this.$sandbox).length).toBe(0);
+					});
 				});
 			});
 
