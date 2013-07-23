@@ -5,9 +5,9 @@ basePath = '';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  'js/jquery-2.0.3.min.js',
-  'js/bootstrap-2.3.2.min.js',
-  'js/bootstrap-tagsinput.js',
+  'lib/jquery-2.0.3.min.js',
+  'lib/bootstrap/bootstrap-2.3.2.min.js',
+  'src/bootstrap-tagsinput.js',
 
   'test/helpers.js',
   { pattern: 'test/*.tests.*.js' }

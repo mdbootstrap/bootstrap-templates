@@ -3,13 +3,24 @@ module.exports = function(grunt) {
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+
+		copy: {
+			main: {
+				files: [
+					{expand: true, flatten: true, src: ['src/*'], dest: 'build/', filter: 'isFile'}
+				]
+			}
+		},
 		uglify: {
 			options: {
-				banner: '/*\n * <%= pkg.name %> v<%= pkg.version %> by <%= pkg.author %>\n * <%= pkg.licenseUrl %>\n */\n'
+				banner: '<%= pkg.banner %>',
+				sourceMap: 'build/<%= pkg.name %>.min.js.map',
+				sourceMappingURL: '<%= pkg.name %>.min.js.map'
 			},
 			build: {
-				src: 'js/<%= pkg.name %>.js',
-				dest: 'build/<%= pkg.name %>.min.js'
+				files: {
+					'build/<%= pkg.name %>.min.js': 'src/<%= pkg.name %>.js'
+				}
 			}
 		},
 		karma: {
@@ -23,18 +34,20 @@ module.exports = function(grunt) {
 		},
 		watch: {
 			scripts: {
-				files: ['js/**/*.js', 'test/**/*.js'],
-				tasks: ['uglify', 'karma'],
+				files: ['src/**/*.js', 'test/**/*.js'],
+				tasks: ['copy', 'uglify'],
 				options: {
-					spawn: false
+					spawn: false,
+					interupt: true
 				}
 			}
 		}
 	});
 
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-	grunt.registerTask('default', ['uglify','karma']);
+	grunt.registerTask('default', ['copy', 'uglify', 'karma']);
 };

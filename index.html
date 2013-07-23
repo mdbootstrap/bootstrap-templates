@@ -5,12 +5,13 @@
 		<meta name="robots" content="index, nofollow" />
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		
-		<link rel="stylesheet" href="css/bootstrap-2.3.2.min.css" type="text/css">
-		<link rel="stylesheet" href="css/bootstrap-tagsinput.css" type="text/css">
+		<link rel="stylesheet" href="lib/bootstrap/css/bootstrap-2.3.2.min.css" type="text/css">
+		<link rel="stylesheet" href="build/bootstrap-tagsinput.css" type="text/css">
 		
-		<script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
-		<script type="text/javascript" src="js/bootstrap-2.3.2.min.js"></script>
-		<script type="text/javascript" src="js/bootstrap-tagsinput.js"></script>
+		<script type="text/javascript" src="lib/jquery-2.0.3.min.js"></script>
+		<script type="text/javascript" src="lib/bootstrap/bootstrap-2.3.2.min.js"></script>
+		<script type="text/javascript" src="build/bootstrap-tagsinput.min.js"></script>
+
 		<style>
 			.bootstrap-tagsinput { width: 100%; }
 		</style>
@@ -32,7 +33,7 @@
 					<tr>
 						<td>
 							<input id="example1" type="text" value="The Netherlands,Belgium,Germany,France,Spain" data-role="tagsinput" />
-						<td>
+						</td>
 						<td>
 							Default tags input
 						</td>
@@ -43,7 +44,7 @@
 							<script>
 								$('#example2').tagsinput({ tagClass: 'label label-success'});
 							</script>
-						<td>
+						</td>
 						<td>
 							Alternative tag style in options:
 							<code>{ tagClass: 'label label-success' }</code>
@@ -67,7 +68,7 @@
 								$('#example3').tagsinput('add', { value: 1, text: 'The Netherlands' });
 								$('#example3').tagsinput('add', { value: 2, text: 'Belgium'         });
 							</script>
-						<td>
+						</td>
 						<td>
 							Supports using objects as tags
 							<code>{
@@ -86,8 +87,5 @@
 				</tbody>
 			</table>
 		</div>
-		<script>
-
-		</script>
 	</body>
 </html>
