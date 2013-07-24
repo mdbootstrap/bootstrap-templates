@@ -9,12 +9,6 @@
 		<link rel="stylesheet" href="assets/bootstrap/css/docs.css">
 		<link rel="stylesheet" href="assets/google-code-prettify/prettify.css">
 		<link rel="stylesheet" href="assets/bootstrap-tagsinput.css">
-		
-		<script src="assets/jquery.min.js"></script>
-		<script src="assets/bootstrap/bootstrap.min.js"></script>
-		<script src="assets/google-code-prettify/prettify.js"></script>
-		<script src="assets/bootstrap-tagsinput.min.js"></script>
-
 		<style>
 			.bootstrap-tagsinput { width: 100%; }
 		</style>
@@ -48,6 +42,19 @@
 					<pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,New York,Sydney,Caïro,Beijing&quot; data-role=&quot;tagsinput&quot; /&gt;</pre>
 				</div>
 
+				<div id="example_typeahead">
+					<h2>Typeahead</h2>
+					<div class="bs-docs-example">
+						<input type="text" value="Amsterdam,New York" />
+					</div>
+						<pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,New York&quot; data-role=&quot;tagsinput&quot; /&gt;
+&lt;script&gt;
+$('input').tagsinput({
+    source: ['Amsterdam', 'New York', 'Sydney', 'Caïro', 'Beijing'
+});
+&lt;/script&gt;</pre>
+				</div>
+
 				<div id="example_objects_as_tags">
 					<h2>Objects as tags</h2>
 					Instead of just adding strings as tags, bind objects to your tags. This makes it possible to set id values in your input field's value, instead of just
@@ -71,22 +78,6 @@ $('input').tagsinput({
 $('input').tagsinput('add', { value: 1, text: 'Amsterdam' });
 $('input').tagsinput('add', { value: 2, text: 'New York'         });
 &lt;/script&gt;</pre>
-
-					<script>
-						$('#example_objects_as_tags > > input').tagsinput({
-							itemValue: 'value',
-							itemText: 'text',
-							source: [
-								{ value: 1, text: 'Amsterdam' },
-								{ value: 2, text: 'New York'  },
-								{ value: 3, text: 'Sydney'    },
-								{ value: 4, text: 'Caïro'     },
-								{ value: 5, text: 'Beijing'   }
-							]
-						});
-						$('#example_objects_as_tags > > input').tagsinput('add', { value: 1, text: 'Amsterdam' });
-						$('#example_objects_as_tags > > input').tagsinput('add', { value: 2, text: 'New York'  });
-					</script>
 				</div>
 
 				<div id="example_tagclass">
@@ -121,32 +112,6 @@ $('input').tagsinput({
 $('input').tagsinput('add', { value: 1, text: 'Amsterdam' });
 $('input').tagsinput('add', { value: 2, text: 'New York'  });
 &lt;/script&gt;</pre>
-
-					<script>
-						$('#example_tagclass > > input').tagsinput({
-							itemValue: 'value',
-							itemText: 'text',
-							source: [
-								{ value: 1, text: 'Amsterdam', continent: 'Europe'    },
-								{ value: 2, text: 'New York' , continent: 'America'   },
-								{ value: 3, text: 'Sydney'   , continent: 'Australia' },
-								{ value: 4, text: 'Caïro'    , continent: 'Africa'    },
-								{ value: 5, text: 'Beijing'  , continent: 'Asia'      }
-							],
-							tagClass: function(item) {
-								// No offense intended, just using the colors of the Olympic Rings here ;-)
-								switch (item.continent) {
-									case 'Europe'   : return 'badge badge-info';
-									case 'America'  : return 'label label-important';
-									case 'Australia': return 'badge badge-success';
-									case 'Africa'   : return 'label label-inverse';
-									case 'Asia'     : return 'badge badge-warning';
-								}
-							}
-						});
-						$('#example_tagclass > > input').tagsinput('add', { value: 2, text: 'New York', continent: 'America'   });
-						$('#example_tagclass > > input').tagsinput('add', { value: 3, text: 'Sydney'  , continent: 'Australia' });
-					</script>
 				</div>
 			</section>
 
@@ -154,15 +119,86 @@ $('input').tagsinput('add', { value: 2, text: 'New York'  });
 				<div class="page-header">
 					<h1>Options</h1>
 				</div>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>option</th>
+							<th>description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>tagClass</code></td>
+							<td>
+								<p>Classname for the tags, or a function returning a classname</p>
+								<pre class="prettyprint linenums">$('input').tagsinput({
+    tagClass: 'big'
+});</pre>
+								<pre class="prettyprint linenums">$('input').tagsinput({
+    tagClass: function(item) {
+        return (item.length > 10 ? 'big' : 'small');
+    }
+});</pre>
+							</td>
+						</tr>
+						<tr>
+							<td><code>itemValue</code></td>
+							<td>
+								<p>When adding objects as tags, itemValue <em>must</em> be set to the name of the property containing the item's value, or a function returning an item's value.</p>
+								<pre class="prettyprint linenums">$('input').tagsinput({
+    itemValue: 'id'
+});</pre>
+								<pre class="prettyprint linenums">$('input').tagsinput({
+    itemValue: function(item) {
+        return item.id;
+    }
+});</pre>
+							</td>
+						</tr>
+						<tr>
+							<td><code>itemText</code></td>
+							<td>
+								<p>When adding objects as tags, you can set itemText to the name of the property of item to use for a its tag's text. You may also provide a function which returns an item's value. When this options is not set, the value of <code>itemValue</code> will be used.
+
+
+								<pre class="prettyprint linenums">$('input').tagsinput({
+    itemText: 'label'
+});</pre>
+								<pre class="prettyprint linenums">$('input').tagsinput({
+    itemText: function(item) {
+        return item.label;
+    }
+});</pre>
+							</td>
+						</tr>
+						<tr>
+							<td><code>source</code></td>
+							<td>
+								<p>An array (or function returning an array), which will be used as source for a typeahead.
+
+
+								<pre class="prettyprint linenums">$('input').tagsinput({
+    source: ['Amsterdam', 'New York', 'Sydney', 'Caïro', 'Beijing']
+});</pre>
+								<pre class="prettyprint linenums">$('input').tagsinput({
+    source: function(query) {
+        return $.get('http://someservice.com');
+    }
+});</pre>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</section>
 		</div>
 	    <footer class="footer">
 			<p>Code licensed under <a href="https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE" target="_blank">MIT License</a></p>
 		</footer>
 
-		<script>
-			// make code pretty
-			window.prettyPrint && prettyPrint()
-		</script>
+		<script src="assets/jquery.min.js"></script>
+		<script src="assets/bootstrap/bootstrap.min.js"></script>
+		<script src="assets/google-code-prettify/prettify.js"></script>
+		<script src="assets/bootstrap-tagsinput.min.js"></script>
+		<script src="assets/app.js"></script>
 	</body>
 </html>
