@@ -1,3 +1,4 @@
+build/tmp/
 node_modules/
 test/reports/
 libpeerconnection.log
