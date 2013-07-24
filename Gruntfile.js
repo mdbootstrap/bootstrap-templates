@@ -7,26 +7,26 @@ module.exports = function(grunt) {
 		copy: {
 			main: {
 				files: [
-					{expand: true, flatten: true, src: ['src/*.js'], dest: 'build/tmp/', filter: 'isFile'}
+					{expand: true, flatten: true, src: ['src/*.js'], dest: 'build/bootstrap-tagsinput/', filter: 'isFile'}
 				]
 			}
 		},
 		uglify: {
 			options: {
 				banner: '<%= pkg.banner %>',
-				sourceMap: 'build/tmp/<%= pkg.name %>.min.js.map',
+				sourceMap: 'build/bootstrap-tagsinput/<%= pkg.name %>.min.js.map',
 				sourceMappingURL: '<%= pkg.name %>.min.js.map'
 			},
 			build: {
 				files: {
-					'build/tmp/<%= pkg.name %>.min.js': 'src/<%= pkg.name %>.js'
+					'build/bootstrap-tagsinput/<%= pkg.name %>.min.js': 'src/<%= pkg.name %>.js'
 				}
 			}
 		},
 		sass: {
 			build: {
 				files: {
-					'build/tmp/<%= pkg.name %>.css' : 'src/<%= pkg.name %>.scss'
+					'build/bootstrap-tagsinput/<%= pkg.name %>.css' : 'src/<%= pkg.name %>.scss'
 				}
 			}
 		},
@@ -51,8 +51,8 @@ module.exports = function(grunt) {
 		},
 		zip: {
 			build: {
-				cwd: 'build/tmp/',
-				src:  ['build/tmp/*.*'],
+				cwd: 'build/bootstrap-tagsinput/',
+				src:  ['build/bootstrap-tagsinput/*.*'],
 				dest:  'build/<%= pkg.name %>.zip'
 			}
 		}
