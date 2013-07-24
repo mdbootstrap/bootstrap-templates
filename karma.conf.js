@@ -5,8 +5,8 @@ basePath = '';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  'lib/jquery-2.0.3.min.js',
-  'lib/bootstrap/bootstrap-2.3.2.min.js',
+  'lib/jquery.min.js',
+  'lib/bootstrap.min.js',
   'src/bootstrap-tagsinput.js',
 
   'test/helpers.js',
@@ -18,7 +18,7 @@ exclude = [
 ];
 
 preprocessors = {
-  'js/bootstrap-tagsinput.js': 'coverage'
+  'src/bootstrap-tagsinput.js': 'coverage'
 };
 
 // test results reporter to use
