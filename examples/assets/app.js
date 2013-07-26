@@ -1,67 +1,65 @@
-$('#example_typeahead > > input').tagsinput({
-	source: ['Amsterdam', 'New York', 'Sydney', 'Caïro', 'Beijing']
+$('.example_typeahead > > input').tagsinput({
+  source: function(query) {
+    return $.getJSON('citynames.json')
+            .success(function(citynames) {
+              return citynames;
+            });
+  }
 });
 
-$('#example_objects_as_tags > > input').tagsinput({
-	itemValue: 'value',
-	itemText: 'text',
-	source: [
-		{ value: 1, text: 'Amsterdam' },
-		{ value: 2, text: 'New York'  },
-		{ value: 3, text: 'Sydney'    },
-		{ value: 4, text: 'Caïro'     },
-		{ value: 5, text: 'Beijing'   }
-	]
+$('.example_objects_as_tags > > input').tagsinput({
+  itemValue: 'value',
+  itemText: 'text',
+  source: function(query) {
+    return $.getJSON('cities.json')
+            .success(function(cities) {
+              return cities;
+            });
+  }
 });
-$('#example_objects_as_tags > > input').tagsinput('add', { value: 1, text: 'Amsterdam' });
-$('#example_objects_as_tags > > input').tagsinput('add', { value: 2, text: 'New York'  });
+$('.example_objects_as_tags > > input').tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
+$('.example_objects_as_tags > > input').tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
+$('.example_objects_as_tags > > input').tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
+$('.example_objects_as_tags > > input').tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
+$('.example_objects_as_tags > > input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
 
-$('#example_tagclass > > input').tagsinput({
-	itemValue: 'value',
-	itemText: 'text',
-	source: [
-		{ value: 1, text: 'Amsterdam', continent: 'Europe'    },
-		{ value: 2, text: 'New York' , continent: 'America'   },
-		{ value: 3, text: 'Sydney'   , continent: 'Australia' },
-		{ value: 4, text: 'Caïro'    , continent: 'Africa'    },
-		{ value: 5, text: 'Beijing'  , continent: 'Asia'      }
-	],
-	tagClass: function(item) {
-		switch (item.continent) {
-			case 'Europe'   : return 'badge badge-info';
-			case 'America'  : return 'label label-important';
-			case 'Australia': return 'badge badge-success';
-			case 'Africa'   : return 'label label-inverse';
-			case 'Asia'     : return 'badge badge-warning';
-		}
-	}
+$('.example_tagclass > > input').tagsinput({
+  tagClass: function(item) {
+    switch (item.continent) {
+      case 'Europe'   : return 'badge badge-info';
+      case 'America'  : return 'label label-important';
+      case 'Australia': return 'badge badge-success';
+      case 'Africa'   : return 'label label-inverse';
+      case 'Asia'     : return 'badge badge-warning';
+    }
+  },
+  itemValue: 'value',
+  itemText: 'text',
+  source: function(query) {
+    return $.getJSON('cities.json')
+            .success(function(cities) {
+              return cities;
+            });
+  }
 });
-$('#example_tagclass > > input').tagsinput('add', { value: 2, text: 'New York', continent: 'America'   });
-$('#example_tagclass > > input').tagsinput('add', { value: 3, text: 'Sydney'  , continent: 'Australia' });
+$('.example_tagclass > > input').tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
+$('.example_tagclass > > input').tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
+$('.example_tagclass > > input').tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
+$('.example_tagclass > > input').tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
+$('.example_tagclass > > input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
 
 prettyPrint();
 
 $(function() {
-	$('.bootstrap-tagsinput').after($('<a class="showinfo">show info</a>'));
-});
+  $('input, select').on('change', function(event) {
+    var $element = $(event.target),
+      $container = $element.closest('.example');
 
-$('body').on('mouseover', '.showinfo', function(event) {
-	$(this).popover({
-		html: true,
-		content: function() {
-			var $element = $(this).prevUntil('input').prev(),
-				content = $('<table class="table"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput(\'items\')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>');
+    if (!$element.data('tagsinput'))
+      return;
 
-			$('pre.val', content).html($element.val());
-			$('pre.items', content).html(JSON.stringify($element.tagsinput('items')));
-
-			return content;
-		}
-	});
-
-	$(this).popover('show');
-});
-
-$('body').on('mouseout', '.showinfo', function(event) {
-	$(this).popover('destroy');
+    var val = $element.val();
+    $('pre.val', $container).html( ($.isArray(val) ? JSON.stringify(val) : val ));
+    $('pre.items', $container).html(JSON.stringify($element.tagsinput('items')));
+  }).trigger('change');
 });

@@ -11,8 +11,7 @@
     <link rel="stylesheet" href="assets/bootstrap-tagsinput.css">
     <style>
       .bootstrap-tagsinput { width: 100%; }
-      .popover { max-width: none; }
-      .popover pre { white-space: nowrap;}
+      .accordion { margin-top:-19px; }
     </style>
   </head>
   <body>
@@ -35,65 +34,157 @@
           <h1>Examples</h1>
         </div>
 
-        <div id="example_markup">
+        <div class="example example_markup">
           <h2>Markup</h2>
           Just add <code>data-role="tagsinput"</code> to your input field to automatically change it to a tags input field.
           <div class="bs-docs-example">
-            <input type="text" value="Amsterdam,New York,Sydney,Caïro,Beijing" data-role="tagsinput" />
-            
+            <input type="text" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput" />
           </div>
-          <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,New York,Sydney,Caïro,Beijing&quot; data-role=&quot;tagsinput&quot; /&gt;</pre>
+          <div class="accordion">
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" href="#accordion_example_markup">
+                  Show code
+                </a>
+              </div>
+              <div id="accordion_example_markup" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,Washington,Sydney,Beijing,Cairo&quot; data-role=&quot;tagsinput&quot; /&gt;</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+           <table class="table table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
 
-        <div id="example_typeahead">
+        <div class="example example_multivalue">
+          <h2>True multivalue</h2>
+          Use a <code>&lt;select multiple /&gt;</code> as your input element for a tags input, to gain true multivalue support. Instead of a comma separated string, the values will be set in an array. Existing <code>&lt;option /&gt;</code> elements will automatically be set as tags. This makes it also possible to create tags containing a comma.
+          <div class="bs-docs-example">
+            <select multiple data-role="tagsinput">
+              <option value="Amsterdam">Amsterdam</option>
+              <option value="Washington">Washington</option>
+              <option value="Sydney">Sydney</option>
+              <option value="Beijing">Beijing</option>
+              <option value="Cairo">Cairo</option>
+            </select>
+          </div>
+          <div class="accordion ">
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" href="#example_multivalue">
+                  Show code
+                </a>
+              </div>
+              <div id="example_multivalue" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <pre class="prettyprint linenums">&lt;select multiple data-role="tagsinput"&gt;
+  &lt;option value="Amsterdam"&gt;Amsterdam&lt;/option&gt;
+  &lt;option value="Washington"&gt;Washington&lt;/option&gt;
+  &lt;option value="Sydney"&gt;Sydney&lt;/option&gt;
+  &lt;option value="Beijing"&gt;Beijing&lt;/option&gt;
+  &lt;option value="Cairo"&gt;Cairo&lt;/option&gt;
+&lt;/select&gt;</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+           <table class="table table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
+        </div>
+       
+        <div class="example example_typeahead">
           <h2>Typeahead</h2>
           <div class="bs-docs-example">
-            <input type="text" value="Amsterdam,New York" />
+            <input type="text" value="Amsterdam,Washington" />
           </div>
-          <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,New York&quot; data-role=&quot;tagsinput&quot; /&gt;
+           <div class="accordion ">
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse"href="#example_typeahead">
+                  Show code
+                </a>
+              </div>
+              <div id="example_typeahead" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,Washington&quot; data-role=&quot;tagsinput&quot; /&gt;
 &lt;script&gt;
 $('input').tagsinput({
-  source: ['Amsterdam', 'New York', 'Sydney', 'Caïro', 'Beijing'
+  source: function(query) {
+    return $.getJSON('citynames.json')
+            .then(function(citynames) {
+              return citynames;
+            });
+  }
 });
 &lt;/script&gt;</pre>
+                </div>
+              </div>
+            </div>                  
+          </div>
+          <table class="table table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
 
-        <div id="example_objects_as_tags">
+        <div class="example example_objects_as_tags">
           <h2>Objects as tags</h2>
           Instead of just adding strings as tags, bind objects to your tags. This makes it possible to set id values in your input field's value, instead of just
           the tag's text.
           <div class="bs-docs-example">
             <input type="text" />
           </div>
-            <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; /&gt;
+          <div class="accordion">
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" href="#accordion_example_objects_as_tags">
+                  Show code
+                </a>
+              </div>
+              <div id="accordion_example_objects_as_tags" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; /&gt;
 &lt;script&gt;
 $('input').tagsinput({
   itemValue: 'value',
   itemText: 'text',
-  source: [
-    { value: 1, text: 'Amsterdam' },
-    { value: 2, text: 'New York'  },
-    { value: 3, text: 'Sydney'    },
-    { value: 4, text: 'Caïro'     },
-    { value: 5, text: 'Beijing'   }
-  ]
+  source: function(query) {
+    return $.getJSON('cities.json')
+            .then(function(cities) {
+              return cities;
+            });
+  }
 });
-$('input').tagsinput('add', { value: 1, text: 'Amsterdam' });
-$('input').tagsinput('add', { value: 2, text: 'New York'         });
+
+$('input').tagsinput('add', { "value": 1 , "text": "Amsterdam"  });
+$('input').tagsinput('add', { "value": 4 , "text": "Washington" });
+$('input').tagsinput('add', { "value": 7 , "text": "Sydney"     });
+$('input').tagsinput('add', { "value": 10, "text": "Beijing"    });
+$('input').tagsinput('add', { "value": 13, "text": "Cairo"      });
 &lt;/script&gt;</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <table class="table table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
 
-        <div id="example_tagclass">
-          <h2>Tag styling</h2>
+        <div class="example example_tagclass">
+          <h2>Categorizing tags</h2>
           You can set a fixed css class for your tags, or determine dynamically by provinding a custom function.
           <div class="bs-docs-example">
             <input type="text" />
           </div>
-            <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; /&gt;
+          <div class="accordion">
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" href="#accordion_example_tagclass">
+                  Show code
+                </a>
+              </div>
+              <div id="accordion_example_tagclass" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; /&gt;
 &lt;script&gt;
 $('input').tagsinput({
   tagClass: function(item) {
-    // No offense intended, just using the colors of the Olympic Rings here ;-)
     switch (item.continent) {
       case 'Europe'   : return 'label label-info';
       case 'America'  : return 'label label-important';
@@ -104,25 +195,34 @@ $('input').tagsinput({
   },
   itemValue: 'value',
   itemText: 'text',
-  source: [
-    { value: 1, text: 'Amsterdam', continent: 'Europe'    },
-    { value: 2, text: 'New York' , continent: 'America'   },
-    { value: 3, text: 'Sydney'   , continent: 'Australia' },
-    { value: 4, text: 'Caïro'    , continent: 'Africa'    },
-    { value: 5, text: 'Beijing'  , continent: 'Asia'      }
-  ]
+  source: function(query) {
+    return $.getJSON('cities.json')
+            .then(function(cities) {
+              return cities;
+            });
+  }
 });
-$('input').tagsinput('add', { value: 1, text: 'Amsterdam' });
-$('input').tagsinput('add', { value: 2, text: 'New York'  });
+
+$('input').tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
+$('input').tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
+$('input').tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
+$('input').tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
+$('input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
 &lt;/script&gt;</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <table class="table table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
+
       </section>
 
       <section id="options">
         <div class="page-header">
           <h1>Options</h1>
         </div>
-        <table class="table table-striped">
+        <table class="table table-condensed">
           <thead>
             <tr>
               <th>option</th>
@@ -177,11 +277,11 @@ $('input').tagsinput('add', { value: 2, text: 'New York'  });
             <tr>
               <td><code>source</code></td>
               <td>
-                <p>An array (or function returning an array), which will be used as source for a typeahead.
+                <p>An array (or function returning a promise or array), which will be used as source for a typeahead.
 
 
                 <pre class="prettyprint linenums">$('input').tagsinput({
-  source: ['Amsterdam', 'New York', 'Sydney', 'Caïro', 'Beijing']
+  source: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo']
 });</pre>
                 <pre class="prettyprint linenums">$('input').tagsinput({
   source: function(query) {
@@ -201,7 +301,7 @@ $('input').tagsinput('add', { value: 2, text: 'New York'  });
     <script src="assets/jquery.min.js"></script>
     <script src="assets/bootstrap/bootstrap.min.js"></script>
     <script src="assets/google-code-prettify/prettify.js"></script>
-    <script src="assets/bootstrap-tagsinput.min.js"></script>
+    <script src="assets/bootstrap-tagsinput.js"></script>
     <script src="assets/app.js"></script>
   </body>
 </html>

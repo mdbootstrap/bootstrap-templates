@@ -10,6 +10,12 @@
     },
     itemText: function(item) {
       return this.itemValue(item);
+    },
+    typeahead: {
+      source: null,
+      matcher: function(item) {
+        return true;
+      }
     }
   };
 
@@ -94,8 +100,8 @@
     // Assembly value by retrieving the value of each item, and set it on the element. 
     pushVal: function() {
       var self = this,
-        val = $.map(self.items(), function(item) { return self.options.itemValue(item); });
-      self.$element.val(val, true);
+          val = $.map(self.items(), function(item) { return self.options.itemValue(item); });
+      self.$element.val(val, true).trigger('change');
     },
 
     build: function(options) {
@@ -113,31 +119,32 @@
         $('input', self.$container).typeahead({
           source: function (query, process) {
             this.map = {};
+            var map = this.map;
+            $.when(self.options.source(query))
+             .then(function(items) {
+                var texts = [];
 
-            var data = self.options.source(),
-              texts = [],
-              map = this.map;
+                for (var i = 0; i < items.length; i++) {
+                  var text = self.options.itemText(items[i]);
+                  map[text] = items[i];
+                  texts.push(text);
+                }
 
-            $.each(data, function (i, item) {
-              var text = self.options.itemText(item);
-              map[text] = item;
-              texts.push(text);
+                process(texts);
             });
-
-            process(texts);
           },
-          updater: function (item) {
-            self.add(this.map[item]);
+          updater: function (text) {
+            self.add(this.map[text]);
           },
-          matcher: function (item) {
-            return (item.toLowerCase().indexOf(this.query.trim().toLowerCase()) !== -1);
+          matcher: function (text) {
+            return (text.toLowerCase().indexOf(this.query.trim().toLowerCase()) !== -1);
           },
-          sorter: function (items) {
-            return items.sort();
+          sorter: function (texts) {
+            return texts.sort();
           },
-          highlighter: function (item) {
+          highlighter: function (text) {
             var regex = new RegExp( '(' + this.query + ')', 'gi' );
-            return item.replace( regex, "<strong>$1</strong>" );
+            return text.replace( regex, "<strong>$1</strong>" );
           }
         });
       }
