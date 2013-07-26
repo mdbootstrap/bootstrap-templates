@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Jasmine Test Runner</title>
-		<meta name="robots" content="noindex, nofollow" />
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" href="../lib/jasmine/jasmine.css"/>
-		<script type="text/javascript" src="../lib/jquery.min.js"></script>
-		<script type="text/javascript" src="../lib/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../lib/jasmine/jasmine.js"></script>
-		<script type="text/javascript" src="../lib/jasmine/jasmine-html.js"></script>
+  <head>
+    <title>Jasmine Test Runner</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="../lib/jasmine/jasmine.css"/>
+    <script type="text/javascript" src="../lib/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../lib/jasmine/jasmine.js"></script>
+    <script type="text/javascript" src="../lib/jasmine/jasmine-html.js"></script>
 
-		<script type="text/javascript" src="../src/bootstrap-tagsinput.js"></script>
-		<script type="text/javascript" src="helpers.js"></script>
-		<script type="text/javascript" src="bootstrap-tagsinput.tests.input_with_string_items.js"></script>
-		<script type="text/javascript" src="bootstrap-tagsinput.tests.input_with_object_items.js"></script>
-		<script type="text/javascript" src="bootstrap-tagsinput.tests.select_with_string_items.js"></script>
-	</head>
-	<body>
-		
-		<script>
-		var jasmineEnv = jasmine.getEnv();
-		jasmineEnv.updateInterval = 1000;
+    <script type="text/javascript" src="../src/bootstrap-tagsinput.js"></script>
+    <script type="text/javascript" src="helpers.js"></script>
+    <script type="text/javascript" src="bootstrap-tagsinput.tests.input_with_string_items.js"></script>
+    <script type="text/javascript" src="bootstrap-tagsinput.tests.input_with_object_items.js"></script>
+    <script type="text/javascript" src="bootstrap-tagsinput.tests.select_with_string_items.js"></script>
+  </head>
+  <body>
+    
+    <script>
+    var jasmineEnv = jasmine.getEnv();
+    jasmineEnv.updateInterval = 1000;
 
-		var htmlReporter = new jasmine.HtmlReporter();
+    var htmlReporter = new jasmine.HtmlReporter();
 
-		jasmineEnv.addReporter(htmlReporter);
+    jasmineEnv.addReporter(htmlReporter);
 
-		jasmineEnv.specFilter = function(spec) {
-			return htmlReporter.specFilter(spec);
-		};
+    jasmineEnv.specFilter = function(spec) {
+      return htmlReporter.specFilter(spec);
+    };
 
-		jasmineEnv.execute();
-		</script>
-	</body>
+    jasmineEnv.execute();
+    </script>
+  </body>
 </html>
