@@ -68,5 +68,11 @@ describe("bootstrap-tagsinput", function() {
         });
       });
     });
+
+    testTagsInput('<select multiple><option value="some">some</option></select>', function() {
+      it('should have one tag', function() {
+        expect(this.$element.tagsinput('items')[0]).toBe('some');
+      });
+    });
   });
 });

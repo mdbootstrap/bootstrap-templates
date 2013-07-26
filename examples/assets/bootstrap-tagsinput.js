@@ -59,7 +59,8 @@
       }
 
       // Ignore items allready added
-      if ($.inArray(item, self.items()) !== -1)
+      var itemValue = this.options.itemValue;
+      if ($.inArray(itemValue(item), $.map(self.items(), function(item) { return itemValue(item); })) !== -1)
         return;
 
       var $tag = $('<span class="tag ' + htmlEncode(self.options.tagClass(item)) + '"><span class="text"></span><i class="icon-white icon-remove" data-role="remove"></i></span>');
@@ -68,7 +69,7 @@
 
       $('input', self.$container).before($tag);
 
-      if (self.$element[0].tagName === 'SELECT') {
+      if (self.$element[0].tagName === 'SELECT' && !$('option[value="' + escape(self.options.itemValue(item)) + '"]')[0]) {
         self.$element.append($('<option value="' + htmlEncode(self.options.itemValue(item)) + '" selected>' + htmlEncode(item) + '</option>'));
       }
 
@@ -211,6 +212,7 @@
       self.$container.off('click', '[data-role=remove]');
 
       self.$container.remove();
+      self.$element.removeData('tagsinput');
       self.$element.show();
     }
   };
@@ -227,6 +229,11 @@
         tagsinput = new TagsInput(this, arg1);
         $(this).data('tagsinput', tagsinput);
         results.push(tagsinput);
+
+        if (this.tagName === 'SELECT') {
+          $('option', $(this)).attr('selected', 'selected');
+        }
+
         // Init tags from $(this).val()
         $(this).val($(this).val());
       } else {
@@ -313,6 +320,6 @@
   }
 
   $(function() {
-    $("input[data-role=tagsinput], select[data-role=tagsinput]").tagsinput();
+    $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
   });
 })(window.jQuery);
