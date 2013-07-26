@@ -39,4 +39,29 @@ $('#example_tagclass > > input').tagsinput({
 $('#example_tagclass > > input').tagsinput('add', { value: 2, text: 'New York', continent: 'America'   });
 $('#example_tagclass > > input').tagsinput('add', { value: 3, text: 'Sydney'  , continent: 'Australia' });
 
-window.prettyPrint && prettyPrint();
+prettyPrint();
+
+$(function() {
+	$('.bootstrap-tagsinput').after($('<a class="showinfo">show info</a>'));
+});
+
+$('body').on('mouseover', '.showinfo', function(event) {
+	$(this).popover({
+		html: true,
+		content: function() {
+			var $element = $(this).prevUntil('input').prev(),
+				content = $('<table class="table"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput(\'items\')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>');
+
+			$('pre.val', content).html($element.val());
+			$('pre.items', content).html(JSON.stringify($element.tagsinput('items')));
+
+			return content;
+		}
+	});
+
+	$(this).popover('show');
+});
+
+$('body').on('mouseout', '.showinfo', function(event) {
+	$(this).popover('destroy');
+});

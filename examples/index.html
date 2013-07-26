@@ -11,6 +11,8 @@
 		<link rel="stylesheet" href="assets/bootstrap-tagsinput.css">
 		<style>
 			.bootstrap-tagsinput { width: 100%; }
+			.popover { max-width: none; }
+			.popover pre { white-space: nowrap;}
 		</style>
 	</head>
 	<body>
@@ -38,6 +40,7 @@
 					Just add <code>data-role="tagsinput"</code> to your input field to automatically change it to a tags input field.
 					<div class="bs-docs-example">
 						<input type="text" value="Amsterdam,New York,Sydney,Caïro,Beijing" data-role="tagsinput" />
+						
 					</div>
 					<pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,New York,Sydney,Caïro,Beijing&quot; data-role=&quot;tagsinput&quot; /&gt;</pre>
 				</div>
@@ -47,7 +50,7 @@
 					<div class="bs-docs-example">
 						<input type="text" value="Amsterdam,New York" />
 					</div>
-						<pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,New York&quot; data-role=&quot;tagsinput&quot; /&gt;
+					<pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,New York&quot; data-role=&quot;tagsinput&quot; /&gt;
 &lt;script&gt;
 $('input').tagsinput({
     source: ['Amsterdam', 'New York', 'Sydney', 'Caïro', 'Beijing'
