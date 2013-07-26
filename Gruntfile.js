@@ -44,7 +44,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['src/**/*.js', 'test/**/*.js'],
-        tasks: ['copy', 'uglify'],
+        tasks: ['karma', 'copy', 'uglify', 'sass', 'zip'],
         options: {
           spawn: false,
           interupt: true
