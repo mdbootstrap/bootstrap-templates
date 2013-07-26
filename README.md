@@ -1,6 +1,5 @@
 # Bootstrap Tags Input [![Build Status](https://travis-ci.org/TimSchlechter/bootstrap-tagsinput.png?branch=master)](https://travis-ci.org/TimSchlechter/bootstrap-tagsinput)
-Bootstrap Tags Input is a JQuery based plugin providing a Twitter 
-Bootstrap-like user interface for adding tags.
+Bootstrap Tags Input is a jQuery plugin providing a Twitter Bootstrap user interface for managing tags.
 
 ## Usage
 Examples can be found [here](http://timschlechter.github.com/bootstrap-tagsinput/examples/).

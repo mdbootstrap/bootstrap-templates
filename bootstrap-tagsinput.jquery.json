@@ -1,0 +1,29 @@
+{
+    "name": "bootstrap-tagsinput",
+    "title": "Bootstrap Tags Input",
+    "description": "jQuery plugin providing a Twitter Bootstrap user interface for managing tags.",
+    "keywords": [
+        "tags",
+        "bootstrap",
+        "input",
+        "select"
+    ],
+    "version": "0.1.0",
+    "author": {
+        "name": "Tim Schlechter",
+        "url": "https://github.com/TimSchlechter"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE"
+        }
+    ],
+    "bugs": "https://github.com/TimSchlechter/bootstrap-tagsinput/issues",
+    "homepage": "http://timschlechter.github.io/bootstrap-tagsinput/examples/",
+    "docs": "http://timschlechter.github.io/bootstrap-tagsinput/examples/",
+    "download": "http://timschlechter.github.io/bootstrap-tagsinput/examples/",
+    "dependencies": {
+        "jquery": ">=1.5"
+    }
+}
