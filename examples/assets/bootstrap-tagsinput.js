@@ -42,6 +42,16 @@
       if (item.toString().match(/^\s*$/))
         return;
 
+      if (typeof item === "string" && this.$element[0].tagName === 'INPUT') {
+        var items = item.split(',');
+        if (items.length > 1) {
+          for (var i = 0; i < items.length; i++) {
+            this.add(items[i]);
+          }
+          return;
+        }
+      }
+
       // Ignore items allready added
       if ($.inArray(item, self.items()) !== -1)
         return;

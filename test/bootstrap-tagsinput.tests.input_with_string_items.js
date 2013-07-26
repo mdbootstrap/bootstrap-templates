@@ -80,6 +80,10 @@ describe("bootstrap-tagsinput", function() {
         it("val() should return 'before,after'", function() {
           expect(this.$element.val()).toBe('before,after');
         });
+
+        it("'items' should return 2 items", function() {
+          expect(this.$element.tagsinput('items').length).toBe(2);
+        });
       });
 
       describe("invoke val() with a string containing a comma", function() {
