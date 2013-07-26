@@ -12,7 +12,7 @@ for a tag's label and value. Each tag also holds a reference to the object
 by which it was created, so by calling <code>tagsinput('items')</code> an
 array of the original items is returned.
   
-### True multivalue support
+### True multi value support
 Other implementations just concatenate the values to a comma separated string.
 This results in <code>val()</code> returning just this string, and when
 submitting the form, only one big, concatenated value is sent in the request.
