@@ -5,6 +5,10 @@ Bootstrap Tags Input is a jQuery plugin providing a Twitter Bootstrap user inter
 Examples can be found [here](http://timschlechter.github.com/bootstrap-tagsinput/examples/).
 
 ## Features
+* Objects as tags
+* True multi value
+* Typeahead
+* AngularJS directive included
 
 ### Objects as tags
 Not just support for using strings! This means you can use different values
