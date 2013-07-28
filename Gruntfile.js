@@ -9,7 +9,8 @@ module.exports = function(grunt) {
         files: [
           {expand: true, flatten: true, src: ['src/*.js'], dest: 'examples/assets/', filter: 'isFile'},
           {expand: true, flatten: true, src: ['lib/jquery.min.js'], dest: 'examples/assets/', filter: 'isFile'},
-          {expand: true, flatten: true, src: ['lib/bootstrap.min.js'], dest: 'examples/assets/bootstrap', filter: 'isFile'}
+          {expand: true, flatten: true, src: ['lib/bootstrap.min.js'], dest: 'examples/assets/bootstrap', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['lib/angular.min.js'], dest: 'examples/assets', filter: 'isFile'}
         ]
       }
     },

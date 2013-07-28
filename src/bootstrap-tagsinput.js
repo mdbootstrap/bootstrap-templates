@@ -119,20 +119,29 @@
 
         $('input', self.$container).typeahead({
           source: function (query, process) {
+            function processItems(items) {
+              var texts = [];
+
+              for (var i = 0; i < items.length; i++) {
+                var text = self.options.itemText(items[i]);
+                map[text] = items[i];
+                texts.push(text);
+              }
+              process(texts);
+            }
+
             this.map = {};
-            var map = this.map;
-            $.when(self.options.source(query))
-             .then(function(items) {
-                var texts = [];
+            var map = this.map,
+                data = self.options.source(query);
 
-                for (var i = 0; i < items.length; i++) {
-                  var text = self.options.itemText(items[i]);
-                  map[text] = items[i];
-                  texts.push(text);
-                }
-
-                process(texts);
-            });
+            if ($.isFunction(data.success)) {
+              // support for Angular promises
+              data.success(processItems);
+            } else {
+              // support for functions and jquery promises
+              $.when(data)
+               .then(processItems);
+            }
           },
           updater: function (text) {
             self.add(this.map[text]);

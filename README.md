@@ -4,7 +4,7 @@ Bootstrap Tags Input is a jQuery plugin providing a Twitter Bootstrap user inter
 ## Usage
 Examples can be found [here](http://timschlechter.github.com/bootstrap-tagsinput/examples/).
 
-## What makes this tags input different
+## Features
 
 ### Objects as tags
 Not just support for using strings! This means you can use different values
@@ -24,6 +24,9 @@ form, an array of values will be sent with the request.
 
 ### Typeahead support
 Integrates with Twitter Bootstraps's typeahead.
+
+### Angular JS directive
+Include [bootstrap-tagsinput-angular.js](https://github.com/TimSchlechter/bootstrap-tagsinput/blob/master/src/bootstrap-tagsinput-angular.js) and register the 'bootstrap-tagsinput' in your Angular JS application to use the bootstrap-tagsinput directive. Look at [the examples page](http://timschlechter.github.io/bootstrap-tagsinput/examples/#angular) how to use the directive.
 
 ## License
 This project is licensed under [MIT](https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE "Read more about the MIT license").

@@ -54,3 +54,31 @@ $(function() {
     $('pre.items', $container).html(JSON.stringify($element.tagsinput('items')));
   }).trigger('change');
 });
+
+angular.module('AngularExample', ['bootstrap.tagsinput'])
+  .controller('CityTagsInputController',
+    function CityTagsInputController($scope, $http) {
+      // Init with some cities
+      $scope.cities = [
+        { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    },
+        { "value": 4 , "text": "Washington"  , "continent": "America"   },
+        { "value": 7 , "text": "Sydney"      , "continent": "Australia" },
+        { "value": 10, "text": "Beijing"     , "continent": "Asia"      },
+        { "value": 13, "text": "Cairo"       , "continent": "Africa"    }
+      ];
+
+      $scope.queryCities = function(query) {
+        return $http.get('cities.json');
+      };
+
+      $scope.getTagClass = function(city) {
+        switch (city.continent) {
+          case 'Europe'   : return 'badge badge-info';
+          case 'America'  : return 'label label-important';
+          case 'Australia': return 'badge badge-success';
+          case 'Africa'   : return 'label label-inverse';
+          case 'Asia'     : return 'badge badge-warning';
+        }
+      };
+    }
+  );
