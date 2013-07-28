@@ -1,9 +1,6 @@
 $('.example_typeahead > > input').tagsinput({
   source: function(query) {
-    return $.getJSON('citynames.json')
-            .success(function(citynames) {
-              return citynames;
-            });
+    return $.getJSON('citynames.json');
   }
 });
 
@@ -11,10 +8,7 @@ $('.example_objects_as_tags > > input').tagsinput({
   itemValue: 'value',
   itemText: 'text',
   source: function(query) {
-    return $.getJSON('cities.json')
-            .success(function(cities) {
-              return cities;
-            });
+    return $.getJSON('cities.json');
   }
 });
 $('.example_objects_as_tags > > input').tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
@@ -36,10 +30,7 @@ $('.example_tagclass > > input').tagsinput({
   itemValue: 'value',
   itemText: 'text',
   source: function(query) {
-    return $.getJSON('cities.json')
-            .success(function(cities) {
-              return cities;
-            });
+    return $.getJSON('cities.json');
   }
 });
 $('.example_tagclass > > input').tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });

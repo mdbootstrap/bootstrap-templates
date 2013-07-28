@@ -119,10 +119,7 @@
 &lt;script&gt;
 $('input').tagsinput({
   source: function(query) {
-    return $.getJSON('citynames.json')
-            .then(function(citynames) {
-              return citynames;
-            });
+    return $.getJSON('citynames.json');
   }
 });
 &lt;/script&gt;</pre>
@@ -155,10 +152,7 @@ $('input').tagsinput({
   itemValue: 'value',
   itemText: 'text',
   source: function(query) {
-    return $.getJSON('cities.json')
-            .then(function(cities) {
-              return cities;
-            });
+    return $.getJSON('cities.json');
   }
 });
 
@@ -205,10 +199,7 @@ $('input').tagsinput({
   itemValue: 'value',
   itemText: 'text',
   source: function(query) {
-    return $.getJSON('cities.json')
-            .then(function(cities) {
-              return cities;
-            });
+    return $.getJSON('cities.json');
   }
 });
 
