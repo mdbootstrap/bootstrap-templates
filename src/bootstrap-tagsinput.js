@@ -264,12 +264,9 @@
 
     if (!dontUpdateTagsInput) {
       this.each(function() {
-        var tagsinput = $(this).data('tagsinput'),
-          val = value;
+        var tagsinput = $(this).data('tagsinput');
         if (tagsinput) {
-          if (typeof val === "string" && !this.multiple)
-            val = val.split(',');
-          $.each($.makeArray(val), function(index, item) {
+          $.each($.makeArray(value), function(index, item) {
             tagsinput.add(item);
           });
         }
