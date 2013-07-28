@@ -57,7 +57,15 @@ module.exports = function(grunt) {
         src:  ['examples/assets/bootstrap-tagsinput*.*'],
         dest:  'build/<%= pkg.name %>.zip'
       }
-    }
+    },
+    jquerymanifest: {
+      options: {
+        source: grunt.file.readJSON('package.json'),
+        overrides: {
+          title: '<%= pkg.title %>'
+        }
+      }
+  }
   });
 
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -66,6 +74,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-zip');
+  grunt.loadNpmTasks('grunt-jquerymanifest');
 
-  grunt.registerTask('default', ['karma', 'copy', 'uglify', 'sass', 'zip']);
+  grunt.registerTask('default', ['karma','jquerymanifest', 'copy', 'uglify', 'sass', 'zip']);
 };

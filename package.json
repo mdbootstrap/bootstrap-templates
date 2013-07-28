@@ -1,6 +1,7 @@
 {
   "name": "bootstrap-tagsinput",
-  "version": "0.1.0",
+  "title": "Bootstrap Tags Input",
+  "version": "0.1.1",
   "description": "jQuery plugin providing a Twitter Bootstrap user interface for managing tags.",
   "scripts": {
     "test": "karma start --single-run --no-auto-watch"
@@ -10,10 +11,16 @@
     "url": "git://github.com/timschlechter/bootstrap-tagsinput.git"
   },
   "author": "Tim Schlechter",
-  "license": {
-    "type": "MIT",
-    "url": "https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE"
-  },
+  "license": "MIT",
+  "homepage": "http://timschlechter.github.io/bootstrap-tagsinput/examples/",
+  "download": "http://timschlechter.github.io/bootstrap-tagsinput/build/bootstrap-tagsinput.zip",
+  "keywords": [
+    "tags",
+    "bootstrap",
+    "input",
+    "select",
+    "form"
+  ],
   "readmeFilename": "README.md",
   "devDependencies": {
     "karma": "~0.8",
@@ -25,7 +32,8 @@
     "grunt-contrib-watch": "~0.5.1",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-sass": "~0.6.0",
-    "grunt-zip": "~0.9.2"
+    "grunt-zip": "~0.9.2",
+    "grunt-jquerymanifest": "~0.1.2"
   },
   "banner": "/*\n * <%= pkg.name %> v<%= pkg.version %> by <%= pkg.author %>\n * <%= pkg.license.url %>\n */\n"
 }
