@@ -28,13 +28,46 @@
       <div class="container">
         <h1>Bootstrap Tags Input</h1>
 
-        <p>JQuery based plugin providing a Twitter Bootstrap-like user interface for adding tags.</p>
+        <p>jQuery plugin providing a Twitter Bootstrap user interface for managing tags</p>
 
-        <p class="btn-group text-center span12">
+        <div class="btn-group pull-left">
           <a class="btn btn-primary" href="http://timschlechter.github.io/bootstrap-tagsinput/build/bootstrap-tagsinput.zip">
             <i class="icon-download-alt icon-white"></i> Download <small>(latest)</small>
           </a><a class="btn" href="https://github.com/timschlechter/bootstrap-tagsinput"><i class="icon-github"></i> Code on Github</a>
-        </p>
+        </div>
+        <div class="pull-right">
+          <ul class="bs-docs-social-buttons">
+            <li>
+                <a href="https://twitter.com/share" class="twitter-share-button"
+                   data-hashtags="bootstraptagsinput">Tweet</a>
+                <script>!function (d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (!d.getElementById(id)) {
+                        js = d.createElement(s);
+                        js.id = id;
+                        js.src = "//platform.twitter.com/widgets.js";
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }
+                }(document, "script", "twitter-wjs");</script>
+            </li>
+            <li>
+                <!-- Place this tag where you want the +1 button to render. -->
+                <div class="g-plusone" data-size="medium"></div>
+
+                <!-- Place this tag after the last +1 button tag. -->
+                <script type="text/javascript">
+                    (function () {
+                        var po = document.createElement('script');
+                        po.type = 'text/javascript';
+                        po.async = true;
+                        po.src = 'https://apis.google.com/js/plusone.js';
+                        var s = document.getElementsByTagName('script')[0];
+                        s.parentNode.insertBefore(po, s);
+                    })();
+                </script>
+            </li>
+          </ul>
+        </div>
       </div>
     </header>
     <div class="container">
