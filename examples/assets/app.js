@@ -50,7 +50,7 @@ $(function() {
       return;
 
     var val = $element.val();
-    $('pre.val', $container).html( ($.isArray(val) ? JSON.stringify(val) : val ));
+    $('pre.val', $container).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
     $('pre.items', $container).html(JSON.stringify($element.tagsinput('items')));
   }).trigger('change');
 });
