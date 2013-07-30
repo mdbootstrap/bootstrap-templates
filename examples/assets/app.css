@@ -1,0 +1,15 @@
+.icon-github {
+    background: no-repeat url('../img/github-16px.png');
+    width: 16px;
+    height: 16px;
+}
+
+.bootstrap-tagsinput { width: 100%; }
+
+.accordion {
+	margin-bottom:-3px;
+}
+
+.accordion-group { 
+	border: none;
+}

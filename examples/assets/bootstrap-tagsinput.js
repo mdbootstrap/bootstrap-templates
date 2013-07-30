@@ -3,7 +3,7 @@
 
   var defaultOptions = {
     tagClass: function(item) {
-      return 'badge badge-info';
+      return 'label label-info';
     },
     itemValue: function(item) {
       return item ? item.toString() : item;
@@ -20,11 +20,17 @@
   };
 
   function TagsInput(element, options) {
+    this.itemsArray = [];
+    this.itemsMap = {};
+
     this.$element = $(element);
+    this.$element.hide();
+
     this.multiple = (element.tagName === 'SELECT' && element.getAttribute('multiple'));
 
-    this.$container = $('<div class="bootstrap-tagsinput"><input size="1" type="text" /></div>');
-    this.$element.hide();
+    this.$container = $('<div class="bootstrap-tagsinput"></div>');
+    this.$input = $('<input size="1" type="text" />').appendTo(this.$container);
+
     this.$element.after(this.$container);
 
     this.build(options);
@@ -33,7 +39,7 @@
   TagsInput.prototype = {
     constructor: TagsInput,
 
-    add: function(item) {
+    add: function(item, dontPushVal) {
       var self = this;
 
       // Ignore falsey values, except false
@@ -52,56 +58,68 @@
         var items = item.split(',');
         if (items.length > 1) {
           for (var i = 0; i < items.length; i++) {
-            this.add(items[i]);
+            this.add(items[i], true);
           }
+
+          if (!dontPushVal)
+            self.pushVal();
           return;
         }
       }
 
       // Ignore items allready added
-      var itemValue = this.options.itemValue;
-      if ($.inArray(itemValue(item), $.map(self.items(), function(item) { return itemValue(item); })) !== -1)
+      var itemValue = self.options.itemValue(item),
+          itemText = self.options.itemText(item),
+          tagClass = self.options.tagClass(item);
+
+      if (self.itemsMap[itemValue.toString()] !== undefined)
         return;
 
-      var $tag = $('<span class="tag ' + htmlEncode(self.options.tagClass(item)) + '"><span class="text"></span><i class="icon-white icon-remove" data-role="remove"></i></span>');
-      $(".text", $tag).text(self.options.itemText(item));
-      $tag.data('item', item);
+      // register item in internal array and map
+      self.itemsArray.push(item);
+      self.itemsMap[itemValue] = item;
 
-      $('input', self.$container).before($tag);
+      // add a tag element
+      self.$input.before($('<span class="tag ' + htmlEncode(tagClass) + '" data-value="' + htmlEncode(itemValue) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>'));
 
-      if (self.$element[0].tagName === 'SELECT' && !$('option[value="' + escape(self.options.itemValue(item)) + '"]')[0]) {
-        self.$element.append($('<option value="' + htmlEncode(self.options.itemValue(item)) + '" selected>' + htmlEncode(item) + '</option>'));
+      // add <option /> if item represents a value not present in one of the <select />'s options
+      if (self.$element[0].tagName === 'SELECT' && !$('option[value="' + escape(itemValue) + '"]')[0]) {
+        self.$element.append($('<option value="' + htmlEncode(itemValue) + '" selected>' + htmlEncode(itemText) + '</option>'));
       }
 
-      self.pushVal();
+     if (!dontPushVal)
+        self.pushVal();
     },
 
-    remove: function(item) {
-      var self = this;
+    remove: function(item, dontPushVal) {
+      var self = this,
+          itemValue = self.options.itemValue(item);
 
-      $('.tag', self.$container).filter(function(index) {
-        return $(this).data('item') === item;
-      }).remove();
+      $('.tag[data-value="' + itemValue + '"]', self.$container).remove();
+      $('option[value="' + itemValue + '"]', self.$element).remove();
 
-      if (self.$element[0].tagName === 'SELECT') {
-        $("option", self.$element).filter(function(index) {
-          return $(this).val() === self.options.itemValue(item);
-        }).remove();
-      }
+       // unregister item in internal array and map
+      self.itemsArray.splice(self.itemsArray.indexOf(item), 1);
+      delete self.itemsMap[itemValue];
 
-      self.pushVal();
+      if (!dontPushVal)
+        self.pushVal();
+    },
+
+    refresh: function() {
+      //    $tag = $('.tag', self.$container),
     },
 
     // Returns the items added as tags
     items: function() {
-      var self = this;
-      return $.map($('.tag', self.$container), function(tag) { return $(tag).data('item'); });
+      return this.itemsArray;
     },
 
     // Assembly value by retrieving the value of each item, and set it on the element. 
     pushVal: function() {
       var self = this,
-          val = $.map(self.items(), function(item) { return self.options.itemValue(item); });
+          val = $.map(self.items(), function(item) { return self.options.itemValue(item).toString(); });
+
       self.$element.val(val, true).trigger('change');
     },
 
@@ -114,10 +132,10 @@
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionItemFunction(self.options, 'tagClass');
 
-      if (self.options.source) {
+      if (self.options.source && $.fn.typeahead) {
         makeOptionFunction(self.options, 'source');
 
-        $('input', self.$container).typeahead({
+        self.$input.typeahead({
           source: function (query, process) {
             function processItems(items) {
               var texts = [];
@@ -160,7 +178,7 @@
       }
 
       self.$container.on('click', $.proxy(function(event) {
-        $('input', self.$container).focus();
+        self.$input.focus();
       }, self));
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
@@ -211,6 +229,14 @@
         var $tag = $(event.target).closest('.tag');
         self.remove($tag.data('item'));
       }, self));
+
+      if (self.$element[0].tagName === 'INPUT') {
+        self.add(self.$element.val());
+      } else {
+        $('option', self.$element).each(function() {
+          self.add($(this).attr('value'), true);
+        });
+      }
     },
 
     destroy: function() {
@@ -262,28 +288,6 @@
   };
 
   $.fn.tagsinput.Constructor = TagsInput;
-
-  // HACK: Intercept global JQuery's val(): when a <select multiple /> is
-  // used as tags input element, we need to add an <option /> element to
-  // it when setting value's not present yet.
-  var $val = $.fn.val;
-  $.fn.val = function(value, dontUpdateTagsInput) {
-    if (!arguments.length)
-      return $val.call(this);
-
-    if (!dontUpdateTagsInput) {
-      this.each(function() {
-        var tagsinput = $(this).data('tagsinput');
-        if (tagsinput) {
-          $.each($.makeArray(value), function(index, item) {
-            tagsinput.add(item);
-          });
-        }
-      });
-    }
-
-    return $val.call(this, value);
-  };
 
   // Most options support both a string or number as well as a function as 
   // option value. This function makes sure that the option with the given

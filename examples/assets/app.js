@@ -20,11 +20,11 @@ $('.example_objects_as_tags > > input').tagsinput('add', { "value": 13, "text": 
 $('.example_tagclass > > input').tagsinput({
   tagClass: function(item) {
     switch (item.continent) {
-      case 'Europe'   : return 'badge badge-info';
-      case 'America'  : return 'label label-important';
-      case 'Australia': return 'badge badge-success';
-      case 'Africa'   : return 'label label-inverse';
-      case 'Asia'     : return 'badge badge-warning';
+      case 'Europe'   : return 'label label-info';
+      case 'America'  : return 'label label-danger label-important';
+      case 'Australia': return 'label label-success';
+      case 'Africa'   : return 'label';
+      case 'Asia'     : return 'label label-warning';
     }
   },
   itemValue: 'value',
@@ -50,6 +50,8 @@ $(function() {
       return;
 
     var val = $element.val();
+    if (val === null)
+      val = "null";
     $('pre.val', $container).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
     $('pre.items', $container).html(JSON.stringify($element.tagsinput('items')));
   }).trigger('change');
@@ -73,11 +75,11 @@ angular.module('AngularExample', ['bootstrap.tagsinput'])
 
       $scope.getTagClass = function(city) {
         switch (city.continent) {
-          case 'Europe'   : return 'badge badge-info';
-          case 'America'  : return 'label label-important';
-          case 'Australia': return 'badge badge-success';
-          case 'Africa'   : return 'label label-inverse';
-          case 'Asia'     : return 'badge badge-warning';
+          case 'Europe'   : return 'label label-info';
+          case 'America'  : return 'label label-danger label-important';
+          case 'Australia': return 'label label-success';
+          case 'Africa'   : return 'label';
+          case 'Asia'     : return 'label label-warning';
         }
       };
     }

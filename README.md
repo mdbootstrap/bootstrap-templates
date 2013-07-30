@@ -9,6 +9,7 @@ Examples can be found [here](http://timschlechter.github.com/bootstrap-tagsinput
 * True multi value
 * Typeahead
 * AngularJS directive included
+* Designed for Bootstrap 2.3.2 and 3
 
 ### Objects as tags
 Not just support for using strings! This means you can use different values
@@ -28,6 +29,8 @@ form, an array of values will be sent with the request.
 
 ### Typeahead support
 Integrates with Twitter Bootstraps's typeahead.
+
+*Bootstrap 3 [dropped the Typeahead](https://github.com/twbs/bootstrap/commit/88dd9de9bad56b30a12466477a810c78648200c9). At the moment typeahead is not working when using this plugin with Bootstrap 3. Working on it...*
 
 ### Angular JS directive
 Include [bootstrap-tagsinput-angular.js](https://github.com/TimSchlechter/bootstrap-tagsinput/blob/master/src/bootstrap-tagsinput-angular.js) and register the 'bootstrap-tagsinput' in your Angular JS application to use the bootstrap-tagsinput directive. Look at [the examples page](http://timschlechter.github.io/bootstrap-tagsinput/examples/#angular) how to use the directive.

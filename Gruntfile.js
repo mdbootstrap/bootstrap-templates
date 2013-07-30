@@ -1,6 +1,13 @@
 module.exports = function(grunt) {
 
-  // Project configuration.
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-zip');
+  grunt.loadNpmTasks('grunt-jquerymanifest');
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
@@ -9,7 +16,7 @@ module.exports = function(grunt) {
         files: [
           {expand: true, flatten: true, src: ['src/*.js'], dest: 'examples/assets/', filter: 'isFile'},
           {expand: true, flatten: true, src: ['lib/jquery.min.js'], dest: 'examples/assets/', filter: 'isFile'},
-          {expand: true, flatten: true, src: ['lib/bootstrap.min.js'], dest: 'examples/assets/bootstrap', filter: 'isFile'},
+          {expand: true, cwd: 'lib', src: ['bootstrap*/**'], dest: 'examples/assets/' },
           {expand: true, flatten: true, src: ['lib/angular.min.js'], dest: 'examples/assets', filter: 'isFile'}
         ]
       }
@@ -69,13 +76,7 @@ module.exports = function(grunt) {
   }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-sass');
-  grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-zip');
-  grunt.loadNpmTasks('grunt-jquerymanifest');
-
   grunt.registerTask('default', ['karma','jquerymanifest', 'copy', 'uglify', 'sass', 'zip']);
+  grunt.registerTask('build', ['copy', 'sass']);
+  grunt.registerTask('unit', ['karma']);
 };

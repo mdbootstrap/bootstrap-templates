@@ -3,16 +3,15 @@
   <head>
     <title>Bootstrap Tags Input</title>
     <meta name="robots" content="index, follow" />
+    <base href="../" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     
-    <link rel="stylesheet" href="assets/bootstrap-2.3.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/bootstrap-2.3.2/css/docs.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/docs.css">
     <link rel="stylesheet" href="assets/google-code-prettify/prettify.css">
     <link rel="stylesheet" href="assets/bootstrap-tagsinput.css">
     <link rel="stylesheet" href="assets/app.css">
-    <style>
-    .accordion { margin-top:-19px; }
-    </style>
+
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -25,58 +24,60 @@
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav">
-      <div class="navbar-inner">
-        <div class="container">
-          <div class="nav-collapse collapse bs-navbar-collapse">
-            <ul class="nav navbar-nav">
-              <li>
-                <a href="https://github.com/timschlechter/bootstrap-tagsinput">Code on Github</a>
-              </li>
-              <li>
-                 <a href="3/">Bootstrap 3?</a>
-              </li>
-              <li>
-                <a href="http://timschlechter.github.io/bootstrap-tagsinput/build/bootstrap-tagsinput.zip">Download <small>(latest)</small></a>
-              </li>
-            </ul>
-            <p class="navbar-text pull-right">
-              <a href="https://twitter.com/share" class="navbar-link twitter-share-button"
-                 data-hashtags="bootstraptagsinput">Tweet</a>
-                  <script>!function (d, s, id) {
-                      var js, fjs = d.getElementsByTagName(s)[0];
-                      if (!d.getElementById(id)) {
-                          js = d.createElement(s);
-                          js.id = id;
-                          js.src = "//platform.twitter.com/widgets.js";
-                          fjs.parentNode.insertBefore(js, fjs);
-                      }
-                  }(document, "script", "twitter-wjs");</script>
+      <div class="container">
+        <div class="nav-collapse collapse bs-navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="https://github.com/timschlechter/bootstrap-tagsinput">Code on Github</a>
+            </li>
+            <li>
+               <a href=".">Bootstrap 2.3.2</a>
+            </li>
+            <li>
+              <a href="http://timschlechter.github.io/bootstrap-tagsinput/build/bootstrap-tagsinput.zip">Download <small>(latest)</small></a>
+            </li>          
+          </ul>
+          <p class="navbar-text pull-right">
+            <a href="https://twitter.com/share" class="navbar-link twitter-share-button"
+               data-hashtags="bootstraptagsinput">Tweet</a>
+                <script>!function (d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (!d.getElementById(id)) {
+                        js = d.createElement(s);
+                        js.id = id;
+                        js.src = "//platform.twitter.com/widgets.js";
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }
+                }(document, "script", "twitter-wjs");</script>
 
-                  <!-- Place this tag where you want the +1 button to render. -->
-                  <a class="navbar-link g-plusone" data-size="medium"></a>
+                <!-- Place this tag where you want the +1 button to render. -->
+                <a class="navbar-link g-plusone" data-size="medium"></a>
 
-                  <!-- Place this tag after the last +1 button tag. -->
-                  <script type="text/javascript">
-                      (function () {
-                          var po = document.createElement('script');
-                          po.type = 'text/javascript';
-                          po.async = true;
-                          po.src = 'https://apis.google.com/js/plusone.js';
-                          var s = document.getElementsByTagName('script')[0];
-                          s.parentNode.insertBefore(po, s);
-                      })();
-                  </script>
-            </p>
-          </div>
+                <!-- Place this tag after the last +1 button tag. -->
+                <script type="text/javascript">
+                    (function () {
+                        var po = document.createElement('script');
+                        po.type = 'text/javascript';
+                        po.async = true;
+                        po.src = 'https://apis.google.com/js/plusone.js';
+                        var s = document.getElementsByTagName('script')[0];
+                        s.parentNode.insertBefore(po, s);
+                    })();
+                </script>
+          </p>
         </div>
       </div>
     </div>
-    <header class="jumbotron subhead">
+    <header class="bs-header">
       <div class="container">
         <h1>Bootstrap Tags Input</h1>
         <p>jQuery plugin providing a Twitter Bootstrap user interface for managing tags</p>
+      </div>
     </header>
     <div class="container">
+      <div class="bs-callout bs-callout-danger">
+        Bootstrap 3 <a href="https://github.com/twbs/bootstrap/commit/88dd9de9bad56b30a12466477a810c78648200c9">dropped the Typeahead</a>. At the moment typeahead is not working when using this plugin with Bootstrap 3. Working on it...
+      </div>
       <section id="examples">
         <div class="page-header">
           <h2>Examples</h2>
@@ -84,10 +85,8 @@
 
         <div class="example example_markup">
           <h3>Markup</h3>
-          <p>
-            Just add <code>data-role="tagsinput"</code> to your input field to automatically change it to a tags input field.
-          </p>
-          <div class="bs-docs-example">
+          <p>Just add <code>data-role="tagsinput"</code> to your input field to automatically change it to a tags input field.</p>
+          <div class="bs-example">
             <input type="text" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput" />
           </div>
           <div class="accordion">
@@ -98,8 +97,8 @@
                 </a>
               </div>
               <div id="accordion_example_markup" class="accordion-body collapse">
-                <div class="accordion-inner">
-                  <pre class="prettyprint linenums"><code class="html">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,Washington,Sydney,Beijing,Cairo&quot; data-role=&quot;tagsinput&quot; /&gt;</code></pre>
+                <div class="accordion-inner highlight">
+                  <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,Washington,Sydney,Beijing,Cairo&quot; data-role=&quot;tagsinput&quot; /&gt;</pre>
                 </div>
               </div>
             </div>
@@ -112,7 +111,7 @@
           <p>
             Use a <code>&lt;select multiple /&gt;</code> as your input element for a tags input, to gain true multivalue support. Instead of a comma separated string, the values will be set in an array. Existing <code>&lt;option /&gt;</code> elements will automatically be set as tags. This makes it also possible to create tags containing a comma.
           </p>
-          <div class="bs-docs-example">
+          <div class="bs-example">
             <select multiple data-role="tagsinput">
               <option value="Amsterdam">Amsterdam</option>
               <option value="Washington">Washington</option>
@@ -146,7 +145,7 @@
        
         <div class="example example_typeahead">
           <h3>Typeahead</h3>
-          <div class="bs-docs-example">
+          <div class="bs-example">
             <input type="text" value="Amsterdam,Washington" />
           </div>
            <div class="accordion ">
@@ -178,7 +177,7 @@ $('input').tagsinput({
           <p>
             Instead of just adding strings as tags, bind objects to your tags. This makes it possible to set id values in your input field's value, instead of just the tag's text.
           </p>
-          <div class="bs-docs-example">
+          <div class="bs-example">
             <input type="text" />
           </div>
           <div class="accordion">
@@ -218,7 +217,7 @@ $('input').tagsinput('add', { "value": 13, "text": "Cairo"      });
           <p>
             You can set a fixed css class for your tags, or determine dynamically by provinding a custom function.
           </p>
-          <div class="bs-docs-example">
+          <div class="bs-example">
             <input type="text" />
           </div>
           <div class="accordion">
@@ -267,7 +266,7 @@ $('input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": 
           <p>
             Include <code>bootstrap-tagsinput-angular.js</code> and register the 'bootstrap-tagsinput' in your Angular JS application to use the bootstrap-tagsinput directive.
           </p>
-          <div class="bs-docs-example">
+          <div class="bs-example">
             <bootstrap-tagsinput
               ng-model="cities"
               source="queryCities"
@@ -415,12 +414,12 @@ angular.module('AngularExample', ['bootstrap.tagsinput'])
         </table>
       </section>
     </div>
-      <footer class="footer">
+      <footer class="bs-footer">
       <p>Code licensed under <a href="https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE" target="_blank">MIT License</a></p>
     </footer>
 
     <script src="assets/jquery.min.js"></script>
-    <script src="assets/bootstrap-2.3.2/js/bootstrap.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/angular.min.js"></script>
     <script src="assets/google-code-prettify/prettify.js"></script>
     <script src="assets/bootstrap-tagsinput.js"></script>

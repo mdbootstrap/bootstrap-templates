@@ -37,36 +37,6 @@ describe("bootstrap-tagsinput", function() {
           expect(this.$element.val()[0]).toBe('before,after');
         });
       });
-
-      describe("invoke val() on <SELECT />", function() {
-        describe("with 'some_tag'", function() {
-          beforeEach(function() {
-            this.$element.val('some_tag');
-          });
-
-          it("val() should return an array containing 'some_tag'", function() {
-            expect(this.$element.val()[0]).toBe('some_tag');
-          });
-
-          it("'items' should return 1 item", function() {
-            expect(this.$element.tagsinput('items').length).toBe(1);
-          });
-        });
-
-        describe("with a string containing a comma", function() {
-          beforeEach(function() {
-            this.$element.val('before,after');
-          });
-
-          it("val() should return an array containing 1 value", function() {
-            expect(this.$element.val().length).toBe(1);
-          });
-
-          it("'items' should return 1 item", function() {
-            expect(this.$element.tagsinput('items').length).toBe(1);
-          });
-        });
-      });
     });
 
     testTagsInput('<select multiple><option value="some">some</option></select>', function() {

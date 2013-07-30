@@ -25,5 +25,15 @@
   .bootstrap-tagsinput .tag {
     margin-right: 5px;
     color: white; }
+    .bootstrap-tagsinput .tag [data-role="remove"] {
+      margin-left: 8px;
+      cursor: pointer; }
+      .bootstrap-tagsinput .tag [data-role="remove"]:after {
+        content: "x";
+        padding: 0px 2px; }
+      .bootstrap-tagsinput .tag [data-role="remove"]:hover {
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); }
+        .bootstrap-tagsinput .tag [data-role="remove"]:hover:active {
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
   .bootstrap-tagsinput .icon-white {
     margin-left: 5px; }
