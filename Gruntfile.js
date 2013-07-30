@@ -77,6 +77,6 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('default', ['karma','jquerymanifest', 'copy', 'uglify', 'sass', 'zip']);
-  grunt.registerTask('build', ['copy', 'sass']);
+  grunt.registerTask('build', ['copy', 'uglify', 'sass']);
   grunt.registerTask('unit', ['karma']);
 };
