@@ -226,8 +226,8 @@
 
       // Remove icon clicked
       self.$container.on('click', '[data-role=remove]', $.proxy(function(event) {
-        var $tag = $(event.target).closest('.tag');
-        self.remove($tag.data('item'));
+        var value = $(event.target).closest('.tag').attr('data-value');
+        self.remove(self.itemsMap[value]);
       }, self));
 
       if (self.$element[0].tagName === 'INPUT') {
