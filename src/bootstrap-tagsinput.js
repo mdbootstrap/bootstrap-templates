@@ -187,9 +187,11 @@
           // BACKSPACE
           case 8:
             if (doGetCaretPosition($input[0]) === 0) {
-              var items = self.items();
-              if (items[0])
-                self.remove(items[items.length-1]);
+              var prev = $input.prev();
+              if (prev) {
+                var itemValue = prev.data('value');
+                self.remove(self.itemsMap[itemValue]);
+              }
             }
             break;
 

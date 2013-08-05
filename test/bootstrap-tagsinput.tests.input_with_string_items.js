@@ -92,6 +92,26 @@ describe("bootstrap-tagsinput", function() {
       it('should have 2 tags', function() {
         expect(this.$element.tagsinput('items').length).toBe(2);
       });
+
+      describe("backspace", function() {
+        beforeEach(function() {
+          // focus tags input          
+          this.$tagsinput.trigger('click');
+        });
+        it('after last tag, should remove the last tag', function() {
+          this.$tagsinput_input.trigger($.Event('keydown', { which: 8 }));
+          expect(this.$element.tagsinput('items')[0]).toBe('some');
+        });
+        it('after last tag, should remove the last tag', function() {
+          this.$tagsinput_input.trigger($.Event('keydown', { which: 8 }));
+          expect(this.$element.tagsinput('items').length).toBe(1);
+        });
+        it('after first tag, should remove the last tag', function() {
+          this.$tagsinput_input.trigger($.Event('keydown', { which: 37 }));
+          this.$tagsinput_input.trigger($.Event('keydown', { which: 8 }));
+          expect(this.$element.tagsinput('items')[0]).toBe('tags');
+        });
+      });
     });
   });
 });
