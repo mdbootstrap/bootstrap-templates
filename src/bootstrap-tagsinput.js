@@ -80,11 +80,15 @@
       self.itemsMap[itemValue] = item;
 
       // add a tag element
-      self.$input.before($('<span class="tag ' + htmlEncode(tagClass) + '" data-value="' + htmlEncode(itemValue) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>'));
+      var $tag = $('<span class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
+      $tag.attr('data-value', itemValue);
+      self.$input.before($tag);
 
       // add <option /> if item represents a value not present in one of the <select />'s options
       if (self.$element[0].tagName === 'SELECT' && !$('option[value="' + escape(itemValue) + '"]')[0]) {
-        self.$element.append($('<option value="' + htmlEncode(itemValue) + '" selected>' + htmlEncode(itemText) + '</option>'));
+        var $option = $('<option selected>' + htmlEncode(itemText) + '</option>');
+        $option.attr('value', itemValue);
+        self.$element.append($option);
       }
 
      if (!dontPushVal)
@@ -95,8 +99,8 @@
       var self = this,
           itemValue = self.options.itemValue(item);
 
-      $('.tag[data-value="' + itemValue + '"]', self.$container).remove();
-      $('option[value="' + itemValue + '"]', self.$element).remove();
+      $('.tag', self.$container).filter(function() { return $(this).data('value') === itemValue; }).remove();
+      $('option', self.$element).filter(function() { return $(this).attr('value') === itemValue; }).remove();
 
        // unregister item in internal array and map
       self.itemsArray.splice(self.itemsArray.indexOf(item), 1);
