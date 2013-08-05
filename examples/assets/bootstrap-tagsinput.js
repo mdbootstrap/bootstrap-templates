@@ -106,6 +106,20 @@
         self.pushVal();
     },
 
+    removeAll: function() {
+      var self = this;
+
+      $('.tag', self.$container).remove();
+      $('option', self.$element).remove();
+
+      while(self.itemsArray.length > 0)
+        self.itemsArray.pop();
+      for (var prop in self.itemsMap)
+        delete self.itemsMap[prop];
+
+      self.pushVal();
+    },
+
     refresh: function() {
       //    $tag = $('.tag', self.$container),
     },
@@ -187,9 +201,20 @@
           // BACKSPACE
           case 8:
             if (doGetCaretPosition($input[0]) === 0) {
-              var items = self.items();
-              if (items[0])
-                self.remove(items[items.length-1]);
+              var prev = $input.prev();
+              if (prev) {
+                self.remove(self.itemsMap[prev.data('value')]);
+              }
+            }
+            break;
+
+          // DELETE
+          case 46:
+            if (doGetCaretPosition($input[0]) === 0) {
+              var next = $input.next();
+              if (next) {
+                self.remove(self.itemsMap[next.data('value')]);
+              }
             }
             break;
 

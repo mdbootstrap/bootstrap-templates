@@ -106,6 +106,20 @@
         self.pushVal();
     },
 
+    removeAll: function() {
+      var self = this;
+
+      $('.tag', self.$container).remove();
+      $('option', self.$element).remove();
+
+      while(self.itemsArray.length > 0)
+        self.itemsArray.pop();
+      for (var prop in self.itemsMap)
+        delete self.itemsMap[prop];
+
+      self.pushVal();
+    },
+
     refresh: function() {
       //    $tag = $('.tag', self.$container),
     },

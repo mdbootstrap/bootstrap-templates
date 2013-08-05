@@ -93,19 +93,37 @@ describe("bootstrap-tagsinput", function() {
         expect(this.$element.tagsinput('items').length).toBe(2);
       });
 
+
+      describe("invoke 'removeAll'", function() {
+        beforeEach(function() {
+          this.$element.tagsinput('removeAll');
+        });
+
+        it("should remove both tags", function() {
+          expect(this.$element.tagsinput('items').length).toBe(0);
+        });
+
+        it("val() should return ''", function() {
+          expect(this.$element.val()).toBe('');
+        });
+      });
+
       describe("BACKSPACE", function() {
         beforeEach(function() {
           // focus tags input          
           this.$tagsinput.trigger('click');
         });
+
         it('after last tag, should remove the last tag', function() {
           this.$tagsinput_input.trigger($.Event('keydown', { which: 8 }));
           expect(this.$element.tagsinput('items')[0]).toBe('some');
         });
+
         it('after last tag, should remove the last tag', function() {
           this.$tagsinput_input.trigger($.Event('keydown', { which: 8 }));
           expect(this.$element.tagsinput('items').length).toBe(1);
         });
+
         it('after first tag, should remove the first tag', function() {
           this.$tagsinput_input.trigger($.Event('keydown', { which: 37 }));
           this.$tagsinput_input.trigger($.Event('keydown', { which: 8 }));
@@ -120,14 +138,17 @@ describe("bootstrap-tagsinput", function() {
           // move cursor before last tag
           this.$tagsinput_input.trigger($.Event('keydown', { which: 37 }));
         });
+
         it('before last tag, should remove the last tag', function() {
           this.$tagsinput_input.trigger($.Event('keydown', { which: 46 }));
           expect(this.$element.tagsinput('items')[0]).toBe('some');
         });
+
         it('before last tag, should remove the last tag', function() {
           this.$tagsinput_input.trigger($.Event('keydown', { which: 46 }));
           expect(this.$element.tagsinput('items').length).toBe(1);
         });
+
         it('before first tag, should remove the first tag', function() {
           this.$tagsinput_input.trigger($.Event('keydown', { which: 37 }));
             this.$tagsinput_input.trigger($.Event('keydown', { which: 46 }));
