@@ -189,8 +189,17 @@
             if (doGetCaretPosition($input[0]) === 0) {
               var prev = $input.prev();
               if (prev) {
-                var itemValue = prev.data('value');
-                self.remove(self.itemsMap[itemValue]);
+                self.remove(self.itemsMap[prev.data('value')]);
+              }
+            }
+            break;
+
+          // DELETE
+          case 46:
+            if (doGetCaretPosition($input[0]) === 0) {
+              var next = $input.next();
+              if (next) {
+                self.remove(self.itemsMap[next.data('value')]);
               }
             }
             break;
