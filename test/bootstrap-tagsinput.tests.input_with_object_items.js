@@ -74,6 +74,9 @@ describe("bootstrap-tagsinput", function() {
           it("should update tags's text", function() {
             expect($('.tag', this.$sandbox).text()).toBe('changed');
           });
+          it("tag should still have remove button", function() {
+            expect($('[data-role=remove]', this.$sandbox)[0]).not.toBeUndefined();
+          });
         });
       });
     });

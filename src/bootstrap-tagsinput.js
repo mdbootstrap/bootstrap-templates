@@ -136,9 +136,11 @@
           // Update tag's class and inner text
           $tag.attr('class', null);
           $tag.addClass('tag ' + htmlEncode(tagClass));
-          $tag.text(htmlEncode(itemText));
+          $tag.contents().filter(function() {
+            return this.nodeType == 3;
+          })[0].nodeValue = htmlEncode(itemText);
 
-          if (self.isSelect) { 
+          if (self.isSelect) {
             var option = $('option', self.$element).filter(function() { return $(this).data('item') === item; });
             option.attr('value', itemValue);
           }
