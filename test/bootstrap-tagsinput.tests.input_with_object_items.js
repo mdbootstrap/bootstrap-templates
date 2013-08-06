@@ -10,8 +10,9 @@ describe("bootstrap-tagsinput", function() {
 
     testTagsInput('<input type="text" />', { itemValue: function(item) { return item.value; } }, function() {
       describe("adding an item", function() {
-        var item = { value: 1 };
+        var item;
         beforeEach(function() {
+          item = { value: 1 };
           this.$element.tagsinput('add', item);
         });
         it("'items' should return the item", function() {
@@ -28,8 +29,9 @@ describe("bootstrap-tagsinput", function() {
 
     testTagsInput('<input type="text" />', { itemValue: 'value' }, function() {
       describe("adding an item", function() {
-        var item = { value: 1 };
+        var item;
         beforeEach(function() {
+          item = { value: 1 };
           this.$element.tagsinput('add', item);
         });
         it("'items' should return the item", function() {
@@ -61,6 +63,17 @@ describe("bootstrap-tagsinput", function() {
         });
         it("tag's text should be the item's text", function() {
           expect($('.tag', this.$sandbox).text()).toBe("some");
+        });
+
+        describe("change item and invoke 'refesh'", function() {
+          beforeEach(function() {
+            item.text = 'changed';
+            this.$element.tagsinput('refresh');
+          });
+
+          it("should update tags's text", function() {
+            expect($('.tag', this.$sandbox).text()).toBe('changed');
+          });
         });
       });
     });

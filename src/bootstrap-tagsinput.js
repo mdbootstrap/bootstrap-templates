@@ -26,7 +26,8 @@
     this.$element = $(element);
     this.$element.hide();
 
-    this.multiple = (element.tagName === 'SELECT' && element.getAttribute('multiple'));
+    this.isSelect = (element.tagName === 'SELECT');
+    this.multiple = (this.isSelect && element.getAttribute('multiple'));
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
     this.$input = $('<input size="1" type="text" />').appendTo(this.$container);
@@ -81,12 +82,13 @@
 
       // add a tag element
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
-      $tag.attr('data-value', itemValue);
+      $tag.data('item', item);
       self.$input.before($tag);
 
       // add <option /> if item represents a value not present in one of the <select />'s options
-      if (self.$element[0].tagName === 'SELECT' && !$('option[value="' + escape(itemValue) + '"]')[0]) {
+      if (self.isSelect && !$('option[value="' + escape(itemValue) + '"]')[0]) {
         var $option = $('<option selected>' + htmlEncode(itemText) + '</option>');
+        $option.data('item', item);
         $option.attr('value', itemValue);
         self.$element.append($option);
       }
@@ -96,15 +98,13 @@
     },
 
     remove: function(item, dontPushVal) {
-      var self = this,
-          itemValue = self.options.itemValue(item);
+      var self = this;
 
-      $('.tag', self.$container).filter(function() { return $(this).data('value') === itemValue; }).remove();
-      $('option', self.$element).filter(function() { return $(this).attr('value') === itemValue; }).remove();
+      $('.tag', self.$container).filter(function() { return $(this).data('item') === item; }).remove();
+      $('option', self.$element).filter(function() { return $(this).data('item') === item; }).remove();
 
        // unregister item in internal array and map
       self.itemsArray.splice(self.itemsArray.indexOf(item), 1);
-      delete self.itemsMap[itemValue];
 
       if (!dontPushVal)
         self.pushVal();
@@ -125,7 +125,24 @@
     },
 
     refresh: function() {
-      //    $tag = $('.tag', self.$container),
+      var self = this;
+      $('.tag', self.$container).each(function() {
+        var $tag = $(this),
+            item = $tag.data('item'),
+            itemValue = self.options.itemValue(item),
+            itemText = self.options.itemText(item),
+            tagClass = self.options.tagClass(item);
+
+          // Update tag's class and inner text
+          $tag.attr('class', null);
+          $tag.addClass('tag ' + htmlEncode(tagClass));
+          $tag.text(htmlEncode(itemText));
+
+          if (self.isSelect) { 
+            var option = $('option', self.$element).filter(function() { return $(this).data('item') === item; });
+            option.attr('value', itemValue);
+          }
+      });
     },
 
     // Returns the items added as tags
@@ -207,7 +224,7 @@
             if (doGetCaretPosition($input[0]) === 0) {
               var prev = $input.prev();
               if (prev) {
-                self.remove(self.itemsMap[prev.data('value')]);
+                self.remove(prev.data('item'));
               }
             }
             break;
@@ -217,7 +234,7 @@
             if (doGetCaretPosition($input[0]) === 0) {
               var next = $input.next();
               if (next) {
-                self.remove(self.itemsMap[next.data('value')]);
+                self.remove(next.data('item'));
               }
             }
             break;
@@ -255,8 +272,7 @@
 
       // Remove icon clicked
       self.$container.on('click', '[data-role=remove]', $.proxy(function(event) {
-        var value = $(event.target).closest('.tag').attr('data-value');
-        self.remove(self.itemsMap[value]);
+        self.remove($(event.target).closest('.tag').data('item'));
       }, self));
 
       if (self.$element[0].tagName === 'INPUT') {
@@ -273,7 +289,7 @@
 
       // Unbind events
       self.$container.off('keypress', 'input');
-      self.$container.off('click', '[data-role=remove]');
+      self.$container.off('click', '[50role=remove]');
 
       self.$container.remove();
       self.$element.removeData('tagsinput');
