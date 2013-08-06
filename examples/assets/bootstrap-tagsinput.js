@@ -10,12 +10,6 @@
     },
     itemText: function(item) {
       return this.itemValue(item);
-    },
-    typeahead: {
-      source: null,
-      matcher: function(item) {
-        return true;
-      }
     }
   };
 
@@ -169,8 +163,13 @@
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionItemFunction(self.options, 'tagClass');
 
-      if (self.options.source && $.fn.typeahead) {
-        makeOptionFunction(self.options, 'source');
+      var typeahead = self.options.typeahead || {};
+      // for backwards compatibility, self.options.source is deprecated
+      if (self.options.source)
+        typeahead.source = self.options.source;
+
+      if (typeahead.source && $.fn.typeahead) {
+        makeOptionFunction(typeahead, 'source');
 
         self.$input.typeahead({
           source: function (query, process) {
@@ -187,7 +186,7 @@
 
             this.map = {};
             var map = this.map,
-                data = self.options.source(query);
+                data = typeahead.source(query);
 
             if ($.isFunction(data.success)) {
               // support for Angular promises
@@ -261,7 +260,7 @@
             break;
           // ENTER
           case 13:
-            if (!self.options.source) {
+            if (!self.options.typeahead.source) {
               self.add($input.val());
               $input.val('');
             }

@@ -15,10 +15,12 @@ angular.module('bootstrap.tagsinput', [])
         var select = $('select', element);
 
         select.tagsinput({
-          source   : angular.isFunction(scope.$parent[attrs.source])    ? scope.$parent[attrs.source]    : null,
+          typeahead : {
+            source   : angular.isFunction(scope.$parent[attrs.typeaheadSource]) ? scope.$parent[attrs.typeaheadSource] : null
+          },
           itemValue: angular.isFunction(scope.$parent[attrs.itemvalue]) ? scope.$parent[attrs.itemvalue] : function(item) { return item[attrs.itemvalue]; },
-          itemText : angular.isFunction(scope.$parent[attrs.itemtext])  ? scope.$parent[attrs.itemtext]  : function(item) { return item[attrs.itemtext]; },
-          tagClass : angular.isFunction(scope.$parent[attrs.tagclass])  ? scope.$parent[attrs.tagclass]  : function(item) { return attrs.tagclass; }
+          itemText : angular.isFunction(scope.$parent[attrs.itemtext]) ? scope.$parent[attrs.itemtext] : function(item) { return item[attrs.itemtext]; },
+          tagClass : angular.isFunction(scope.$parent[attrs.tagclass]) ? scope.$parent[attrs.tagclass] : function(item) { return attrs.tagclass; }
         });
 
         for (var i = 0; i < scope.model.length; i++) {

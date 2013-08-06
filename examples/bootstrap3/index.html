@@ -160,8 +160,10 @@
                   <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,Washington&quot; data-role=&quot;tagsinput&quot; /&gt;
 &lt;script&gt;
 $('input').tagsinput({
-  source: function(query) {
-    return $.getJSON('citynames.json');
+  typehead {
+    source: function(query) {
+      return $.getJSON('citynames.json');
+    }
   }
 });
 &lt;/script&gt;</pre>
@@ -194,8 +196,10 @@ $('input').tagsinput({
 $('input').tagsinput({
   itemValue: 'value',
   itemText: 'text',
-  source: function(query) {
-    return $.getJSON('cities.json');
+  typehead {
+    source: function(query) {
+      return $.getJSON('cities.json');
+    }
   }
 });
 
@@ -243,8 +247,10 @@ $('input').tagsinput({
   },
   itemValue: 'value',
   itemText: 'text',
-  source: function(query) {
-    return $.getJSON('cities.json');
+  typehead {
+    source: function(query) {
+      return $.getJSON('cities.json');
+    }
   }
 });
 
@@ -269,7 +275,7 @@ $('input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": 
           <div class="bs-example">
             <bootstrap-tagsinput
               ng-model="cities"
-              source="queryCities"
+              typeahead-source="queryCities"
               tagclass="getTagClass"
               itemvalue="value"
               itemtext="text">
@@ -286,7 +292,7 @@ $('input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": 
                 <div class="accordion-inner">
                   <pre class="prettyprint linenums">&lt;bootstrap-tagsinput
   ng-model="cities"
-  source="queryCities"
+  typeahead-source="queryCities"
   tagclass="getTagClass"
   itemvalue="value"
   itemtext="text"&gt;
@@ -345,13 +351,13 @@ angular.module('AngularExample', ['bootstrap.tagsinput'])
         <table class="table table-bordered table-condensed">
           <thead>
             <tr>
-              <th>option</th>
+              <th colspan="2">option</th>
               <th>description</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><code>tagClass</code></td>
+              <td colspan="2"><code>tagClass</code></td>
               <td>
                 <p>Classname for the tags, or a function returning a classname</p>
                 <pre class="prettyprint linenums">$('input').tagsinput({
@@ -365,7 +371,7 @@ angular.module('AngularExample', ['bootstrap.tagsinput'])
               </td>
             </tr>
             <tr>
-              <td><code>itemValue</code></td>
+              <td colspan="2"><code>itemValue</code></td>
               <td>
                 <p>When adding objects as tags, itemValue <em>must</em> be set to the name of the property containing the item's value, or a function returning an item's value.</p>
                 <pre class="prettyprint linenums">$('input').tagsinput({
@@ -379,7 +385,7 @@ angular.module('AngularExample', ['bootstrap.tagsinput'])
               </td>
             </tr>
             <tr>
-              <td><code>itemText</code></td>
+              <td colspan="2"><code>itemText</code></td>
               <td>
                 <p>When adding objects as tags, you can set itemText to the name of the property of item to use for a its tag's text. You may also provide a function which returns an item's value. When this options is not set, the value of <code>itemValue</code> will be used.
 
@@ -395,17 +401,27 @@ angular.module('AngularExample', ['bootstrap.tagsinput'])
               </td>
             </tr>
             <tr>
+              <td colspan="2"><code>typeahead</code></td>
+              <td><p>Object containing typeahead specific options</td>
+            </tr>
+            </tr>
+            <tr>
+              <td></td>
               <td><code>source</code></td>
               <td>
                 <p>An array (or function returning a promise or array), which will be used as source for a typeahead.
 
 
                 <pre class="prettyprint linenums">$('input').tagsinput({
-  source: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo']
+  typeahead: {
+    source: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo']
+  }
 });</pre>
                 <pre class="prettyprint linenums">$('input').tagsinput({
-  source: function(query) {
-    return $.get('http://someservice.com');
+  typeahead: {                  
+    source: function(query) {
+      return $.get('http://someservice.com');
+    }
   }
 });</pre>
               </td>
@@ -414,7 +430,7 @@ angular.module('AngularExample', ['bootstrap.tagsinput'])
         </table>
       </section>
     </div>
-      <footer class="bs-footer">
+    <footer class="bs-footer">
       <p>Code licensed under <a href="https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE" target="_blank">MIT License</a></p>
     </footer>
 
