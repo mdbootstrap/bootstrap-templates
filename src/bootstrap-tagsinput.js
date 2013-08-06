@@ -16,7 +16,6 @@
 
   function TagsInput(element, options) {
     this.itemsArray = [];
-    this.itemsMap = {};
 
     this.$element = $(element);
     this.$element.hide();
@@ -68,12 +67,11 @@
           itemText = self.options.itemText(item),
           tagClass = self.options.tagClass(item);
 
-      if (self.itemsMap[itemValue.toString()] !== undefined)
+      if (self.itemsArray.indexOf(item) !== -1)
         return;
 
       // register item in internal array and map
       self.itemsArray.push(item);
-      self.itemsMap[itemValue] = item;
 
       // add a tag element
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
@@ -113,8 +111,6 @@
 
       while(self.itemsArray.length > 0)
         self.itemsArray.pop();
-      for (var prop in self.itemsMap)
-        delete self.itemsMap[prop];
 
       self.pushVal();
     },
