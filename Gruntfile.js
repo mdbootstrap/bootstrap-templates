@@ -52,7 +52,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['src/**/*.js', 'test/**/*.js'],
-        tasks: ['karma', 'copy', 'uglify', 'sass', 'zip'],
+        tasks: ['copy', 'uglify'],
         options: {
           spawn: false,
           interupt: true
