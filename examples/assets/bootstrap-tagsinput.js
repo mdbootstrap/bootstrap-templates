@@ -67,7 +67,7 @@
           itemText = self.options.itemText(item),
           tagClass = self.options.tagClass(item);
 
-      if (self.itemsArray.indexOf(item) !== -1)
+      if ($.grep(self.itemsArray, function(item) { return self.options.itemValue(item) === itemValue; } )[0])
         return;
 
       // register item in internal array and map
