@@ -10,7 +10,8 @@
     },
     itemText: function(item) {
       return this.itemValue(item);
-    }
+    },
+    freeInput : true
   };
 
   function TagsInput(element, options) {
@@ -158,12 +159,16 @@
       var self = this;
 
       self.options = $.extend({}, defaultOptions, options);
+      var typeahead = self.options.typeahead || {};
+
+      // When itemValue is set, freeInput should always be false
+      if (self.options.itemValue !== defaultOptions.itemValue)
+        self.options.freeInput = false;
 
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionItemFunction(self.options, 'tagClass');
 
-      var typeahead = self.options.typeahead || {};
       // for backwards compatibility, self.options.source is deprecated
       if (self.options.source)
         typeahead.source = self.options.source;
@@ -260,7 +265,7 @@
             break;
           // ENTER
           case 13:
-            if (!self.options.typeahead.source) {
+            if (self.options.freeInput) {
               self.add($input.val());
               $input.val('');
             }

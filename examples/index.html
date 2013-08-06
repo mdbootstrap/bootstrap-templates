@@ -402,6 +402,21 @@ angular.module('AngularExample', ['bootstrap.tagsinput'])
               </td>
             </tr>
             <tr>
+              <td colspan="2"><code>freeInput</code></td>
+              <td>
+                <p>Allow creating tags which are not returned by typeahead's source (default: true)</p>
+                <div class="alert alert-block">
+                  This is only possible when using string as tags. When itemValue option is set, this option will be ignored.
+                </div>
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  typeahead: {
+    source: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo'],
+    freeInput: true
+  }
+});</pre>
+              </td>
+            </tr>            
+            <tr>
               <td colspan="2"><code>typeahead</code></td>
               <td><p>Object containing typeahead specific options</td>
             </tr>
@@ -411,8 +426,6 @@ angular.module('AngularExample', ['bootstrap.tagsinput'])
               <td><code>source</code></td>
               <td>
                 <p>An array (or function returning a promise or array), which will be used as source for a typeahead.
-
-
                 <pre class="prettyprint linenums">$('input').tagsinput({
   typeahead: {
     source: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo']
