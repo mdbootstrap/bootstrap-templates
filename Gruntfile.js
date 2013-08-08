@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-zip');
@@ -14,7 +14,7 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand: true, flatten: true, src: ['src/*.js'], dest: 'examples/assets/', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['src/*.*'], dest: 'examples/assets/', filter: 'isFile'},
           {expand: true, flatten: true, src: ['lib/jquery.min.js'], dest: 'examples/assets/', filter: 'isFile'},
           {expand: true, cwd: 'lib', src: ['bootstrap*/**'], dest: 'examples/assets/' },
           {expand: true, flatten: true, src: ['lib/angular.min.js'], dest: 'examples/assets', filter: 'isFile'}
@@ -33,10 +33,10 @@ module.exports = function(grunt) {
         }
       }
     },
-    sass: {
+    less: {
       build: {
         files: {
-          'examples/assets/<%= pkg.name %>.css' : 'src/<%= pkg.name %>.scss'
+          "examples/assets/<%= pkg.name %>.css": "src/<%= pkg.name %>.less"
         }
       }
     },
@@ -51,7 +51,7 @@ module.exports = function(grunt) {
     },
     watch: {
       scripts: {
-        files: ['src/**/*.js', 'test/**/*.js'],
+        files: ['src/**/*.*', 'test/**/*.js'],
         tasks: ['copy', 'uglify'],
         options: {
           spawn: false,
@@ -73,10 +73,10 @@ module.exports = function(grunt) {
           title: '<%= pkg.title %>'
         }
       }
-  }
+    }
   });
 
-  grunt.registerTask('default', ['karma','jquerymanifest', 'copy', 'uglify', 'sass', 'zip']);
-  grunt.registerTask('build', ['copy', 'uglify', 'sass']);
+  grunt.registerTask('default', ['karma','jquerymanifest', 'copy', 'uglify', 'less', 'zip']);
+  grunt.registerTask('build', ['copy', 'uglify', 'less']);
   grunt.registerTask('unit', ['karma']);
 };
