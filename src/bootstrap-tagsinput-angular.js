@@ -1,4 +1,4 @@
-angular.module('bootstrap.tagsinput', [])
+angular.module('bootstrap-tagsinput', [])
 .directive('bootstrapTagsinput', [function() {
   return {
     restrict: 'EA',
