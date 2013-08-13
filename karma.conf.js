@@ -12,7 +12,7 @@ files = [
   'src/bootstrap-tagsinput-angular.js',
 
   'test/helpers.js',
-  { pattern: 'test/**/*.tests.js' }
+  { pattern: 'test/bootstrap-tagsinput/*.tests.js' }
 ];
 
 // list of files to exclude
