@@ -21,7 +21,8 @@
     this.$element.hide();
 
     this.isSelect = (element.tagName === 'SELECT');
-    this.multiple = (this.isSelect && element.getAttribute('multiple'));
+    this.multiple = (this.isSelect && element.hasAttribute('multiple'));
+    this.objectItems = options && options.itemValue;
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
     this.$input = $('<input size="1" type="text" />').appendTo(this.$container);
@@ -42,12 +43,16 @@
         return;
 
       // Throw an error when trying to add an object while the itemValue option was not set
-      if (typeof item === "object" && self.options.itemValue === defaultOptions.itemValue)
+      if (typeof item === "object" && !self.objectItems)
         throw("Can't add objects when itemValue option is not set");
 
       // Ignore strings only containg whitespace
       if (item.toString().match(/^\s*$/))
         return;
+
+      // If SELECT but not multiple, remove current tag
+      if (self.isSelect && !self.multiple && self.itemsArray.length > 0)
+        self.remove(self.itemsArray[0]);
 
       if (typeof item === "string" && this.$element[0].tagName === 'INPUT') {
         var items = item.split(',');
@@ -88,19 +93,30 @@
 
      if (!dontPushVal)
         self.pushVal();
+
+      self.$element.trigger($.Event('itemAdded', { item: item }));
     },
 
     remove: function(item, dontPushVal) {
       var self = this;
 
-      $('.tag', self.$container).filter(function() { return $(this).data('item') === item; }).remove();
-      $('option', self.$element).filter(function() { return $(this).data('item') === item; }).remove();
+      if (self.objectItems) {
+        if (typeof item === "object")
+          item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  self.options.itemValue(item); } )[0];
+        else
+          item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  item; } )[0];
+      }
 
-       // unregister item in internal array and map
-      self.itemsArray.splice(self.itemsArray.indexOf(item), 1);
+      if (item) {
+        $('.tag', self.$container).filter(function() { return $(this).data('item') === item; }).remove();
+        $('option', self.$element).filter(function() { return $(this).data('item') === item; }).remove();
+        self.itemsArray.splice(self.itemsArray.indexOf(item), 1);
+      }
 
       if (!dontPushVal)
         self.pushVal();
+
+      self.$element.trigger($.Event('itemRemoved',  { item: item }));
     },
 
     removeAll: function() {
@@ -146,7 +162,9 @@
     // Assembly value by retrieving the value of each item, and set it on the element. 
     pushVal: function() {
       var self = this,
-          val = $.map(self.items(), function(item) { return self.options.itemValue(item).toString(); });
+          val = $.map(self.items(), function(item) {
+            return self.options.itemValue(item).toString();
+          });
 
       self.$element.val(val, true).trigger('change');
     },
@@ -158,7 +176,7 @@
       var typeahead = self.options.typeahead || {};
 
       // When itemValue is set, freeInput should always be false
-      if (self.options.itemValue !== defaultOptions.itemValue)
+      if (self.objectItems)
         self.options.freeInput = false;
 
       makeOptionItemFunction(self.options, 'itemValue');
@@ -296,6 +314,10 @@
       self.$container.remove();
       self.$element.removeData('tagsinput');
       self.$element.show();
+    },
+
+    focus: function() {
+      this.$input.focus();
     }
   };
 

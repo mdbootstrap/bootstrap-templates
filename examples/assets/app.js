@@ -63,7 +63,7 @@ $(function() {
   }).trigger('change');
 });
 
-angular.module('AngularExample', ['bootstrap.tagsinput'])
+angular.module('AngularExample', ['bootstrap-tagsinput'])
   .controller('CityTagsInputController',
     function CityTagsInputController($scope, $http) {
       // Init with some cities
