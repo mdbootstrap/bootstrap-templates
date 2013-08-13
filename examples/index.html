@@ -24,6 +24,7 @@
     </script>
   </head>
   <body>
+    <div id="fb-root"></div>
     <div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav">
       <div class="navbar-inner">
         <div class="container">
@@ -66,6 +67,14 @@
                           s.parentNode.insertBefore(po, s);
                       })();
                   </script>
+                  <script>(function(d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id)) return;
+                    js = d.createElement(s); js.id = id;
+                    js.src = "//connect.facebook.net/nl_NL/all.js#xfbml=1&appId=122064240555";
+                    fjs.parentNode.insertBefore(js, fjs);
+                  }(document, 'script', 'facebook-jssdk'));</script>
+                  <a class="navbar-link fb-like" data-href="http://timschlechter.github.io/bootstrap-tagsinput/examples/" data-width="110" data-layout="button_count" data-show-faces="true" data-send="false"></a>
             </p>
           </div>
         </div>
