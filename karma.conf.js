@@ -6,7 +6,6 @@ files = [
   JASMINE,
   JASMINE_ADAPTER,
   'lib/jquery.min.js',
-  'lib/bootstrap.min.js',
   'src/bootstrap-tagsinput.js',
 
   'test/helpers.js',
@@ -18,7 +17,7 @@ exclude = [
 ];
 
 preprocessors = {
-  'src/bootstrap-tagsinput.js': 'coverage'
+  'src/*.js': 'coverage'
 };
 
 // test results reporter to use

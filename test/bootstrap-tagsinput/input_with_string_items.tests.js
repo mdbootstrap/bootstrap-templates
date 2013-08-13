@@ -85,8 +85,12 @@ describe("bootstrap-tagsinput", function() {
           expect(this.$element.tagsinput('items').length).toBe(2);
         });
       });
-    });
 
+      it("'focus' should place focus in input", function() {
+        this.$element.tagsinput('focus');
+        expect(this.$tagsinput_input.is(":focus")).toBe(true);
+      });
+    });
 
     testTagsInput('<input type="text" value="some,tags" />', function() {
       it('should have 2 tags', function() {
@@ -110,8 +114,7 @@ describe("bootstrap-tagsinput", function() {
 
       describe("BACKSPACE", function() {
         beforeEach(function() {
-          // focus tags input          
-          this.$tagsinput.trigger('click');
+          this.$element.tagsinput('focus');
         });
 
         it('after last tag, should remove the last tag', function() {
@@ -133,8 +136,7 @@ describe("bootstrap-tagsinput", function() {
 
       describe("DELETE", function() {
         beforeEach(function() {
-          // focus tags input          
-          this.$tagsinput.trigger('click');
+          this.$element.tagsinput('focus');
           // move cursor before last tag
           this.$tagsinput_input.trigger($.Event('keydown', { which: 37 }));
         });

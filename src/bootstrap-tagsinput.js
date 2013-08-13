@@ -296,6 +296,10 @@
       self.$container.remove();
       self.$element.removeData('tagsinput');
       self.$element.show();
+    },
+
+    focus: function() {
+      this.$input.focus();
     }
   };
 

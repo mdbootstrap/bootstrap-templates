@@ -2,7 +2,6 @@ describe("bootstrap-tagsinput", function() {
 
   describe("Reproduced bugs", function() {
 
-
     describe("#1: Demo error", function() {
 
       testTagsInput('<input type="text" value="some_tag" />', function() {
