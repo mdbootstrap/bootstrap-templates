@@ -21,7 +21,7 @@
     this.$element.hide();
 
     this.isSelect = (element.tagName === 'SELECT');
-    this.multiple = (this.isSelect && element.getAttribute('multiple'));
+    this.multiple = (this.isSelect && element.hasAttribute('multiple'));
     this.objectItems = options && options.itemValue;
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
@@ -93,6 +93,8 @@
 
      if (!dontPushVal)
         self.pushVal();
+
+      self.$element.trigger($.Event('itemAdded', { item: item }));
     },
 
     remove: function(item, dontPushVal) {
@@ -113,6 +115,8 @@
 
       if (!dontPushVal)
         self.pushVal();
+
+      self.$element.trigger($.Event('itemRemoved',  { item: item }));
     },
 
     removeAll: function() {
@@ -158,7 +162,9 @@
     // Assembly value by retrieving the value of each item, and set it on the element. 
     pushVal: function() {
       var self = this,
-          val = $.map(self.items(), function(item) { return self.options.itemValue(item).toString(); });
+          val = $.map(self.items(), function(item) {
+            return self.options.itemValue(item).toString();
+          });
 
       self.$element.val(val, true).trigger('change');
     },
