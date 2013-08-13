@@ -88,7 +88,7 @@ describe("bootstrap-tagsinput", function() {
 
       it("'focus' should place focus in input", function() {
         this.$element.tagsinput('focus');
-        expect(this.$tagsinput_input.is(":focus")).toBe(true);
+        expect(hasFocus(this.$tagsinput_input)).toBe(true);
       });
     });
 

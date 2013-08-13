@@ -30,3 +30,7 @@ function testTagsInput(elementHtml, options, tests) {
     tests();
   });
 }
+
+function hasFocus($elt) {
+  return $elt.get(0) === document.activeElement;
+}
