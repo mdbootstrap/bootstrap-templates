@@ -1,12 +1,13 @@
 describe('bootstrap-tagsinput', function() {
-  var $scope,
-      $element;
-  
+
   // Load the myApp module, which contains the directive
   beforeEach(module('bootstrap-tagsinput'));
   
   describe("with strings as items" , function() {
     describe("compile with 2 tags in model" , function() {
+      var $scope,
+          $element;
+  
       beforeEach(inject(function($compile, $rootScope){
         $scope = $rootScope;
         $scope.tags = ['Amsterdam', 'New York'];
@@ -26,6 +27,9 @@ describe('bootstrap-tagsinput', function() {
 
   describe("with objects as items" , function() {
     describe("compile with 2 tags in model" , function() {
+      var $scope,
+          $element;
+  
       beforeEach(inject(function($compile, $rootScope){
         $scope = $rootScope;
         $scope.tags = [{ value: 1, text: 'Amsterdam'}, { value: 2, text: 'New York'} ];
