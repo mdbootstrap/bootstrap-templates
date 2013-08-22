@@ -282,6 +282,7 @@
             if (self.options.freeInput) {
               self.add($input.val());
               $input.val('');
+              event.preventDefault();
             }
             break;
 
