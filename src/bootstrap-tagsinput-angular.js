@@ -41,7 +41,7 @@ angular.module('bootstrap-tagsinput', [])
         }
 
         select.on('itemAdded', function(event) {
-          if (scope.model.indexOf(event.item) !== -1)
+          if (scope.model.indexOf(event.item) === -1)
             scope.model.push(event.item);
         });
 
