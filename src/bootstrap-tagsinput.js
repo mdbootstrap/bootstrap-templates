@@ -242,6 +242,8 @@
             break;
           // ENTER
           case 13:
+          // TAB
+          case 9:
             if (self.options.freeInput) {
               self.add($input.val());
               $input.val('');
