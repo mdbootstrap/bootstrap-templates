@@ -492,9 +492,9 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td>
                 <p>Adds a tag</p>
 
-                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('add', 'some tag');</pre>
+                <pre class="prettyprint linenums">$('input').tagsinput('add', 'some tag');</pre>
 
-                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('add', { id: 1, text: 'some tag' });</pre>
+                <pre class="prettyprint linenums">$('input').tagsinput('add', { id: 1, text: 'some tag' });</pre>
               </td>
             </tr>
             <tr>
@@ -502,9 +502,9 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td>
                 <p>Removes a tag</p>
 
-                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('remove', 'some tag');</pre>
+                <pre class="prettyprint linenums">$('input').tagsinput('remove', 'some tag');</pre>
 
-                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('remove', { id: 1, text: 'some tag' });</pre>
+                <pre class="prettyprint linenums">$('input').tagsinput('remove', { id: 1, text: 'some tag' });</pre>
               </td>
             </tr>
             <tr>
@@ -512,7 +512,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td>
                 <p>Removes all tags</p>
 
-                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('removeAll');</pre>
+                <pre class="prettyprint linenums">$('input').tagsinput('removeAll');</pre>
               </td>
             </tr>
             <tr>
@@ -520,7 +520,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td>
                 <p>Sets focus in the tagsinput</p>
 
-                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('focus');</pre>
+                <pre class="prettyprint linenums">$('input').tagsinput('focus');</pre>
               </td>
             </tr>
             <tr>
@@ -537,8 +537,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td>
                 <p>Refreshes the tags input UI. This might be usefull when you're adding objects as tags. When an object's text changes, you'll have to refresh to update the matching tag's text.</p>
 
-
-                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('refresh');</pre>
+                <pre class="prettyprint linenums">$('input').tagsinput('refresh');</pre>
               </td>
             </tr>
             <tr>
@@ -546,7 +545,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td>
                 <p>Removes tagsinput behaviour</p>
 
-                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('destroy');</pre>
+                <pre class="prettyprint linenums">$('input').tagsinput('destroy');</pre>
               </td>
             </tr>
           </tbody>
