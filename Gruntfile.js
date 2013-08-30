@@ -17,7 +17,9 @@ module.exports = function(grunt) {
           {expand: true, flatten: true, src: ['src/*.*'], dest: 'examples/assets/', filter: 'isFile'},
           {expand: true, flatten: true, src: ['lib/jquery.min.js'], dest: 'examples/assets/', filter: 'isFile'},
           {expand: true, cwd: 'lib', src: ['bootstrap*/**'], dest: 'examples/assets/' },
-          {expand: true, flatten: true, src: ['lib/angular.min.js'], dest: 'examples/assets', filter: 'isFile'}
+          {expand: true, flatten: true, src: ['lib/angular.min.js'], dest: 'examples/assets', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['lib/typeahead*.js'], dest: 'examples/assets', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['lib/hogan.js'], dest: 'examples/assets', filter: 'isFile'}
         ]
       }
     },
@@ -51,7 +53,7 @@ module.exports = function(grunt) {
     },
     watch: {
       scripts: {
-        files: ['src/**/*.*', 'test/**/*.js'],
+        files: ['src/**/*.*', 'test/**/*.js', 'examples/**/*.html'],
         tasks: ['copy', 'uglify'],
         options: {
           spawn: false,

@@ -24,9 +24,9 @@
   </head>
   <body>
     <div id="fb-root"></div>
-    <div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav">
+    <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
       <div class="container">
-        <div class="nav-collapse collapse bs-navbar-collapse">
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
           <ul class="nav navbar-nav">
             <li>
               <a href="https://github.com/timschlechter/bootstrap-tagsinput">Code on Github</a>
@@ -74,19 +74,17 @@
                 }(document, 'script', 'facebook-jssdk'));</script>
                 <a class="navbar-link fb-like" data-href="http://timschlechter.github.io/bootstrap-tagsinput/examples/bootstrap3/" data-width="110" data-layout="button_count" data-show-faces="true" data-send="false"></a>
           </p>
-        </div>
+        </nav>
       </div>
-    </div>
-    <header class="bs-header">
+    </header>
+    
+    <div class="bs-header">
       <div class="container">
         <h1>Bootstrap Tags Input</h1>
         <p>jQuery plugin providing a Twitter Bootstrap user interface for managing tags</p>
       </div>
-    </header>
+    </div>
     <div class="container">
-      <div class="bs-callout bs-callout-danger">
-        Bootstrap 3 <a href="https://github.com/twbs/bootstrap/commit/88dd9de9bad56b30a12466477a810c78648200c9">dropped the Typeahead</a>. At the moment typeahead is not working when using this plugin with Bootstrap 3. Working on it...
-      </div>
       <section id="examples">
         <div class="page-header">
           <h2>Examples</h2>
@@ -154,6 +152,8 @@
        
         <div class="example example_typeahead">
           <h3>Typeahead</h3>
+          Typeahead is not included in Bootstrap 3, so you'll have to include your own typeahead library. I'd recommed <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a>. An example of using this is shown below.
+
           <div class="bs-example">
             <input type="text" value="Amsterdam,Washington" />
           </div>
@@ -168,13 +168,15 @@
                 <div class="accordion-inner">
                   <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,Washington&quot; data-role=&quot;tagsinput&quot; /&gt;
 &lt;script&gt;
-$('input').tagsinput({
-  typehead {
-    source: function(query) {
-      return $.getJSON('citynames.json');
-    }
-  }
-});
+$('input').tagsinput();
+
+// Adding custom typeahead support using http://twitter.github.io/typeahead.js
+$('input').tagsinput('input').typeahead({
+  prefetch: 'citynames.json'
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
+  this.tagsinput('add', datum.value);
+  this.tagsinput('input').typeahead('setQuery', '');
+}, $('input')));
 &lt;/script&gt;</pre>
                 </div>
               </div>
@@ -203,20 +205,34 @@ $('input').tagsinput({
                   <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; /&gt;
 &lt;script&gt;
 $('input').tagsinput({
-  itemValue: 'value',
-  itemText: 'text',
-  typehead {
-    source: function(query) {
-      return $.getJSON('cities.json');
+  tagClass: function(item) {
+    switch (item.continent) {
+      case 'Europe'   : return 'label label-primary';
+      case 'America'  : return 'label label-danger label-important';
+      case 'Australia': return 'label label-success';
+      case 'Africa'   : return 'label label-default';
+      case 'Asia'     : return 'label label-warning';
     }
-  }
+  },
+  itemValue: 'value',
+  itemText: 'text'
 });
+$('input').tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
+$('input').tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
+$('input').tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
+$('input').tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
+$('input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
 
-$('input').tagsinput('add', { "value": 1 , "text": "Amsterdam"  });
-$('input').tagsinput('add', { "value": 4 , "text": "Washington" });
-$('input').tagsinput('add', { "value": 7 , "text": "Sydney"     });
-$('input').tagsinput('add', { "value": 10, "text": "Beijing"    });
-$('input').tagsinput('add', { "value": 13, "text": "Cairo"      });
+// Adding custom typeahead support using http://twitter.github.io/typeahead.js
+$('input').tagsinput('input').typeahead({
+  valueKey: 'text',
+  prefetch: 'cities.json',
+  template: '&lt;p&gt;{{text}}&lt;/p&gt;',
+  engine: Hogan
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
+  this.tagsinput('add', datum);
+  this.tagsinput('input').typeahead('setQuery', '');
+}, $('input')));
 &lt;/script&gt;</pre>
                 </div>
               </div>
@@ -247,27 +263,32 @@ $('input').tagsinput('add', { "value": 13, "text": "Cairo"      });
 $('input').tagsinput({
   tagClass: function(item) {
     switch (item.continent) {
-      case 'Europe'   : return 'label label-info';
-      case 'America'  : return 'label label-important';
+      case 'Europe'   : return 'label label-primary';
+      case 'America'  : return 'label label-danger label-important';
       case 'Australia': return 'label label-success';
-      case 'Africa'   : return 'badge badge-inverse';
-      case 'Asia'     : return 'badge badge-warning';
+      case 'Africa'   : return 'label label-default';
+      case 'Asia'     : return 'label label-warning';
     }
   },
   itemValue: 'value',
-  itemText: 'text',
-  typehead {
-    source: function(query) {
-      return $.getJSON('cities.json');
-    }
-  }
+  itemText: 'text'
 });
-
 $('input').tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
 $('input').tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
 $('input').tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
 $('input').tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
 $('input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
+
+// Adding custom typeahead support using http://twitter.github.io/typeahead.js
+$('input').tagsinput('input').typeahead({
+  valueKey: 'text',
+  prefetch: 'cities.json',
+  template: '&lt;p&gt;{{text}}&lt;/p&gt;',                                      
+  engine: Hogan
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
+  this.tagsinput('add', datum);
+  this.tagsinput('input').typeahead('setQuery', '');
+}, $('input')));
 &lt;/script&gt;</pre>
                 </div>
               </div>
@@ -276,7 +297,7 @@ $('input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": 
           <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
 
-        <div id="angular" class="example example_angular" ng-app="AngularExample" ng-controller="CityTagsInputController">
+        <!-- div id="angular" class="example example_angular" ng-app="AngularExample" ng-controller="CityTagsInputController">
           <h3>AngularJS support</h3>
           <p>
             Include <code>bootstrap-tagsinput-angular.js</code> and register the 'bootstrap-tagsinput' in your Angular JS application to use the bootstrap-tagsinput directive.
@@ -351,7 +372,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
             </tbody>
           </table>
         </div>
-      </section>
+      </section -->
 
       <section id="options">
         <div class="page-header">
@@ -453,6 +474,84 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
           </tbody>
         </table>
       </section>
+
+      <section id="methods">
+        <div class="page-header">
+          <h2>Methods</h2>
+        </div>
+        <table class="table table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th colspan="2">method</th>
+              <th>description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>add</code></td>
+              <td>
+                <p>Adds a tag</p>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('add', 'some tag');</pre>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('add', { id: 1, text: 'some tag' });</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>remove</code></td>
+              <td>
+                <p>Removes a tag</p>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('remove', 'some tag');</pre>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('remove', { id: 1, text: 'some tag' });</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>removeAll</code></td>
+              <td>
+                <p>Removes all tags</p>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('removeAll');</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>focus</code></td>
+              <td>
+                <p>Sets focus in the tagsinput</p>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('focus');</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>input</code></td>
+              <td>
+                <p>Returns the tagsinput's internal &lt;input /&gt;, which is used for adding tags. You could use this to add your own typeahead behaviour for example.</p>
+
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('input');</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>refresh</code></td>
+              <td>
+                <p>Refreshes the tags input UI. This might be usefull when you're adding objects as tags. When an object's text changes, you'll have to refresh to update the matching tag's text.</p>
+
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('refresh');</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>destroy</code></td>
+              <td>
+                <p>Removes tagsinput behaviour</p>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('destroy');</pre>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </div>
     <footer class="bs-footer">
       <p>Code licensed under <a href="https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE" target="_blank">MIT License</a></p>
@@ -464,6 +563,9 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
     <script src="assets/google-code-prettify/prettify.js"></script>
     <script src="assets/bootstrap-tagsinput.js"></script>
     <script src="assets/bootstrap-tagsinput-angular.js"></script>
+    <script src="assets/typeahead.min.js"></script>
+    <script src="assets/hogan.js"></script>
+    <script src="assets/app_bs3.js"></script>
     <script src="assets/app.js"></script>
   </body>
 </html>

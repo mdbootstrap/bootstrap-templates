@@ -452,6 +452,84 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
           </tbody>
         </table>
       </section>
+
+      <section id="methods">
+        <div class="page-header">
+          <h2>Methods</h2>
+        </div>
+        <table class="table table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th colspan="2">method</th>
+              <th>description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>add</code></td>
+              <td>
+                <p>Adds a tag</p>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('add', 'some tag');</pre>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('add', { id: 1, text: 'some tag' });</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>remove</code></td>
+              <td>
+                <p>Removes a tag</p>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('remove', 'some tag');</pre>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('remove', { id: 1, text: 'some tag' });</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>removeAll</code></td>
+              <td>
+                <p>Removes all tags</p>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('removeAll');</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>focus</code></td>
+              <td>
+                <p>Sets focus in the tagsinput</p>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('focus');</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>input</code></td>
+              <td>
+                <p>Returns the tagsinput's internal &lt;input /&gt;, which is used for adding tags. You could use this to add your own typeahead behaviour for example.</p>
+
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('input');</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>refresh</code></td>
+              <td>
+                <p>Refreshes the tags input UI. This might be usefull when you're adding objects as tags. When an object's text changes, you'll have to refresh to update the matching tag's text.</p>
+
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('refresh');</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>destroy</code></td>
+              <td>
+                <p>Removes tagsinput behaviour</p>
+
+                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('destroy');</pre>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </div>
       <footer class="footer">
       <p>Code licensed under <a href="https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE" target="_blank">MIT License</a></p>
@@ -463,6 +541,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
     <script src="assets/google-code-prettify/prettify.js"></script>
     <script src="assets/bootstrap-tagsinput.js"></script>
     <script src="assets/bootstrap-tagsinput-angular.js"></script>
+    <script src="assets/app_bs2.js"></script>
     <script src="assets/app.js"></script>
   </body>
 </html>
