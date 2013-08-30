@@ -320,6 +320,10 @@
 
     focus: function() {
       this.$input.focus();
+    },
+
+    input: function() {
+      return this.$input;
     }
   };
 
