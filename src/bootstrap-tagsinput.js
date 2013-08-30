@@ -81,7 +81,7 @@
       // add a tag element
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
       $tag.data('item', item);
-      self.$input.before($tag);
+      self.findInputWrapper().before($tag);
       $tag.after(' ');
 
       // add <option /> if item represents a value not present in one of the <select />'s options
@@ -238,12 +238,14 @@
       }, self));
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
-        var $input = $(event.target);
+        var $input = $(event.target),
+            $inputWrapper = self.findInputWrapper();
+
         switch (event.which) {
           // BACKSPACE
           case 8:
             if (doGetCaretPosition($input[0]) === 0) {
-              var prev = $input.prev();
+              var prev = $inputWrapper.prev();
               if (prev) {
                 self.remove(prev.data('item'));
               }
@@ -253,7 +255,7 @@
           // DELETE
           case 46:
             if (doGetCaretPosition($input[0]) === 0) {
-              var next = $input.next();
+              var next = $inputWrapper.next();
               if (next) {
                 self.remove(next.data('item'));
               }
@@ -263,18 +265,18 @@
           // LEFT ARROW
           case 37:
             // Try to move the input before the previous tag
-            var $prevTag = $input.prev();
+            var $prevTag = $inputWrapper.prev();
             if ($input.val().length === 0 && $prevTag[0]) {
-              $prevTag.before($input);
+              $prevTag.before($inputWrapper);
               $input.focus();
             }
             break;
           // LEFT ARROW
           case 39:
             // Try to move the input before the previous tag
-            var $nextTag = $input.next();
+            var $nextTag = $inputWrapper.next();
             if ($input.val().length === 0 && $nextTag[0]) {
-              $nextTag.after($input);
+              $nextTag.after($inputWrapper);
               $input.focus();
             }
             break;
@@ -320,6 +322,19 @@
 
     focus: function() {
       this.$input.focus();
+    },
+
+    input: function() {
+      return this.$input;
+    },
+
+    findInputWrapper: function() {
+      var elt = this.$input[0],
+          container = this.$container[0];
+      while(elt && elt.parentNode !== container)
+        elt = elt.parentNode;
+
+      return $(elt);
     }
   };
 
