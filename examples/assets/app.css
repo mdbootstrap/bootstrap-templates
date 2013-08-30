@@ -15,7 +15,7 @@
 }
 
 body {
-    padding: 40px;
+    padding-top: 40px;
 }
 .twitter-typeahead .tt-query,
 .twitter-typeahead .tt-hint {
