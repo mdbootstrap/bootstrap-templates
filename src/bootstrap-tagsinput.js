@@ -185,51 +185,14 @@
 
       // for backwards compatibility, self.options.source is deprecated
       if (self.options.source)
-        typeahead.source = self.options.source;
+        typeahead.local = self.options.source;
 
-      if (typeahead.source && $.fn.typeahead) {
-        makeOptionFunction(typeahead, 'source');
-
-        self.$input.typeahead({
-          source: function (query, process) {
-            function processItems(items) {
-              var texts = [];
-
-              for (var i = 0; i < items.length; i++) {
-                var text = self.options.itemText(items[i]);
-                map[text] = items[i];
-                texts.push(text);
-              }
-              process(texts);
-            }
-
-            this.map = {};
-            var map = this.map,
-                data = typeahead.source(query);
-
-            if ($.isFunction(data.success)) {
-              // support for Angular promises
-              data.success(processItems);
-            } else {
-              // support for functions and jquery promises
-              $.when(data)
-               .then(processItems);
-            }
-          },
-          updater: function (text) {
-            self.add(this.map[text]);
-          },
-          matcher: function (text) {
-            return (text.toLowerCase().indexOf(this.query.trim().toLowerCase()) !== -1);
-          },
-          sorter: function (texts) {
-            return texts.sort();
-          },
-          highlighter: function (text) {
-            var regex = new RegExp( '(' + this.query + ')', 'gi' );
-            return text.replace( regex, "<strong>$1</strong>" );
-          }
-        });
+      if ((typeahead.local || typeahead.prefetch || typeahead.remote) && $.fn.typeahead) {
+        self.$input.typeahead(typeahead).
+          bind('typeahead:selected', function (obj, datum) {
+            self.add(datum.value);
+            self.$input.typeahead('setQuery', '');
+          });
       }
 
       self.$container.on('click', $.proxy(function(event) {
