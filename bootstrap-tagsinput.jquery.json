@@ -14,10 +14,6 @@
   "dependencies": {
     "jquery": "*"
   },
-  "homepage": {
-    "type": "git",
-    "url": "git://github.com/timschlechter/bootstrap-tagsinput.git"
-  },
   "description": "jQuery plugin providing a Twitter Bootstrap user interface for managing tags.",
   "keywords": [
     "tags",
@@ -26,5 +22,6 @@
     "select",
     "form"
   ],
+  "homepage": "http://timschlechter.github.io/bootstrap-tagsinput/examples/",
   "download": "http://timschlechter.github.io/bootstrap-tagsinput/build/bootstrap-tagsinput.zip"
 }
