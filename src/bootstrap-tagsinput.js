@@ -280,6 +280,8 @@
               $input.focus();
             }
             break;
+          // COMMA
+          case 188:
           // ENTER
           case 13:
             if (self.options.freeInput) {
