@@ -5,12 +5,10 @@ angular.module('bsTagsInput', [])
  * @restrict A
  *
  * @description
- * Sets up an input field for tag inputs, using the bootstrap-tagsinput jQuery plugin.  Optionally
- * uses typeahead.js for autocompletion.
+ * Sets up an input field for tag inputs, using the bootstrap-tagsinput jQuery plugin.
  *
  * @element INPUT or SELECT
  * @param {Object} options passed to the bootstrap-tagsinput plugin at initialization.
- *    The typeahead option, if specified, will instead be passed to the typeahead.js plugin.
  *
  * @example
     <doc:example>
@@ -18,15 +16,13 @@ angular.module('bsTagsInput', [])
         <script>
           function Ctrl($scope) {
             $scope.tags = ['Amsterdam', 'Washington'];
-            $scope.tagsOptions = {
-              typeahead: {
-                local: ['Sydney', 'Beijing', 'Cairo']
-              }
+            $scope.tagsTypeahead = {
+              local: ['Sydney', 'Beijing', 'Cairo']
             }
           }
         </script>
         <form ng-controller="Ctrl">
-          <input type="text" ng-model="tags" bs-tags-input="tagsOptions">
+          <input type="text" ng-model="tags" bs-tags-input bs-tags-typeahead="tagsTypeahead">
           <pre>{{tags}}</pre>
         </form>
       </doc:source>
@@ -52,19 +48,11 @@ angular.module('bsTagsInput', [])
 
   return {
     require: 'ngModel',
+    controller: function() {
+    },
     link: function(scope, element, attrs, ngModelCtrl) {
-      // parse options
-      var options = {};
-      if (attrs.bsTagsInput) {
-        options = scope.$eval(attrs.bsTagsInput);
-      }
-      var typeaheadOpts = options.typeahead;
-      delete options.typeahead;
-      if (jQuery.fn.typeahead === undefined) {
-        typeaheadOpts = undefined;
-      }
-
       // initialize tagsinput
+      var options = scope.$eval(attrs.bsTagsInput) || {};
       element.tagsinput(options);
 
       // handle changes from the underlying model
@@ -89,16 +77,32 @@ angular.module('bsTagsInput', [])
       scope.$on('$destroy', function() {
         element.tagsinput('destroy');
       });
-
-      // setup typeahead, if desired
-      if (typeaheadOpts !== undefined) {
-        element.tagsinput('input')
-            .typeahead(typeaheadOpts)
-            .bind('typeahead:selected', function(obj, datum) {
-          element.tagsinput('add', datum.value);
-          element.tagsinput('input').typeahead('setQuery', '');
-        });
-      }
     }
   };
+})
+/**
+ * @ngdoc directive
+ * @name bsTagsTypeahead
+ * @restrict A
+ *
+ * @description
+ * Using typeahead.js, adds autocompletion support to a bsTagsInput field.
+ *
+ * @element INPUT or SELECT
+ * @param {Object} options passed to the typeahead.js plugin.
+ */
+.directive('bsTagsTypeahead', function() {
+  return {
+    require: 'bsTagsInput',
+    link: function(scope, element, attrs, bsTagsInputCtrl) {
+      // setup typeahead on the 'input' element
+      var options = scope.$eval(attrs.bsTagsTypeahead) || {};
+      element.tagsinput('input')
+          .typeahead(options)
+          .bind('typeahead:selected', function(obj, datum) {
+        element.tagsinput('add', datum.value);
+        element.tagsinput('input').typeahead('setQuery', '');
+      });
+    }
+  }
 });

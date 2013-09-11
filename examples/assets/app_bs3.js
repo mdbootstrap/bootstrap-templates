@@ -64,10 +64,8 @@ angular.module('AngularExample', ['bsTagsInput'])
   .controller('Ctrl',
     function Ctrl($scope) {
       $scope.tags = ['Amsterdam', 'Washington'];
-      $scope.tagsOptions = {
-        typeahead: {
-          local: ['Sydney', 'Beijing', 'Cairo']
-        }
+      $scope.tagsTypeahead = {
+        local: ['Sydney', 'Beijing', 'Cairo']
       };
     }
   );
