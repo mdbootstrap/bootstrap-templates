@@ -297,19 +297,15 @@ $('input').tagsinput('input').typeahead({
           <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
 
-        <!-- div id="angular" class="example example_angular" ng-app="AngularExample" ng-controller="CityTagsInputController">
+        <div id="angular" class="example example_angular" ng-app="AngularExample" ng-controller="Ctrl">
           <h3>AngularJS support</h3>
           <p>
-            Include <code>bootstrap-tagsinput-angular.js</code> and register the 'bootstrap-tagsinput' in your Angular JS application to use the bootstrap-tagsinput directive.
+            Include <code>bsTagsInput.js</code> and register the 'bsTagsInput' module in your Angular JS application to use the bs-tags-input directive.
           </p>
           <div class="bs-example">
-            <bootstrap-tagsinput
-              ng-model="cities"
-              typeahead-source="queryCities"
-              tagclass="getTagClass"
-              itemvalue="value"
-              itemtext="text">
-            </bootstrap-tagsinput>
+            <input type="text"
+              ng-model="tags"
+              bs-tags-input="tagsOptions">
           </div>
           <div class="accordion">
             <div class="accordion-group">
@@ -320,38 +316,18 @@ $('input').tagsinput('input').typeahead({
               </div>
               <div id="example_angular" class="accordion-body collapse">
                 <div class="accordion-inner">
-                  <pre class="prettyprint linenums">&lt;bootstrap-tagsinput
-  ng-model="cities"
-  typeahead-source="queryCities"
-  tagclass="getTagClass"
-  itemvalue="value"
-  itemtext="text"&gt;
-&lt;/bootstrap-tagsinput&gt;
+                  <pre class="prettyprint linenums">&lt;input type="text"
+  ng-model="tags"
+  bs-tags-input="tagsOptions"&gt;
 
 &lt;script&gt;
-angular.module('AngularExample', ['bootstrap-tagsinput'])
-  .controller('CityTagsInputController',
-    function CityTagsInputController($scope) {
-      // Init with some cities
-      $scope.cities = [
-        { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    },
-        { "value": 4 , "text": "Washington"  , "continent": "America"   },
-        { "value": 7 , "text": "Sydney"      , "continent": "Australia" },
-        { "value": 10, "text": "Beijing"     , "continent": "Asia"      },
-        { "value": 13, "text": "Cairo"       , "continent": "Africa"    }
-      ];
-
-      $scope.queryCities = function(query) {
-        return $http.get('cities.json');
-      };
-
-      $scope.getTagClass = function(city) {
-        switch (city.continent) {
-          case 'Europe'   : return 'badge badge-info';
-          case 'America'  : return 'label label-important';
-          case 'Australia': return 'badge badge-success';
-          case 'Africa'   : return 'label label-inverse';
-          case 'Asia'     : return 'badge badge-warning';
+angular.module('AngularExample', ['bsTagsInput'])
+  .controller('Ctrl',
+    function Ctrl($scope) {
+      $scope.tags = ['Amsterdam', 'Washington'];
+      $scope.tagsOptions = {
+        typeahead: {
+          local: ['Sydney', 'Beijing', 'Cairo']
         }
       };
     }
@@ -366,13 +342,11 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <tr><th>statement</th><th>returns</th></tr>
             </thead>
             <tbody>
-              <tr><td><code>$scope.cities</code></td><td><pre class="items prettyprint linenums">{{cities}}</td></tr>
-              <tr><td><code>$("select").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr>
-              <tr><td><code>$("select").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr>
+              <tr><td><code>$scope.tags</code></td><td><pre class="items prettyprint linenums">{{tags}}</td></tr>
             </tbody>
           </table>
         </div>
-      </section -->
+      </section>
 
       <section id="options">
         <div class="page-header">
@@ -561,7 +535,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
     <script src="assets/angular.min.js"></script>
     <script src="assets/google-code-prettify/prettify.js"></script>
     <script src="assets/bootstrap-tagsinput.js"></script>
-    <script src="assets/bootstrap-tagsinput-angular.js"></script>
+    <script src="assets/bsTagsInput.js"></script>
     <script src="assets/typeahead.min.js"></script>
     <script src="assets/hogan.js"></script>
     <script src="assets/app_bs3.js"></script>

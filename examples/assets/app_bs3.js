@@ -59,3 +59,15 @@ elt.tagsinput('input').typeahead({
 	this.tagsinput('add', datum);
 	this.tagsinput('input').typeahead('setQuery', '');
 }, elt));
+
+angular.module('AngularExample', ['bsTagsInput'])
+  .controller('Ctrl',
+    function Ctrl($scope) {
+      $scope.tags = ['Amsterdam', 'Washington'];
+      $scope.tagsOptions = {
+        typeahead: {
+          local: ['Sydney', 'Beijing', 'Cairo']
+        }
+      };
+    }
+  );
