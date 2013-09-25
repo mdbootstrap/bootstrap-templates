@@ -11,7 +11,8 @@
     itemText: function(item) {
       return this.itemValue(item);
     },
-    freeInput : true
+    freeInput : true,
+    limit : 0
   };
 
   function TagsInput(element, options) {
@@ -28,6 +29,7 @@
     this.$input = $('<input size="1" type="text" />').appendTo(this.$container);
 
     this.$element.after(this.$container);
+    this.enabled = true;
 
     this.build(options);
   }
@@ -95,6 +97,9 @@
      if (!dontPushVal)
         self.pushVal();
 
+      if (self.options.limit && self.itemsArray.length >= self.options.limit && self.isEnabled())
+        self.disable();
+
       self.$element.trigger($.Event('itemAdded', { item: item }));
     },
 
@@ -117,6 +122,9 @@
       if (!dontPushVal)
         self.pushVal();
 
+      if (self.options.limit && self.itemsArray.length < self.options.limit && !this.isEnabled())
+        this.enable();
+
       self.$element.trigger($.Event('itemRemoved',  { item: item }));
     },
 
@@ -130,6 +138,9 @@
         self.itemsArray.pop();
 
       self.pushVal();
+
+      if (self.options.limit && !this.isEnabled())
+        this.enable();
     },
 
     refresh: function() {
@@ -306,6 +317,20 @@
           self.add($(this).attr('value'), true);
         });
       }
+    },
+
+    disable: function() {
+      this.$input.prop('disabled', true);
+      this.enabled = false;
+    },
+
+    enable: function() {
+      this.$input.prop('disabled', false);
+      this.enabled = true;
+    },
+
+    isEnabled: function() {
+      return this.enabled;
     },
 
     destroy: function() {
