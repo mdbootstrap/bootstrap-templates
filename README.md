@@ -33,5 +33,13 @@ Integrates with Twitter Bootstraps' 2.3.2 typeahead, or use custom typeahead whe
 ### Angular JS directive
 Include [bootstrap-tagsinput-angular.js](https://github.com/TimSchlechter/bootstrap-tagsinput/blob/master/src/bootstrap-tagsinput-angular.js) and register the 'bootstrap-tagsinput' in your Angular JS application to use the bootstrap-tagsinput directive. Look at [the examples page](http://timschlechter.github.io/bootstrap-tagsinput/examples/#angular) how to use the directive.
 
+## History
+### 0.3.5
+* [confirmKeys option](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/10)
+### 0.3.4
+* [Limit number of tags, enable/disable input](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/28)
+* [Avoid conflict with other selects when checking for value presence](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/33)
+* [Add bsTagsInput angular directive & example for bootstrap3 with typeahea...](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/24)
+
 ## License
 This project is licensed under [MIT](https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE "Read more about the MIT license").

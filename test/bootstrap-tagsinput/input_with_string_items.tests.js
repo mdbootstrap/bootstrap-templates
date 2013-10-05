@@ -7,6 +7,12 @@ describe("bootstrap-tagsinput", function() {
         expect(this.$element.css('display')).toBe('none');
       });
 
+      it("should add tag on when pressing ENTER", function() {
+        this.$tagsinput_input.val('some_tag');
+        this.$tagsinput_input.trigger($.Event('keydown', { which: 13 }));
+        expect(this.$element.tagsinput('items').length).toBe(1);
+      });
+
       describe("should not add tag", function() {
         it("when adding same item twice", function() {
           this.$element.tagsinput('add', 'some_tag');
@@ -177,6 +183,14 @@ describe("bootstrap-tagsinput", function() {
           expect(this.$tagsinput.hasClass('bootstrap-tagsinput-max')).toBe(false);
         });
       })
+    });
+
+    testTagsInput('<input type="text" />', { confirmKeys: [9] }, function() {
+      it("should add tag on when pressing TAB", function() {
+        this.$tagsinput_input.val('some_tag');
+        this.$tagsinput_input.trigger($.Event('keydown', { which: 9 }));
+        expect(this.$element.tagsinput('items').length).toBe(1);
+      });
     });
   });  
 });

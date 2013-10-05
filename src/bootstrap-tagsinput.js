@@ -11,8 +11,9 @@
     itemText: function(item) {
       return this.itemValue(item);
     },
-    freeInput : true,
-    maxTags : undefined
+    freeInput: true,
+    maxTags: undefined,
+    confirmKeys: [13]
   };
 
   function TagsInput(element, options) {
@@ -295,15 +296,12 @@
               $input.focus();
             }
             break;
-          // ENTER
-          case 13:
-            if (self.options.freeInput) {
+         default:
+            if (self.options.freeInput && self.options.confirmKeys.indexOf(event.which) >= 0) {
               self.add($input.val());
               $input.val('');
               event.preventDefault();
             }
-            break;
-
         }
 
         $input.attr('size', Math.max(1, $input.val().length));

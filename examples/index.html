@@ -411,6 +411,15 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               </td>
             </tr>
             <tr>
+              <td colspan="2"><code>confirmKeys</code></td>
+              <td>
+                <p>Array of keycodes which will add a tag when typing in the input. (default: [13], which is ENTER)</p>
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  confirmKeys: [13, 44]
+});</pre>
+              </td>
+            </tr>  
+            <tr>
               <td colspan="2"><code>maxTags</code></td>
               <td>
                 <p>When set, no more than the given number of tags are allowed to add (default: undefined). When maxTags is reached, a class 'bootstrap-tagsinput-max' is placed on the tagsinput element.</p>

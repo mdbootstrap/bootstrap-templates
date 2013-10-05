@@ -11,8 +11,9 @@
     itemText: function(item) {
       return this.itemValue(item);
     },
-    freeInput : true,
-    maxTags : 0
+    freeInput: true,
+    maxTags: undefined,
+    confirmKeys: [13]
   };
 
   function TagsInput(element, options) {
@@ -96,8 +97,12 @@
         self.$element.append($option);
       }
 
-     if (!dontPushVal)
+      if (!dontPushVal)
         self.pushVal();
+
+      // Add class when reached maxTags
+      if (self.options.maxTags === self.itemsArray.length)
+        self.$container.addClass('bootstrap-tagsinput-max');
 
       self.$element.trigger($.Event('itemAdded', { item: item }));
     },
@@ -121,8 +126,9 @@
       if (!dontPushVal)
         self.pushVal();
 
-      if (self.options.maxTags && self.itemsArray.length < self.options.maxTags && !this.isEnabled())
-        this.enable();
+      // Remove class when reached maxTags
+      if (self.options.maxTags > self.itemsArray.length)
+        self.$container.removeClass('bootstrap-tagsinput-max');
 
       self.$element.trigger($.Event('itemRemoved',  { item: item }));
     },
@@ -290,15 +296,12 @@
               $input.focus();
             }
             break;
-          // ENTER
-          case 13:
-            if (self.options.freeInput) {
+         default:
+            if (self.options.freeInput && self.options.confirmKeys.indexOf(event.which) >= 0) {
               self.add($input.val());
               $input.val('');
               event.preventDefault();
             }
-            break;
-
         }
 
         $input.attr('size', Math.max(1, $input.val().length));
