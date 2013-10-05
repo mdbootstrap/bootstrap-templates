@@ -36,6 +36,7 @@ Include [bootstrap-tagsinput-angular.js](https://github.com/TimSchlechter/bootst
 ## History
 ### 0.3.5
 * [confirmKeys option](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/10)
+
 ### 0.3.4
 * [Limit number of tags, enable/disable input](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/28)
 * [Avoid conflict with other selects when checking for value presence](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/33)
