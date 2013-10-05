@@ -1,7 +1,7 @@
 $('.example_typeahead > > input').tagsinput({
   typeahead: {
     source: function(query) {
-      return $.getJSON('citynames.json');
+      return $.getJSON('assets/citynames.json');
     }
   }
 });
@@ -11,7 +11,7 @@ $('.example_objects_as_tags > > input').tagsinput({
   itemText: 'text',
   typeahead: {
     source: function(query) {
-      return $.getJSON('cities.json');
+      return $.getJSON('assets/cities.json');
     }
   }
 });
@@ -35,7 +35,7 @@ $('.example_tagclass > > input').tagsinput({
   itemText: 'text',
   typeahead: {
     source: function(query) {
-      return $.getJSON('cities.json');
+      return $.getJSON('assets/cities.json');
     }
   }
 });
@@ -58,7 +58,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
       ];
 
       $scope.queryCities = function(query) {
-        return $http.get('cities.json');
+        return $http.get('assets/cities.json');
       };
 
       $scope.getTagClass = function(city) {

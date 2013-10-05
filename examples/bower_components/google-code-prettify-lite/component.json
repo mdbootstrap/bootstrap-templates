@@ -1,0 +1,8 @@
+{
+  "name": "google-code-prettify-lite",
+  "repo": "bhurlow/google-code-prettify-lite",
+  "description": "Just the js and css of the google prettify lib ",
+  "version": "1.0.0",
+  "keywords": ["syntax", "highlight"],
+  "main": "prettify.js"
+}

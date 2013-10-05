@@ -2,7 +2,7 @@ var elt = $('.example_typeahead > > input');
 
 elt.tagsinput();
 elt.tagsinput('input').typeahead({
-  prefetch: 'citynames.json'
+  prefetch: 'assets/citynames.json'
 }).bind('typeahead:selected', $.proxy(function (obj, datum) {  
 	this.tagsinput('add', datum.value);
 	this.tagsinput('input').typeahead('setQuery', '');
@@ -21,7 +21,7 @@ elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa
 
 elt.tagsinput('input').typeahead({
   valueKey: 'text',
-  prefetch: 'cities.json',
+  prefetch: 'assets/cities.json',
   template: '<p>{{text}}</p>',                                       
   engine: Hogan
 
@@ -52,7 +52,7 @@ elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa
 
 elt.tagsinput('input').typeahead({
   valueKey: 'text',
-  prefetch: 'cities.json',
+  prefetch: 'assets/cities.json',
   template: '<p>{{text}}</p>',                                       
   engine: Hogan
 }).bind('typeahead:selected', $.proxy(function (obj, datum) {  

@@ -12,33 +12,28 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     copy: {
-      main: {
+      build: {
         files: [
-          {expand: true, flatten: true, src: ['src/*.*'], dest: 'examples/assets/', filter: 'isFile'},
-          {expand: true, flatten: true, src: ['lib/jquery.min.js'], dest: 'examples/assets/', filter: 'isFile'},
-          {expand: true, cwd: 'lib', src: ['bootstrap*/**'], dest: 'examples/assets/' },
-          {expand: true, flatten: true, src: ['lib/angular.min.js'], dest: 'examples/assets', filter: 'isFile'},
-          {expand: true, flatten: true, src: ['lib/typeahead*.js'], dest: 'examples/assets', filter: 'isFile'},
-          {expand: true, flatten: true, src: ['lib/hogan.js'], dest: 'examples/assets', filter: 'isFile'}
+          {expand: true, flatten: true, src: ['src/*.*'], dest: 'dist/', filter: 'isFile'}
         ]
       }
     },
     uglify: {
       options: {
         banner: '<%= pkg.banner %>',
-        sourceMap: 'examples/assets/<%= pkg.name %>.min.js.map',
+        sourceMap: 'dist/<%= pkg.name %>.min.js.map',
         sourceMappingURL: '<%= pkg.name %>.min.js.map'
       },
       build: {
         files: {
-          'examples/assets/<%= pkg.name %>.min.js': 'src/<%= pkg.name %>.js'
+          'dist/<%= pkg.name %>.min.js': 'dist/<%= pkg.name %>.js'
         }
       }
     },
     less: {
       build: {
         files: {
-          "examples/assets/<%= pkg.name %>.css": "src/<%= pkg.name %>.less"
+          "dist/<%= pkg.name %>.css": "dist/<%= pkg.name %>.less"
         }
       }
     },
@@ -54,7 +49,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['src/**/*.*', 'test/**/*.js', 'examples/**/*.html'],
-        tasks: ['copy', 'uglify'],
+        tasks: ['copy:build', 'uglify:build', 'less:build'],
         options: {
           spawn: false,
           interupt: true
@@ -62,9 +57,9 @@ module.exports = function(grunt) {
       }
     },
     zip: {
-      build: {
-        cwd: 'examples/assets/',
-        src:  ['examples/assets/bootstrap-tagsinput*.*'],
+      delpoy: {
+        cwd: 'dist/',
+        src:  ['dist/bootstrap-tagsinput*.*'],
         dest:  'build/<%= pkg.name %>.zip'
       }
     },
@@ -78,7 +73,6 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['karma','jquerymanifest', 'copy', 'uglify', 'less', 'zip']);
-  grunt.registerTask('build', ['copy', 'uglify', 'less']);
+  grunt.registerTask('build', ['unit', 'jquerymanifest', 'copy:build', 'uglify:build', 'less:build', 'zip']);  
   grunt.registerTask('unit', ['karma']);
 };

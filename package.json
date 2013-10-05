@@ -1,7 +1,7 @@
 {
   "name": "bootstrap-tagsinput",
   "title": "Bootstrap Tags Input",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "jQuery plugin providing a Twitter Bootstrap user interface for managing tags.",
   "scripts": {
     "test": "karma start --single-run --no-auto-watch"
@@ -33,7 +33,9 @@
     "grunt-contrib-copy": "~0.4.1",
     "grunt-zip": "~0.9.2",
     "grunt-jquerymanifest": "~0.1.2",
-    "grunt-contrib-less": "~0.6.4"
+    "grunt-contrib-less": "~0.6.4",
+    "phantomjs": "~1.9.2-2"
   },
   "banner": "/*\n * <%= pkg.name %> v<%= pkg.version %> by <%= pkg.author %>\n * <%= pkg.license.url %>\n */\n"
+  
 }

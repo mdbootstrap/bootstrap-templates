@@ -1,0 +1,32 @@
+{
+  "name": "bootstrap-tagsinput-examples",
+  "version": "0.1.0",
+  "homepage": "http://timschlechter.github.io/bootstrap-tagsinput/examples/",
+  "authors": [
+    "Tim Schlechter <timschlechter@gmail.com>"
+  ],
+  "description": "Bootstrap Tagsinput Examples",
+  "keywords": [
+    "twitter",
+    "bootstrap",
+    "tagsinput",
+    "examples"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.0.3",
+    "bootstrap": "~3.0.0",
+    "angular": "~1.0.8",
+    "google-code-prettify-lite": "*",
+    "hogan": "~3.0.0",
+    "typeahead.js": "~0.9.3"
+  }
+}
