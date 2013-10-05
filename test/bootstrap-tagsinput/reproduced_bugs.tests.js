@@ -84,7 +84,22 @@ describe("bootstrap-tagsinput", function() {
           });
         });
       });
-
     });
+
+    describe("#34: Error in ReloadPage", function() {
+      describe("init tagsinput with objects as items, but with value set on element", function() {
+        testTagsInput('<input type="text" value="1" />', { itemValue: function(item) { return item.value; } }, function() {
+          it("should have no tags", function() {
+            expect(this.$element.tagsinput('items').length).toBe(0);
+          });
+        });
+
+        testTagsInput('<select><option value="1" /></select>', { itemValue: function(item) { return item.value; } }, function() {
+          it("should have no tags", function() {
+            expect(this.$element.tagsinput('items').length).toBe(0);
+          });
+        });
+      });
+    })
   });
 });

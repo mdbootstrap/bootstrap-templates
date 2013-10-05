@@ -312,12 +312,15 @@
         self.remove($(event.target).closest('.tag').data('item'));
       }, self));
 
-      if (self.$element[0].tagName === 'INPUT') {
-        self.add(self.$element.val());
-      } else {
-        $('option', self.$element).each(function() {
-          self.add($(this).attr('value'), true);
-        });
+      // Only add existing value as tags when using strings as tags
+      if (self.options.itemValue === defaultOptions.itemValue) {
+        if (self.$element[0].tagName === 'INPUT') {
+            self.add(self.$element.val());
+        } else {
+          $('option', self.$element).each(function() {
+            self.add($(this).attr('value'), true);
+          });
+        }
       }
     },
 
@@ -393,8 +396,8 @@
   // key in the given options is wrapped in a function
   function makeOptionItemFunction(options, key) {
     if (typeof options[key] !== 'function') {
-      var value = options[key];
-      options[key] = function(item) { return item[value]; };
+      var propertyName = options[key];
+      options[key] = function(item) { return item[propertyName]; };
     }
   }
   function makeOptionFunction(options, key) {
