@@ -12,7 +12,7 @@
       return this.itemValue(item);
     },
     freeInput : true,
-    limit : 0
+    maxTags : undefined
   };
 
   function TagsInput(element, options) {
@@ -29,7 +29,6 @@
     this.$input = $('<input size="1" type="text" />').appendTo(this.$container);
 
     this.$element.after(this.$container);
-    this.enabled = true;
 
     this.build(options);
   }
@@ -39,6 +38,9 @@
 
     add: function(item, dontPushVal) {
       var self = this;
+
+      if (self.options.maxTags && self.itemsArray.length >= self.options.maxTags)
+        return;
 
       // Ignore falsey values, except false
       if (item !== false && !item)
@@ -94,11 +96,12 @@
         self.$element.append($option);
       }
 
-     if (!dontPushVal)
+      if (!dontPushVal)
         self.pushVal();
 
-      if (self.options.limit && self.itemsArray.length >= self.options.limit && self.isEnabled())
-        self.disable();
+      // Add class when reached maxTags
+      if (self.options.maxTags === self.itemsArray.length)
+        self.$container.addClass('bootstrap-tagsinput-max');
 
       self.$element.trigger($.Event('itemAdded', { item: item }));
     },
@@ -122,8 +125,9 @@
       if (!dontPushVal)
         self.pushVal();
 
-      if (self.options.limit && self.itemsArray.length < self.options.limit && !this.isEnabled())
-        this.enable();
+      // Remove class when reached maxTags
+      if (self.options.maxTags > self.itemsArray.length)
+        self.$container.removeClass('bootstrap-tagsinput-max');
 
       self.$element.trigger($.Event('itemRemoved',  { item: item }));
     },
@@ -139,7 +143,7 @@
 
       self.pushVal();
 
-      if (self.options.limit && !this.isEnabled())
+      if (self.options.maxTags && !this.isEnabled())
         this.enable();
     },
 
@@ -317,20 +321,6 @@
           self.add($(this).attr('value'), true);
         });
       }
-    },
-
-    disable: function() {
-      this.$input.prop('disabled', true);
-      this.enabled = false;
-    },
-
-    enable: function() {
-      this.$input.prop('disabled', false);
-      this.enabled = true;
-    },
-
-    isEnabled: function() {
-      return this.enabled;
     },
 
     destroy: function() {

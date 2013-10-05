@@ -411,6 +411,15 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               </td>
             </tr>
             <tr>
+              <td colspan="2"><code>maxTags</code></td>
+              <td>
+                <p>When set, no more than the given number of tags are allowed to add (default: undefined). When maxTags is reached, a class 'bootstrap-tagsinput-max' is placed on the tagsinput element.</p>
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  maxTags: 3
+});</pre>
+              </td>
+            </tr>  
+            <tr>
               <td colspan="2"><code>freeInput</code></td>
               <td>
                 <p>Allow creating tags which are not returned by typeahead's source (default: true)</p>
