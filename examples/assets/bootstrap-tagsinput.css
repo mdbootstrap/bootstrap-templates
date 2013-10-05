@@ -23,9 +23,12 @@
 .bootstrap-tagsinput input:focus {
   border: none;
   box-shadow: none;
+  outline: none;
 }
 .bootstrap-tagsinput .tag {
-  margin-right: 2px;
+  display: inline-block;
+  line-height: 14px;
+  margin-right: 5px;
   color: white;
 }
 .bootstrap-tagsinput .tag [data-role="remove"] {
