@@ -204,15 +204,6 @@ $('input').tagsinput('input').typeahead({
                   <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; /&gt;
 &lt;script&gt;
 $('input').tagsinput({
-  tagClass: function(item) {
-    switch (item.continent) {
-      case 'Europe'   : return 'label label-primary';
-      case 'America'  : return 'label label-danger label-important';
-      case 'Australia': return 'label label-success';
-      case 'Africa'   : return 'label label-default';
-      case 'Asia'     : return 'label label-warning';
-    }
-  },
   itemValue: 'value',
   itemText: 'text'
 });
@@ -222,15 +213,15 @@ $('input').tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": 
 $('input').tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
 $('input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
 
-// Adding custom typeahead support using http://twitter.github.io/typeahead.js
 $('input').tagsinput('input').typeahead({
   valueKey: 'text',
-  prefetch: 'cities.json',
+  prefetch: 'assets/cities.json',
   template: '&lt;p&gt;{{text}}&lt;/p&gt;',
   engine: Hogan
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
-  this.tagsinput('add', datum);
-  this.tagsinput('input').typeahead('setQuery', '');
+
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {
+	this.tagsinput('add', datum);
+	this.tagsinput('input').typeahead('setQuery', '');
 }, $('input')));
 &lt;/script&gt;</pre>
                 </div>
