@@ -16,6 +16,9 @@
     confirmKeys: [13]
   };
 
+  /**
+   * Constructor function
+   */
   function TagsInput(element, options) {
     this.itemsArray = [];
 
@@ -37,6 +40,10 @@
   TagsInput.prototype = {
     constructor: TagsInput,
 
+    /**
+     * Adds the given item as a new tag. Pass true to dontPushVal to prevent
+     * updating the elements val()
+     */
     add: function(item, dontPushVal) {
       var self = this;
 
@@ -107,6 +114,10 @@
       self.$element.trigger($.Event('itemAdded', { item: item }));
     },
 
+    /**
+     * Removes the given item. Pass true to dontPushVal to prevent updating the
+     * elements val()
+     */
     remove: function(item, dontPushVal) {
       var self = this;
 
@@ -133,6 +144,9 @@
       self.$element.trigger($.Event('itemRemoved',  { item: item }));
     },
 
+    /**
+     * Removes all items
+     */
     removeAll: function() {
       var self = this;
 
@@ -148,6 +162,10 @@
         this.enable();
     },
 
+    /**
+     * Refreshes the tags so they match the text/value of their corresponding
+     * item.
+     */
     refresh: function() {
       var self = this;
       $('.tag', self.$container).each(function() {
@@ -171,12 +189,17 @@
       });
     },
 
-    // Returns the items added as tags
+    /**
+     * Returns the items added as tags
+     */
     items: function() {
       return this.itemsArray;
     },
 
-    // Assembly value by retrieving the value of each item, and set it on the element. 
+    /**
+     * Assembly value by retrieving the value of each item, and set it on the
+     * element. 
+     */
     pushVal: function() {
       var self = this,
           val = $.map(self.items(), function(item) {
@@ -186,6 +209,9 @@
       self.$element.val(val, true).trigger('change');
     },
 
+    /**
+     * Initializes the tags input behaviour on the element
+     */
     build: function(options) {
       var self = this;
 
@@ -287,9 +313,9 @@
               $input.focus();
             }
             break;
-          // LEFT ARROW
+          // RIGHT ARROW
           case 39:
-            // Try to move the input before the previous tag
+            // Try to move the input after the next tag
             var $nextTag = $inputWrapper.next();
             if ($input.val().length === 0 && $nextTag[0]) {
               $nextTag.after($inputWrapper);
@@ -297,6 +323,8 @@
             }
             break;
          default:
+            // When key corresponds one of the confirmKeys, add current input
+            // as a new tag
             if (self.options.freeInput && self.options.confirmKeys.indexOf(event.which) >= 0) {
               self.add($input.val());
               $input.val('');
@@ -304,6 +332,7 @@
             }
         }
 
+        // Reset internal input's size
         $input.attr('size', Math.max(1, $input.val().length));
       }, self));
 
@@ -324,26 +353,39 @@
       }
     },
 
+    /**
+     * Removes all tagsinput behaviour and unregsiter all event handlers
+     */
     destroy: function() {
       var self = this;
 
       // Unbind events
       self.$container.off('keypress', 'input');
-      self.$container.off('click', '[50role=remove]');
+      self.$container.off('click', '[role=remove]');
 
       self.$container.remove();
       self.$element.removeData('tagsinput');
       self.$element.show();
     },
 
+    /**
+     * Sets focus on the tagsinput 
+     */
     focus: function() {
       this.$input.focus();
     },
 
+    /**
+     * Returns the internal input element
+     */
     input: function() {
       return this.$input;
     },
 
+    /**
+     * Returns the element which is wrapped around the internal input. This
+     * is normally the $container, but typeahead.js moves the $input element.
+     */
     findInputWrapper: function() {
       var elt = this.$input[0],
           container = this.$container[0];
@@ -354,7 +396,9 @@
     }
   };
 
-  // Register JQuery plugin
+  /**
+   * Register JQuery plugin
+   */
   $.fn.tagsinput = function(arg1, arg2) {
     var results = [];
 
@@ -391,9 +435,11 @@
 
   $.fn.tagsinput.Constructor = TagsInput;
 
-  // Most options support both a string or number as well as a function as 
-  // option value. This function makes sure that the option with the given
-  // key in the given options is wrapped in a function
+  /**
+   * Most options support both a string or number as well as a function as 
+   * option value. This function makes sure that the option with the given
+   * key in the given options is wrapped in a function
+   */
   function makeOptionItemFunction(options, key) {
     if (typeof options[key] !== 'function') {
       var propertyName = options[key];
@@ -406,7 +452,9 @@
       options[key] = function() { return value; };
     }
   }
-  // HtmlEncodes the given value
+  /**
+   * HtmlEncodes the given value
+   */
   var htmlEncodeContainer = $('<div />');
   function htmlEncode(value) {
     if (value) {
@@ -416,8 +464,10 @@
     }
   }
 
-  // Returns the position of the caret in the given input field
-  // http://flightschool.acylt.com/devnotes/caret-position-woes/
+  /**
+   * Returns the position of the caret in the given input field
+   * http://flightschool.acylt.com/devnotes/caret-position-woes/
+   */
   function doGetCaretPosition(oField) {
     var iCaretPos = 0;
     if (document.selection) {
@@ -431,6 +481,10 @@
     return (iCaretPos);
   }
 
+  /**
+   * Initialize tagsinput behaviour on inputs and selects which have
+   * data-role=tagsinput
+   */
   $(function() {
     $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
   });
