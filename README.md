@@ -34,19 +34,22 @@ Integrates with Twitter Bootstraps' 2.3.2 typeahead, or use custom typeahead whe
 Include [bootstrap-tagsinput-angular.js](https://github.com/TimSchlechter/bootstrap-tagsinput/blob/master/src/bootstrap-tagsinput-angular.js) and register the 'bootstrap-tagsinput' in your Angular JS application to use the bootstrap-tagsinput directive. Look at [the examples page](http://timschlechter.github.io/bootstrap-tagsinput/examples/#angular) how to use the directive.
 
 ## History
+__0.3.7__
+* [#39: flash when duplicate is entered](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/39)
+
 __0.3.6__
 
-* [Error in ReloadPage](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/34)
+* [#34: Error in ReloadPage](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/34)
 
 __0.3.5__
 
-* [confirmKeys option](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/10)
+* [#10: confirmKeys option](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/10)
 
 __0.3.4__
 
-* [Limit number of tags, enable/disable input](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/28)
-* [Avoid conflict with other selects when checking for value presence](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/33)
-* [Add bsTagsInput angular directive & example for bootstrap3 with typeahea...](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/24)
+* [#24: Add bsTagsInput angular directive & example for bootstrap3 with typeahea...](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/24)
+* [#28: Limit number of tags, enable/disable input](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/28)
+* [#33: Avoid conflict with other selects when checking for value presence](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/33)
 
 ## License
 This project is licensed under [MIT](https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE "Read more about the MIT license").

@@ -467,6 +467,16 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
 });</pre>
               </td>
             </tr>
+            <tr>
+              <td colspan="2"><code>onTagExists</code></td>
+              <td><p>Function invoked when trying to add an item which allready exists. By default, the existing tag hides and fades in.
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  onTagExists: function(item, $tag) {
+    $tag.hide.fadeIn();
+  }
+});</pre>
+              </td>
+            </tr>
           </tbody>
         </table>
       </section>
