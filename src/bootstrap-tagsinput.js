@@ -31,9 +31,11 @@
     this.isSelect = (element.tagName === 'SELECT');
     this.multiple = (this.isSelect && element.hasAttribute('multiple'));
     this.objectItems = options && options.itemValue;
+    this.placeholderText = element.hasAttribute('placeholder') ? this.$element.attr('placeholder') : '';
+    this.inputSize = Math.max(1, this.placeholderText.length);
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
-    this.$input = $('<input size="1" type="text" />').appendTo(this.$container);
+    this.$input = $('<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
 
     this.$element.after(this.$container);
 
@@ -343,7 +345,7 @@
         }
 
         // Reset internal input's size
-        $input.attr('size', Math.max(1, $input.val().length));
+        $input.attr('size', Math.max(this.inputSize, $input.val().length));
       }, self));
 
       // Remove icon clicked
