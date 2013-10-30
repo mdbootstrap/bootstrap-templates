@@ -141,7 +141,7 @@
       if (item) {
         $('.tag', self.$container).filter(function() { return $(this).data('item') === item; }).remove();
         $('option', self.$element).filter(function() { return $(this).data('item') === item; }).remove();
-        self.itemsArray.splice(self.itemsArray.indexOf(item), 1);
+        self.itemsArray.splice($.inArray(item, self.itemsArray), 1);
       }
 
       if (!dontPushVal)
@@ -273,8 +273,9 @@
             self.add(this.map[text]);
           },
           matcher: function (text) {
-            return (text.toLowerCase().indexOf(this.query.trim().toLowerCase()) !== -1);
+            return ($.inArray(this.query.trim().toLowerCase(), text.toLowerCase()) !== -1);
           },
+      
           sorter: function (texts) {
             return texts.sort();
           },
@@ -335,7 +336,7 @@
          default:
             // When key corresponds one of the confirmKeys, add current input
             // as a new tag
-            if (self.options.freeInput && self.options.confirmKeys.indexOf(event.which) >= 0) {
+            if (self.options.freeInput && $.inArray(event.which, self.options.confirmKeys) >= 0) {
               self.add($input.val());
               $input.val('');
               event.preventDefault();
