@@ -34,6 +34,10 @@ Integrates with Twitter Bootstraps' 2.3.2 typeahead, or use custom typeahead whe
 Include [bootstrap-tagsinput-angular.js](https://github.com/TimSchlechter/bootstrap-tagsinput/blob/master/src/bootstrap-tagsinput-angular.js) and register the 'bootstrap-tagsinput' in your Angular JS application to use the bootstrap-tagsinput directive. Look at [the examples page](http://timschlechter.github.io/bootstrap-tagsinput/examples/#angular) how to use the directive.
 
 ## History
+
+__0.3.9__
+* [#48: Type ahead stops when entering second character](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/48)
+
 __0.3.8__
 * [#43: Add support for placeholder](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/43)
 * [#46: ie 8 compatibility, replace indexOf method](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/46)

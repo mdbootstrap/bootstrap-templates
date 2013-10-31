@@ -275,7 +275,7 @@
             self.add(this.map[text]);
           },
           matcher: function (text) {
-            return ($.inArray(this.query.trim().toLowerCase(), text.toLowerCase()) !== -1);
+            return (text.toLowerCase().indexOf(this.query.trim().toLowerCase()) !== -1);
           },
           sorter: function (texts) {
             return texts.sort();
@@ -446,7 +446,7 @@
   };
 
   $.fn.tagsinput.Constructor = TagsInput;
-
+  
   /**
    * Most options support both a string or number as well as a function as 
    * option value. This function makes sure that the option with the given
