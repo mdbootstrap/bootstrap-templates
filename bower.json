@@ -6,7 +6,10 @@
     "Tim Schlechter"
   ],
   "description": "jQuery plugin providing a Twitter Bootstrap user interface for managing tags.",
-  "main": "dist/bootstrap-tagsinput.min.js",
+  "main": [
+    "dist/bootstrap-tagsinput.min.js",
+    "dist/bootstrap-tagsinput.css"
+  ],
   "keywords": [
     "tags",
     "bootstrap",
