@@ -39,7 +39,7 @@
     } else {
       this.$container = $('<div class="bootstrap-tagsinput"></div>');
     }
-    
+
     this.$input = $('<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
 
     this.$element.after(this.$container);
@@ -192,17 +192,17 @@
             itemText = self.options.itemText(item),
             tagClass = self.options.tagClass(item);
 
-          // Update tag's class and inner text
-          $tag.attr('class', null);
-          $tag.addClass('tag ' + htmlEncode(tagClass));
-          $tag.contents().filter(function() {
-            return this.nodeType == 3;
-          })[0].nodeValue = htmlEncode(itemText);
+        // Update tag's class and inner text
+        $tag.attr('class', null);
+        $tag.addClass('tag ' + htmlEncode(tagClass));
+        $tag.contents().filter(function() {
+          return this.nodeType == 3;
+        })[0].nodeValue = htmlEncode(itemText);
 
-          if (self.isSelect) {
-            var option = $('option', self.$element).filter(function() { return $(this).data('item') === item; });
-            option.attr('value', itemValue);
-          }
+        if (self.isSelect) {
+          var option = $('option', self.$element).filter(function() { return $(this).data('item') === item; });
+          option.attr('value', itemValue);
+        }
       });
     },
 
@@ -215,7 +215,7 @@
 
     /**
      * Assembly value by retrieving the value of each item, and set it on the
-     * element. 
+     * element.
      */
     pushVal: function() {
       var self = this,
@@ -273,7 +273,7 @@
             } else {
               // support for functions and jquery promises
               $.when(data)
-               .then(processItems);
+                  .then(processItems);
             }
           },
           updater: function (text) {
@@ -303,20 +303,25 @@
         switch (event.which) {
           // BACKSPACE
           case 8:
-            if (doGetCaretPosition($input[0]) === 0) {
+            if ($input.val() === "") {
               var prev = $inputWrapper.prev();
               if (prev && prev.is(".tag")) {
                 self.remove(prev.data('item'));
+                $input.val(prev.text());
+                event.preventDefault();
               }
             }
             break;
 
           // DELETE
           case 46:
-            if (doGetCaretPosition($input[0]) === 0) {
+            if ($input.val() === "") {
               var next = $inputWrapper.next();
               if (next && next.is(".tag")) {
                 self.remove(next.data('item'));
+                $input.val(next.text());
+                doSetCaretPosition($input[0], 0);
+                event.preventDefault();
               }
             }
             break;
@@ -339,7 +344,7 @@
               $input.focus();
             }
             break;
-         default:
+          default:
             // When key corresponds one of the confirmKeys, add current input
             // as a new tag
             if (self.options.freeInput && $.inArray(event.which, self.options.confirmKeys) >= 0) {
@@ -361,7 +366,7 @@
       // Only add existing value as tags when using strings as tags
       if (self.options.itemValue === defaultOptions.itemValue) {
         if (self.$element[0].tagName === 'INPUT') {
-            self.add(self.$element.val());
+          self.add(self.$element.val());
         } else {
           $('option', self.$element).each(function() {
             self.add($(this).attr('value'), true);
@@ -386,7 +391,7 @@
     },
 
     /**
-     * Sets focus on the tagsinput 
+     * Sets focus on the tagsinput
      */
     focus: function() {
       this.$input.focus();
@@ -451,9 +456,9 @@
   };
 
   $.fn.tagsinput.Constructor = TagsInput;
-  
+
   /**
-   * Most options support both a string or number as well as a function as 
+   * Most options support both a string or number as well as a function as
    * option value. This function makes sure that the option with the given
    * key in the given options is wrapped in a function
    */
@@ -482,20 +487,30 @@
   }
 
   /**
-   * Returns the position of the caret in the given input field
+   * Sets the caret (cursor) position of the specified text field.
+   * Valid positions are 0-oField.length.
    * http://flightschool.acylt.com/devnotes/caret-position-woes/
    */
-  function doGetCaretPosition(oField) {
-    var iCaretPos = 0;
+  function doSetCaretPosition(oField, iCaretPos) {
+    // IE Support
     if (document.selection) {
+      // Set focus on the element
       oField.focus ();
+      // Create empty selection range
       var oSel = document.selection.createRange ();
+      // Move selection start and end to 0 position
       oSel.moveStart ('character', -oField.value.length);
-      iCaretPos = oSel.text.length;
-    } else if (oField.selectionStart || oField.selectionStart == '0') {
-      iCaretPos = oField.selectionStart;
+      // Move selection start and end to desired position
+      oSel.moveStart ('character', iCaretPos);
+      oSel.moveEnd ('character', 0);
+      oSel.select ();
     }
-    return (iCaretPos);
+    // Firefox support
+    else if (oField.selectionStart || oField.selectionStart == '0') {
+      oField.selectionStart = iCaretPos;
+      oField.selectionEnd = iCaretPos;
+      oField.focus ();
+    }
   }
 
   /**
