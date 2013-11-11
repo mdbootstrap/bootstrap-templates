@@ -305,7 +305,7 @@
           case 8:
             if (doGetCaretPosition($input[0]) === 0) {
               var prev = $inputWrapper.prev();
-              if (prev) {
+              if (prev && prev.is(".tag")) {
                 self.remove(prev.data('item'));
               }
             }
@@ -315,7 +315,7 @@
           case 46:
             if (doGetCaretPosition($input[0]) === 0) {
               var next = $inputWrapper.next();
-              if (next) {
+              if (next && next.is(".tag")) {
                 self.remove(next.data('item'));
               }
             }
@@ -489,7 +489,7 @@
     var iCaretPos = 0;
     if (document.selection) {
       oField.focus ();
-      var oSel = document.selection.createRange();
+      var oSel = document.selection.createRange ();
       oSel.moveStart ('character', -oField.value.length);
       iCaretPos = oSel.text.length;
     } else if (oField.selectionStart || oField.selectionStart == '0') {
