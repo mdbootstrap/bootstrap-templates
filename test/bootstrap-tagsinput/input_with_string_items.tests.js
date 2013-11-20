@@ -192,5 +192,14 @@ describe("bootstrap-tagsinput", function() {
         expect(this.$element.tagsinput('items').length).toBe(1);
       });
     });
+    
+    testTagsInput('<input type="text" />', { confirmOnBlur: true }, function() {
+      it("should add tag on when input lose focus", function() {
+        this.$tagsinput_input.focus();
+        this.$tagsinput_input.val('some_tag');
+        this.$tagsinput_input.trigger('blur');
+        expect(this.$element.tagsinput('items').length).toBe(1);
+      });
+    });
   });  
 });
