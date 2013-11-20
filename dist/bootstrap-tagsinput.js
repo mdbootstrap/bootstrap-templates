@@ -16,7 +16,8 @@
     confirmKeys: [13],
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
-    }
+    },
+    confirmOnBlur: false
   };
 
   /**
@@ -352,6 +353,14 @@
       self.$container.on('click', '[data-role=remove]', $.proxy(function(event) {
         self.remove($(event.target).closest('.tag').data('item'));
       }, self));
+
+      if (self.options.confirmOnBlur) {
+        self.$container.on('blur', 'input', $.proxy(function(event) {
+          var $input = $(event.target);
+          self.add($input.val());
+          $input.val('');
+        }, self));
+      }
 
       // Only add existing value as tags when using strings as tags
       if (self.options.itemValue === defaultOptions.itemValue) {
