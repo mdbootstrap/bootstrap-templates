@@ -13,6 +13,7 @@
     },
     freeInput: true,
     maxTags: undefined,
+    maxChars: 0,
     confirmKeys: [13],
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
@@ -335,10 +336,12 @@
             }
             break;
          default:
-            // When key corresponds one of the confirmKeys, add current input
-            // as a new tag
-            if (self.options.freeInput && keyCombinationInList(event, self.options.confirmKeys)) {
-              self.add($input.val());
+            // When key corresponds one of the confirmKeys, or text.length reached maximum,
+            // add current input as a new tag
+            var text = $input.val(),
+                maxLengthReached = self.options.maxChars > 0 && text.length >= self.options.maxChars;
+            if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
+              self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
               $input.val('');
               event.preventDefault();
             }
