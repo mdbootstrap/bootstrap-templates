@@ -242,6 +242,7 @@
       if (self.options.source)
         typeahead.source = self.options.source;
 
+      // typeahead version 2.3
       if (typeahead.source && $.fn.typeahead) {
         makeOptionFunction(typeahead, 'source');
 
@@ -285,6 +286,25 @@
             return text.replace( regex, "<strong>$1</strong>" );
           }
         });
+      // Typeahead boostrap 3
+      } else if ((typeahead.remote || typeahead.local || typeahead.prefetch) && $.fn.typeahead) {
+          // set valueKey for prefetch
+          if (typeahead.prefetch && !typeahead.valueKey) {
+              typeahead.valueKey = options.itemText || 'text';
+          }
+
+          typeahead = $.extend({
+                  name: self.$element.attr('name') || null
+                  , template: '<p>{{' + (options.itemText ? options.itemText : 'text')  + '}}</p>'
+                  , engine: Hogan
+              },
+              typeahead
+          );
+
+          self.$input.typeahead(typeahead).on('typeahead:selected', $.proxy(function (obj, datum) {
+              self.$element.tagsinput('add', datum);
+              self.$element.tagsinput('input').typeahead('setQuery', '');
+          }, self));
       }
 
       self.$container.on('click', $.proxy(function(event) {

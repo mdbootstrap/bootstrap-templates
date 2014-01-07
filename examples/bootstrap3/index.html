@@ -154,7 +154,7 @@
           Typeahead is not included in Bootstrap 3, so you'll have to include your own typeahead library. I'd recommed <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a>. An example of using this is shown below.
 
           <div class="bs-example">
-            <input type="text" value="Amsterdam,Washington" />
+            <input type="text" value="" name="typeahead" />
           </div>
            <div class="accordion ">
             <div class="accordion-group">
@@ -170,12 +170,13 @@
 $('input').tagsinput();
 
 // Adding custom typeahead support using http://twitter.github.io/typeahead.js
-$('input').tagsinput('input').typeahead({
-  prefetch: 'citynames.json'
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
-  this.tagsinput('add', datum.value);
-  this.tagsinput('input').typeahead('setQuery', '');
-}, $('input')));
+$('input').tagsinput({
+  typeahead: {
+    remote: 'assets/query.json.html?q=%QUERY',
+    template: '&lt;p&gt;{{text}}&lt;/p&gt;', // optional (this value by default)
+    engine: Hogan // optional (this value by default)
+  }
+});
 &lt;/script&gt;</pre>
                 </div>
               </div>
@@ -190,7 +191,7 @@ $('input').tagsinput('input').typeahead({
             Instead of just adding strings as tags, bind objects to your tags. This makes it possible to set id values in your input field's value, instead of just the tag's text.
           </p>
           <div class="bs-example">
-            <input type="text" />
+            <input type="text" name="objecttags" />
           </div>
           <div class="accordion">
             <div class="accordion-group">
@@ -205,7 +206,12 @@ $('input').tagsinput('input').typeahead({
 &lt;script&gt;
 $('input').tagsinput({
   itemValue: 'value',
-  itemText: 'text'
+  itemText: 'text',
+  typeahead: {
+    prefetch: 'assets/cities.json',
+    template: '&lt;p&gt;{{text}}&lt;/p&gt;', // optional (this value by default)
+    engine: Hogan // optional (this value by default)
+  }
 });
 $('input').tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
 $('input').tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
@@ -213,16 +219,7 @@ $('input').tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": 
 $('input').tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
 $('input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
 
-$('input').tagsinput('input').typeahead({
-  valueKey: 'text',
-  prefetch: 'assets/cities.json',
-  template: '&lt;p&gt;{{text}}&lt;/p&gt;',
-  engine: Hogan
-
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {
-	this.tagsinput('add', datum);
-	this.tagsinput('input').typeahead('setQuery', '');
-}, $('input')));
+$('input').tagsinput('input').);
 &lt;/script&gt;</pre>
                 </div>
               </div>
@@ -237,7 +234,7 @@ $('input').tagsinput('input').typeahead({
             You can set a fixed css class for your tags, or determine dynamically by provinding a custom function.
           </p>
           <div class="bs-example">
-            <input type="text" />
+            <input type="text" name="tagclass" />
           </div>
           <div class="accordion">
             <div class="accordion-group">
@@ -261,7 +258,12 @@ $('input').tagsinput({
     }
   },
   itemValue: 'value',
-  itemText: 'text'
+  itemText: 'text',
+  typeahead: {
+    prefetch: 'cities.json',
+    template: '&lt;p&gt;{{text}}&lt;/p&gt;', // optional (this value by default)
+    engine: Hogan // optional (this value by default)
+  }
 });
 $('input').tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
 $('input').tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
@@ -269,16 +271,6 @@ $('input').tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": 
 $('input').tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
 $('input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
 
-// Adding custom typeahead support using http://twitter.github.io/typeahead.js
-$('input').tagsinput('input').typeahead({
-  valueKey: 'text',
-  prefetch: 'cities.json',
-  template: '&lt;p&gt;{{text}}&lt;/p&gt;',                                      
-  engine: Hogan
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
-  this.tagsinput('add', datum);
-  this.tagsinput('input').typeahead('setQuery', '');
-}, $('input')));
 &lt;/script&gt;</pre>
                 </div>
               </div>
@@ -447,7 +439,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
                 </div>
                 <pre class="prettyprint linenums">$('input').tagsinput({
   typeahead: {
-    source: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo'],
+    local: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo'],
     freeInput: true
   }
 });</pre>
@@ -460,24 +452,77 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
             </tr>
             <tr>
               <td></td>
-              <td><code>source</code></td>
+              <td><code>local</code></td>
               <td>
                 <p>An array (or function returning a promise or array), which will be used as source for a typeahead.
 
 
                 <pre class="prettyprint linenums">$('input').tagsinput({
   typeahead: {
-    source: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo']
-  }
-});</pre>
-                <pre class="prettyprint linenums">$('input').tagsinput({
-  typeahead: {                  
-    source: function(query) {
-      return $.get('http://someservice.com');
-    }
+    local: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo']
   }
 });</pre>
               </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><code>remote</code></td>
+                <td>
+                    <p>An url or remote object (<a href="https://github.com/twitter/typeahead.js#remote">Typeahead doc</a>) , which will be used as source for a typeahead.
+
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  itemValue: 'value',
+  itemText: 'text',
+  typeahead: {
+    remote: "http://someservice.com/%QUERY"
+  }
+});</pre>
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  itemValue: 'value',
+  itemText: 'text',
+  typeahead: {
+    remote: {
+        url: "http://someservice.com/%QUERY",
+        dataType: "json"
+    }
+  }
+});</pre>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><code>freeInput</code></td>
+                <td>
+                    <p>Allow creating tags which are not returned by typeahead's source (default: true)</p>
+                    <div class="bs-callout bs-callout-warning">
+                        This is only possible when using string as tags. When itemValue option is set, this option will be ignored.
+                    </div>
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  typeahead: {
+    prefetch: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo'],
+    freeInput: true
+  }
+});</pre>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><code>typeahead</code></td>
+                <td><p>Object containing typeahead specific options</td>
+            </tr>
+            </tr>
+            <tr>
+                <td></td>
+                <td><code>prefetch</code></td>
+                <td>
+                    <p>Can be a URL to a JSON file containing an array.
+
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  itemValue: 'value',
+  itemText: 'text',
+  typeahead: {
+    prefetch: 'cities.json'
+  }
+});</pre>
+                </td>
             </tr>
             <tr>
               <td colspan="2"><code>onTagExists</code></td>
@@ -580,7 +625,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
     <script src="bower_components/google-code-prettify-lite/prettify.js"></script>
     <script src="../dist/bootstrap-tagsinput.js"></script>
     <script src="../dist/bootstrap-tagsinput-angular.js"></script>
-    <script src="bower_components/typeahead.js/dist/typeahead.min.js"></script>
+    <script src="bower_components/typeahead.js/dist/typeahead.js"></script>
     <script src="bower_components/typeahead.js/test/vendor/hogan-2.0.0.js"></script>
     <script src="assets/app_bs3.js"></script>
     <script src="assets/app.js"></script>
