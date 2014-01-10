@@ -16,7 +16,8 @@
     confirmKeys: [13],
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
-    }
+    },
+    onTagEnter: undefined
   };
 
   /**
@@ -338,9 +339,20 @@
             // When key corresponds one of the confirmKeys, add current input
             // as a new tag
             if (self.options.freeInput && $.inArray(event.which, self.options.confirmKeys) >= 0) {
-              self.add($input.val());
+              var item = $input.val();
+
+              // reset input
               $input.val('');
               event.preventDefault();
+
+              // Pass information to onTagEnter Callback
+              if (self.options.onTagEnter) {
+                self.options.onTagEnter(item, self.itemsArray);
+
+                return;
+              } else {
+                self.add(item);
+              }
             }
         }
 
