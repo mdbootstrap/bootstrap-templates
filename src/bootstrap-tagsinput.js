@@ -35,6 +35,7 @@
     this.inputSize = Math.max(1, this.placeholderText.length);
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
+    this.$removeAll = $('<a class="remove-all"><i class="icon-remove"></a>').appendTo(this.$container);
     this.$input = $('<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
 
     this.$element.after(this.$container);
@@ -175,6 +176,52 @@
     },
 
     /**
+     * Shows/hides all source tags.
+     */
+    toggleSourceTags: function(action) {
+      if ($('#source-tags').length) {
+        if (action == 'hide') {
+            $('#source-tags').hide();
+        } else if (action == 'show') {
+            $('#source-tags').show();
+        }
+        return;
+      }
+
+      var self = this;
+
+      var typeahead = self.options.typeahead || {sourceTags: false};
+
+      if (typeahead.source && typeahead.sourceTags && $.fn.typeahead) {
+        makeOptionFunction(typeahead, 'source');
+
+        self.$input.typeahead({
+          source: function (query, process) {
+            function processItems(items) {
+              var texts = [];
+
+              for (var i = 0; i < items.length; i++) {
+                var text = self.options.itemText(items[i]);
+                map[text] = items[i];
+                texts.push(text);
+              }
+              process(texts);
+            }
+          }
+        });
+
+        var $sourceTags = $('<div id="source-tags"></div>');
+
+        self.$input.after($sourceTags);
+
+        $.each(typeahead.source(), function(i, text) {
+          var $tag = $('<span class="source-tag label" data-role="add">' + text + '</span>').appendTo($sourceTags);
+          $tag.after(' ');
+        });
+      }
+    },
+
+    /**
      * Refreshes the tags so they match the text/value of their corresponding
      * item.
      */
@@ -228,7 +275,7 @@
       var self = this;
 
       self.options = $.extend({}, defaultOptions, options);
-      var typeahead = self.options.typeahead || {};
+      var typeahead = self.options.typeahead || {sourceTags: false};
 
       // When itemValue is set, freeInput should always be false
       if (self.objectItems)
@@ -289,6 +336,16 @@
 
       self.$container.on('click', $.proxy(function(event) {
         self.$input.focus();
+        if (self.options.typeahead.sourceTags) {
+          self.toggleSourceTags('show');
+        }
+      }, self));
+
+      $('body').on('click', $.proxy(function(event) {
+        var element = $(event.target);
+        if (!element.hasClass('bootstrap-tagsinput') && element.parents('.bootstrap-tagsinput').length == 0) {
+          self.toggleSourceTags('hide');
+        }
       }, self));
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
@@ -345,12 +402,22 @@
         }
 
         // Reset internal input's size
-        $input.attr('size', Math.max(this.inputSize, $input.val().length));
+        this.placeholderText = this.$element.attr('placeholder') ? this.$element.attr('placeholder') : '';
+        $input.attr('size', Math.max(this.inputSize, this.placeholderText.length));
       }, self));
 
       // Remove icon clicked
       self.$container.on('click', '[data-role=remove]', $.proxy(function(event) {
         self.remove($(event.target).closest('.tag').data('item'));
+      }, self));
+
+      self.$removeAll.on('click', $.proxy(function(event) {
+        self.removeAll();
+      }, self));
+
+      // Source tag clicked
+      self.$container.on('click', '[data-role=add]', $.proxy(function(event) {
+        self.add($(event.target).html());
       }, self));
 
       // Only add existing value as tags when using strings as tags
