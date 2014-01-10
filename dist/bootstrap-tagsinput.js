@@ -35,6 +35,7 @@
     this.inputSize = Math.max(1, this.placeholderText.length);
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
+    this.$removeAll = $('<a class="remove-all"><i class="icon-remove"></a>').appendTo(this.$container);
     this.$input = $('<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
 
     this.$element.after(this.$container);
@@ -352,6 +353,10 @@
       // Remove icon clicked
       self.$container.on('click', '[data-role=remove]', $.proxy(function(event) {
         self.remove($(event.target).closest('.tag').data('item'));
+      }, self));
+
+      self.$removeAll.on('click', $.proxy(function(event) {
+        self.removeAll();
       }, self));
 
       // Only add existing value as tags when using strings as tags
