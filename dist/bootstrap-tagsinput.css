@@ -34,7 +34,7 @@
   cursor: pointer;
 }
 .bootstrap-tagsinput .tag [data-role="remove"]:after {
-  content: "x";
+  content: "\00d7";
   padding: 0px 2px;
 }
 .bootstrap-tagsinput .tag [data-role="remove"]:hover {
