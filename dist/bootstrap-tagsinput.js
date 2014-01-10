@@ -345,7 +345,8 @@
         }
 
         // Reset internal input's size
-        $input.attr('size', Math.max(this.inputSize, $input.val().length));
+        this.placeholderText = this.$element.attr('placeholder') ? this.$element.attr('placeholder') : '';
+        $input.attr('size', Math.max(this.inputSize, this.placeholderText.length));
       }, self));
 
       // Remove icon clicked
