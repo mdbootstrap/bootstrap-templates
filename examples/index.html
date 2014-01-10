@@ -468,6 +468,19 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               </td>
             </tr>
             <tr>
+              <td></td>
+              <td><code>sourceTags</code></td>
+              <td>
+                <p>When enabled (default: false), a list of all tags from source will be displayed below the input when it receives focus. Clicking on a source tag will add it to the list of selected tags.
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  typeahead: {
+    source: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo'],
+    sourceTags: true
+  }
+});</pre>
+              </td>
+            </tr>
+            <tr>
               <td colspan="2"><code>onTagExists</code></td>
               <td><p>Function invoked when trying to add an item which allready exists. By default, the existing tag hides and fades in.
                 <pre class="prettyprint linenums">$('input').tagsinput({
