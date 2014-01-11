@@ -47,6 +47,9 @@
   cursor: pointer;
   margin: 2px;
 }
+.bootstrap-tagsinput .source-tag:hover {
+  background-color: #7F7F7F;
+}
 .bootstrap-tagsinput a.remove-all {
   color: #BFBFBF;
   cursor: pointer;
