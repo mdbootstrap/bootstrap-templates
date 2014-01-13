@@ -179,13 +179,12 @@
      * Shows/hides all source tags.
      */
     toggleSourceTags: function(action) {
-      if ($('#source-tags').length) {
-        if (action == 'hide') {
-            $('#source-tags').hide();
-        } else if (action == 'show') {
-            $('#source-tags').show();
-        }
-        return;
+      if (action == 'hide') {
+          $('#source-tags').hide();
+          return;
+      } else if (action == 'show' && $('#source-tags').length) {
+          $('#source-tags').show();
+          return;
       }
 
       var self = this;
