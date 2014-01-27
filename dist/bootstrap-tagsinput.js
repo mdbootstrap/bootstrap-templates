@@ -14,6 +14,7 @@
     freeInput: true,
     maxTags: undefined,
     confirmKeys: [13],
+	allowDuplicates: false,
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     }
@@ -96,7 +97,7 @@
           var $existingTag = $(".tag", self.$container).filter(function() { return $(this).data("item") === existing; });
           self.options.onTagExists(item, $existingTag);
         }
-        return;
+	    if(!self.options.allowDuplicates) return;
       }
 
       // register item in internal array and map
@@ -135,9 +136,11 @@
 
       if (self.objectItems) {
         if (typeof item === "object")
-          item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  self.options.itemValue(item); } )[0];
+	      item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  self.options.itemValue(item); } );
         else
-          item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  item; } )[0];
+	      item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  item; } );
+
+	    item = item[item.length-1];
       }
 
       if (item) {
