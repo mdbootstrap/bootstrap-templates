@@ -40,15 +40,19 @@ angular.module('bootstrap-tagsinput', [])
           select.tagsinput('add', scope.model[i]);
         }
 
-        select.on('itemAdded', function(event) {
-          if (scope.model.indexOf(event.item) === -1)
-            scope.model.push(event.item);
+        select.on('itemAdded', function (event) {
+            scope.$apply(function () {
+                if (scope.model.indexOf(event.item) === -1)
+                    scope.model.push(event.item);
+            });
         });
 
         select.on('itemRemoved', function(event) {
-          var idx = scope.model.indexOf(event.item);
-          if (idx !== -1)
-            scope.model.splice(idx, 1);
+          scope.$apply(function(){
+              var idx = scope.model.indexOf(event.item);
+              if (idx !== -1)
+                  scope.model.splice(idx, 1);
+          });
         });
 
         // create a shallow copy of model's current state, needed to determine
