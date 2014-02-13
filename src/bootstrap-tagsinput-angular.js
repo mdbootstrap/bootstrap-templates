@@ -35,6 +35,10 @@ angular.module('bootstrap-tagsinput', [])
           itemText : getItemProperty(scope, attrs.itemtext),
           tagClass : angular.isFunction(scope.$parent[attrs.tagclass]) ? scope.$parent[attrs.tagclass] : function(item) { return attrs.tagclass; }
         });
+        
+        if (typeof(attrs.placeholder) != "undefined") {
+		      select.tagsinput('setPlaceholder', attrs.placeholder);
+		    }
 
         for (var i = 0; i < scope.model.length; i++) {
           select.tagsinput('add', scope.model[i]);
