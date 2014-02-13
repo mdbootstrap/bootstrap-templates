@@ -126,6 +126,18 @@
       self.$element.trigger($.Event('itemAdded', { item: item }));
     },
 
+
+	  /**
+	   * Set placeholder from angular
+	   * elements val()
+	   */
+	  setPlaceholder: function(placeholder) {
+		  var self = this;
+		  self.placeholderText = placeholder;
+		  self.$input.attr('placeholder',placeholder);
+		  self.inputSize = Math.max(1, self.placeholderText.length);
+		  self.$input.attr('size',self.inputSize );
+	  },
     /**
      * Removes the given item. Pass true to dontPushVal to prevent updating the
      * elements val()
