@@ -431,7 +431,10 @@
         $(this).val($(this).val());
       } else {
         // Invoke function on existing tags input
-        var retVal = tagsinput[arg1](arg2);
+        var retVal = arg1 != null && arg2 != null 
+		  ? tagsinput[arg1](arg2)
+		  : undefined;
+		
         if (retVal !== undefined)
           results.push(retVal);
       }
