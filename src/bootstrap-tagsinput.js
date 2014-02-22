@@ -355,6 +355,15 @@
         self.remove($(event.target).closest('.tag').data('item'));
       }, self));
 
+      // On lose focus
+      self.$input.on('blur', function(){
+          if (self.options.freeInput) {
+            self.add(self.$input.val());
+            self.$input.val('');
+            event.preventDefault();
+          }
+      });
+
       // Only add existing value as tags when using strings as tags
       if (self.options.itemValue === defaultOptions.itemValue) {
         if (self.$element[0].tagName === 'INPUT') {
