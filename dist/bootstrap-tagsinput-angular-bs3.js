@@ -22,7 +22,8 @@ angular.module('bootstrap-tagsinput', [])
   return {
     restrict: 'EA',
     scope: {
-      model: '=ngModel'
+      model: '=ngModel',
+      tagclass: "&"
     },
     template: '<select multiple></select>',
     replace: false,
@@ -31,25 +32,26 @@ angular.module('bootstrap-tagsinput', [])
         if (!angular.isArray(scope.model)) { scope.model = []; }
         var select = $('select', elem);
 
+        var getTagClass = function(city) {
+          return scope.tagclass({city:city});
+        };
         // initialize tagsinput
         select.tagsinput({
           itemValue: getItemProperty(scope, attrs.itemvalue),
           itemText : getItemProperty(scope, attrs.itemtext),
-          tagClass : angular.isFunction(scope[attrs.tagclass]) ? scope[attrs.tagclass] : function(item) { return attrs.tagclass; }
+          tagClass : getTagClass
         });
-
         // initialize typeahead
-        select.tagsinput('input').typeahead(null, {
-          valueKey: attrs.valueKey,
+        select.tagsinput('input').typeahead({
+          valueKey: attrs.itemtext,
           prefetch: attrs.typeaheadSource,
           template: '<p>{{text}}</p>',
           engine: Hogan
         }).bind('typeahead:selected', function (obj, datum) {
           // add tag and clear input when suggestion is selected
           select.tagsinput('add', datum);
-          select.tagsinput('input').typeahead('val', '');
+          select.tagsinput('input').typeahead('setQuery', '');
         });
-
         // Keypress events for tag control
         // Seperated out to directive to allow better flexibility in actions taken
         select.tagsinput('input').keydown(function(e) {

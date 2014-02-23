@@ -81,7 +81,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
           case 'Europe'   : return 'label label-info';
           case 'America'  : return 'label label-danger label-important';
           case 'Australia': return 'label label-success';
-          case 'Africa'   : return 'label';
+          case 'Africa'   : return 'label label-default';
           case 'Asia'     : return 'label label-warning';
         }
       };

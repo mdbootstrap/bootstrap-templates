@@ -297,8 +297,9 @@ $('input').tagsinput('input').typeahead({
             <bootstrap-tagsinput
               ng-model="cities"
               typeahead-source="assets/cities.json"
-              tagclass="getTagClass"
-              value-key="value">
+              tagclass="getTagClass(city)"
+              itemvalue="value"
+              itemtext="text">
             </bootstrap-tagsinput>
           </div>
           <div class="accordion">
@@ -312,9 +313,10 @@ $('input').tagsinput('input').typeahead({
                 <div class="accordion-inner">
                   <pre class="prettyprint linenums">&lt;bootstrap-tagsinput
   ng-model="cities"
-  typeahead-source="cities.json"
-  tagclass="getTagClass"
-  value-key="value">&gt;
+  typeahead-source="assets/cities.json"
+  tagclass="getTagClass(city)"
+  itemvalue="value"
+  itemtext="text"&gt;
 &lt;/bootstrap-tagsinput&gt;
 
 &lt;script&gt;
