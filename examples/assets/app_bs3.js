@@ -3,7 +3,7 @@ var elt = $('.example_typeahead > > input');
 elt.tagsinput();
 elt.tagsinput('input').typeahead({
   prefetch: 'assets/citynames.json'
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {
 	this.tagsinput('add', datum.value);
 	this.tagsinput('input').typeahead('setQuery', '');
 }, elt));
@@ -22,10 +22,10 @@ elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa
 elt.tagsinput('input').typeahead({
   valueKey: 'text',
   prefetch: 'assets/cities.json',
-  template: '<p>{{text}}</p>',                                       
+  template: '<p>{{text}}</p>',
   engine: Hogan
 
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {
 	this.tagsinput('add', datum);
 	this.tagsinput('input').typeahead('setQuery', '');
 }, elt));
@@ -53,9 +53,37 @@ elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa
 elt.tagsinput('input').typeahead({
   valueKey: 'text',
   prefetch: 'assets/cities.json',
-  template: '<p>{{text}}</p>',                                       
+  template: '<p>{{text}}</p>',
   engine: Hogan
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {
 	this.tagsinput('add', datum);
 	this.tagsinput('input').typeahead('setQuery', '');
 }, elt));
+
+angular.module('AngularExample', ['bootstrap-tagsinput'])
+  .controller('CityTagsInputController',
+    function CityTagsInputController($scope, $http) {
+      // Init with some cities
+      $scope.cities = [
+        { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    },
+        { "value": 4 , "text": "Washington"  , "continent": "America"   },
+        { "value": 7 , "text": "Sydney"      , "continent": "Australia" },
+        { "value": 10, "text": "Beijing"     , "continent": "Asia"      },
+        { "value": 13, "text": "Cairo"       , "continent": "Africa"    }
+      ];
+
+      $scope.queryCities = function(query) {
+        return $http.get('assets/cities.json');
+      };
+
+      $scope.getTagClass = function(city) {
+        switch (city.continent) {
+          case 'Europe'   : return 'label label-info';
+          case 'America'  : return 'label label-danger label-important';
+          case 'Australia': return 'label label-success';
+          case 'Africa'   : return 'label';
+          case 'Asia'     : return 'label label-warning';
+        }
+      };
+    }
+  );

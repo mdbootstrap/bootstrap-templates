@@ -5,7 +5,7 @@
     <meta name="robots" content="index, follow" />
     <base href="../" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    
+
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/bootstrap/assets/css/docs.css">
     <link rel="stylesheet" href="../dist/bootstrap-tagsinput.css">
@@ -35,7 +35,7 @@
             </li>
             <li>
               <a href="http://timschlechter.github.io/bootstrap-tagsinput/build/bootstrap-tagsinput.zip">Download <small>(latest)</small></a>
-            </li>          
+            </li>
           </ul>
           <p class="navbar-text pull-right">
             <a href="https://twitter.com/share" class="navbar-link twitter-share-button"
@@ -76,7 +76,7 @@
         </nav>
       </div>
     </header>
-    
+
     <div class="bs-header">
       <div class="container">
         <h1>Bootstrap Tags Input</h1>
@@ -148,7 +148,7 @@
           </div>
            <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("select").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("select").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
-       
+
         <div class="example example_typeahead">
           <h3>Typeahead</h3>
           Typeahead is not included in Bootstrap 3, so you'll have to include your own typeahead library. I'd recommed <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a>. An example of using this is shown below.
@@ -172,14 +172,14 @@ $('input').tagsinput();
 // Adding custom typeahead support using http://twitter.github.io/typeahead.js
 $('input').tagsinput('input').typeahead({
   prefetch: 'citynames.json'
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {
   this.tagsinput('add', datum.value);
   this.tagsinput('input').typeahead('setQuery', '');
 }, $('input')));
 &lt;/script&gt;</pre>
                 </div>
               </div>
-            </div>                  
+            </div>
           </div>
           <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
@@ -273,9 +273,9 @@ $('input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": 
 $('input').tagsinput('input').typeahead({
   valueKey: 'text',
   prefetch: 'cities.json',
-  template: '&lt;p&gt;{{text}}&lt;/p&gt;',                                      
+  template: '&lt;p&gt;{{text}}&lt;/p&gt;',
   engine: Hogan
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {
   this.tagsinput('add', datum);
   this.tagsinput('input').typeahead('setQuery', '');
 }, $('input')));
@@ -287,18 +287,18 @@ $('input').tagsinput('input').typeahead({
           <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
 
-        <!-- div id="angular" class="example example_angular" ng-app="AngularExample" ng-controller="CityTagsInputController">
+        <div id="angular" class="example example_angular" ng-app="AngularExample" ng-controller="CityTagsInputController">
           <h3>AngularJS support</h3>
           <p>
-            Include <code>bootstrap-tagsinput-angular.js</code> and register the 'bootstrap-tagsinput' in your Angular JS application to use the bootstrap-tagsinput directive.
+            Include <code>bootstrap-tagsinput-angular-bs3.js</code> and register the 'bootstrap-tagsinput' in your Angular JS application to use the bootstrap-tagsinput directive.
           </p>
-          <div class="bs-example">
+          <p>This requires Twitters <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a>.</p>
+          <div class="bs-docs-example">
             <bootstrap-tagsinput
               ng-model="cities"
-              typeahead-source="queryCities"
+              typeahead-source="assets/cities.json"
               tagclass="getTagClass"
-              itemvalue="value"
-              itemtext="text">
+              value-key="value">
             </bootstrap-tagsinput>
           </div>
           <div class="accordion">
@@ -312,10 +312,9 @@ $('input').tagsinput('input').typeahead({
                 <div class="accordion-inner">
                   <pre class="prettyprint linenums">&lt;bootstrap-tagsinput
   ng-model="cities"
-  typeahead-source="queryCities"
+  typeahead-source="cities.json"
   tagclass="getTagClass"
-  itemvalue="value"
-  itemtext="text"&gt;
+  value-key="value">&gt;
 &lt;/bootstrap-tagsinput&gt;
 
 &lt;script&gt;
@@ -330,10 +329,6 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
         { "value": 10, "text": "Beijing"     , "continent": "Asia"      },
         { "value": 13, "text": "Cairo"       , "continent": "Africa"    }
       ];
-
-      $scope.queryCities = function(query) {
-        return $http.get('cities.json');
-      };
 
       $scope.getTagClass = function(city) {
         switch (city.continent) {
@@ -362,7 +357,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
             </tbody>
           </table>
         </div>
-      </section -->
+      </section>
 
       <section id="options">
         <div class="page-header">
@@ -437,7 +432,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
   maxTags: 3
 });</pre>
               </td>
-            </tr>  
+            </tr>
             <tr>
               <td colspan="2"><code>freeInput</code></td>
               <td>
@@ -471,7 +466,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
   }
 });</pre>
                 <pre class="prettyprint linenums">$('input').tagsinput({
-  typeahead: {                  
+  typeahead: {
     source: function(query) {
       return $.get('http://someservice.com');
     }
@@ -488,7 +483,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
   }
 });</pre>
               </td>
-            </tr>          
+            </tr>
           </tbody>
         </table>
       </section>
@@ -579,7 +574,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/google-code-prettify-lite/prettify.js"></script>
     <script src="../dist/bootstrap-tagsinput.js"></script>
-    <script src="../dist/bootstrap-tagsinput-angular.js"></script>
+    <script src="../dist/bootstrap-tagsinput-angular-bs3.js"></script>
     <script src="bower_components/typeahead.js/dist/typeahead.min.js"></script>
     <script src="bower_components/typeahead.js/test/vendor/hogan-2.0.0.js"></script>
     <script src="assets/app_bs3.js"></script>
