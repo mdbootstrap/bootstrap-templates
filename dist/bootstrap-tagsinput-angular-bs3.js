@@ -59,6 +59,7 @@ angular.module('bootstrap-tagsinput', [])
           // add tag when tab (9), enter (13) or comma (188) is pressed
           if (keycode === 9 || keycode === 13 || keycode === 188) {
             e.preventDefault();
+            e.stopPropagation();
             var tagInput = $(this).val();
             // but only if there is data to add
             if ( tagInput ) {

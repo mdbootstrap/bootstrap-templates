@@ -22,7 +22,8 @@ angular.module('bootstrap-tagsinput', [])
   return {
     restrict: 'EA',
     scope: {
-      model: '=ngModel'
+      model: '=ngModel',
+      tagclass: "&"
     },
     template: '<select multiple></select>',
     replace: false,
@@ -31,36 +32,26 @@ angular.module('bootstrap-tagsinput', [])
         if (!angular.isArray(scope.model)) { scope.model = []; }
         var select = $('select', elem);
 
-        // instantiate the bloodhound suggestion engine
-        var tags = new Bloodhound({
-          datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d[attrs.typeaheadkey]); },
-          queryTokenizer: Bloodhound.tokenizers.whitespace,
-          prefetch: {
-            url: attrs.typeaheadsrc
-          }
-        });
-
-        // initialize the bloodhound suggestion engine
-        tags.initialize();
-
+        var getTagClass = function(city) {
+          return scope.tagclass({city:city});
+        };
         // initialize tagsinput
         select.tagsinput({
           itemValue: getItemProperty(scope, attrs.itemvalue),
           itemText : getItemProperty(scope, attrs.itemtext),
-          tagClass : angular.isFunction(scope[attrs.tagclass]) ? scope[attrs.tagclass] : function(item) { return attrs.tagclass; }
+          tagClass : getTagClass
         });
-
         // initialize typeahead
-        select.tagsinput('input').typeahead(null, {
-          name: 'Tags',
-          displayKey: attrs.typeaheadkey,
-          source: tags.ttAdapter()
+        select.tagsinput('input').typeahead({
+          valueKey: attrs.itemtext,
+          prefetch: attrs.typeaheadSource,
+          template: '<p>{{text}}</p>',
+          engine: Hogan
         }).bind('typeahead:selected', function (obj, datum) {
           // add tag and clear input when suggestion is selected
           select.tagsinput('add', datum);
-          select.tagsinput('input').typeahead('val', '');
+          select.tagsinput('input').typeahead('setQuery', '');
         });
-
         // Keypress events for tag control
         // Seperated out to directive to allow better flexibility in actions taken
         select.tagsinput('input').keydown(function(e) {
@@ -68,6 +59,7 @@ angular.module('bootstrap-tagsinput', [])
           // add tag when tab (9), enter (13) or comma (188) is pressed
           if (keycode === 9 || keycode === 13 || keycode === 188) {
             e.preventDefault();
+            e.stopPropagation();
             var tagInput = $(this).val();
             // but only if there is data to add
             if ( tagInput ) {
