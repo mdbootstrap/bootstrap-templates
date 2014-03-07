@@ -1,18 +1,5 @@
 angular.module('bootstrap-tagsinput', [])
 	.directive('bootstrapTagsinput', [function() {
-
-		function getItemProperty(scope, property) {
-			if (!property)
-				return undefined;
-
-			if (angular.isFunction(scope.$parent[property]))
-				return scope.$parent[property];
-
-			return function(item) {
-				return item[property];
-			};
-		}
-
 		return {
 			restrict: 'EA',
 			scope: {
@@ -28,15 +15,15 @@ angular.module('bootstrap-tagsinput', [])
 					var select = $('select', element);
 
 					select.tagsinput({
-						itemValue: getItemProperty(scope, attrs.itemvalue),
-						itemText : getItemProperty(scope, attrs.itemtext),
+						itemValue: attrs.itemvalue || 'value',
+						itemText : attrs.itemtext || 'display',
 						tagClass : angular.isFunction(scope.$parent[attrs.tagclass]) ? scope.$parent[attrs.tagclass] : function(item) { return attrs.tagclass; }
 					});
 
 					if (angular.isFunction(scope.$parent[attrs.typeaheadSource])) {
 						select.tagsinput('input').typeahead({
 							source: scope.$parent[attrs.typeaheadSource],
-							displayKey: getItemProperty(scope, attrs.itemtext)
+							displayKey: attrs.itemtext || 'display'
 						}).bind('typeahead:selected', $.proxy(function (obj, datum) {
 							this.tagsinput('add', datum.value);
 							this.tagsinput('input').typeahead('setQuery', '');
