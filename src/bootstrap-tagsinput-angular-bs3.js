@@ -14,11 +14,18 @@ angular.module('bootstrap-tagsinput', [])
 						scope.model = [];
 
 					var select = $('select', element);
+					var itemValue;
 					var options = {
-						itemValue: attrs.itemvalue || 'value',
-						itemText : attrs.itemtext || 'display',
 						tagClass : angular.isFunction(scope.$parent[attrs.tagclass]) ? scope.$parent[attrs.tagclass] : function(item) { return attrs.tagclass; }
 					};
+					if (angular.isDefined(attrs.itemvalue)) {
+						options.itemValue = itemValue = attrs.itemvalue;
+					} else {
+						itemValue = 'value';
+					}
+					if (angular.isDefined(attrs.itemtext)) {
+						options.itemText = attrs.itemtext;
+					}
 					if (angular.isFunction(scope.$parent[attrs.typeaheadSource])) {
 						options.confirmKeys = [];
 					}
@@ -28,20 +35,24 @@ angular.module('bootstrap-tagsinput', [])
 					if (angular.isFunction(scope.$parent[attrs.typeaheadSource])) {
 
 						var addTag = $.proxy(function (obj, datum) {
-							var value;
-							if (typeof(datum) != 'undefined' && datum.hasOwnProperty('value')) {
+							var item ;
+							if (typeof(datum) != 'undefined' && datum.hasOwnProperty(itemValue)) {
 								//added by typeahead
-								value = datum.value;
+								value = datum;
 							} else {
 								//added by input
-								value = this.tagsinput('input').typeahead('val');
+								value = {};
+								value[itemValue] = this.tagsinput('input').typeahead('val');
+								if (options.itemText) {
+									value[options.itemText] = value[itemValue];
+								}
 							}
 							this.tagsinput('add', value);
 							this.tagsinput('input').typeahead('val', '');
 						}, select);
 						select.tagsinput('input').typeahead(null, {
 							source: scope.$parent[attrs.typeaheadSource],
-							displayKey: options.itemText
+							displayKey: options.itemText || itemValue
 						}).on('typeahead:selected', addTag).on('keydown', function (e) {
 							if (e.which === 13) { //enter
 								addTag();
