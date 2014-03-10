@@ -3,7 +3,8 @@ angular.module('bootstrap-tagsinput', [])
 		return {
 			restrict: 'EA',
 			scope: {
-				model: '=ngModel'
+				model: '=ngModel',
+				placeholder: '@'
 			},
 			template: '<select multiple placeholder="{{placeholder}}"></select>',
 			replace: false,
@@ -13,21 +14,39 @@ angular.module('bootstrap-tagsinput', [])
 						scope.model = [];
 
 					var select = $('select', element);
-
-					select.tagsinput({
+					var options = {
 						itemValue: attrs.itemvalue || 'value',
 						itemText : attrs.itemtext || 'display',
 						tagClass : angular.isFunction(scope.$parent[attrs.tagclass]) ? scope.$parent[attrs.tagclass] : function(item) { return attrs.tagclass; }
-					});
+					};
+					if (angular.isFunction(scope.$parent[attrs.typeaheadSource])) {
+						options.confirmKeys = [];
+					}
+
+					select.tagsinput(options);
 
 					if (angular.isFunction(scope.$parent[attrs.typeaheadSource])) {
-						select.tagsinput('input').typeahead({
+
+						var addTag = $.proxy(function (obj, datum) {
+							var value;
+							if (typeof(datum) != 'undefined' && datum.hasOwnProperty('value')) {
+								//added by typeahead
+								value = datum.value;
+							} else {
+								//added by input
+								value = this.tagsinput('input').typeahead('val');
+							}
+							this.tagsinput('add', value);
+							this.tagsinput('input').typeahead('val', '');
+						}, select);
+						select.tagsinput('input').typeahead(null, {
 							source: scope.$parent[attrs.typeaheadSource],
-							displayKey: attrs.itemtext || 'display'
-						}).bind('typeahead:selected', $.proxy(function (obj, datum) {
-							this.tagsinput('add', datum.value);
-							this.tagsinput('input').typeahead('setQuery', '');
-						}, select));
+							displayKey: options.itemText
+						}).on('typeahead:selected', addTag).on('keydown', function (e) {
+							if (e.which === 13) { //enter
+								addTag();
+							}
+						});
 					}
 
 					for (var i = 0; i < scope.model.length; i++) {
