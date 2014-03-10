@@ -1,3 +1,14 @@
+/**
+ * @ngdoc directive
+ * @name bootstrap-tagsinput.directive:bootstrapTagsinput
+ * @element ANY
+ * @restrict EA
+ * @prefix data-
+ * @param {ngModel} model angular model that contains the tags that have been added
+ * @param {string} placeholder placeholder text for the add tag input field
+ * @description
+ * Creates a bootstrap-tagsinput UI element
+ */
 angular.module('bootstrap-tagsinput', [])
 	.directive('bootstrapTagsinput', [function() {
 		return {
