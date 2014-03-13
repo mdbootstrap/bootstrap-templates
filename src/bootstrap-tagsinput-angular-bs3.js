@@ -4,7 +4,7 @@
  * @element ANY
  * @restrict EA
  * @prefix data-
- * @param {ngModel} model angular model that contains the tags that have been added
+ * @param {array} ngModel angular model that contains the tags that have been added
  * @param {string} placeholder placeholder text for the add tag input field
  * @param {string} typeaheadSource name of function in parent scope that returns the typeahead query function
  * @param {string} tagclass name of function in parent scope that returns the classes for a tag (or a string of classes to statically add)
@@ -91,14 +91,18 @@ angular.module('bootstrap-tagsinput', [])
 					}
 
 					select.on('itemAdded', function(event) {
-						if (scope.model.indexOf(event.item) === -1)
+						if (scope.model.indexOf(event.item) === -1) {
 							scope.model.push(event.item);
+							scope.$apply();
+						}
 					});
 
 					select.on('itemRemoved', function(event) {
 						var idx = scope.model.indexOf(event.item);
-						if (idx !== -1)
+						if (idx !== -1) {
 							scope.model.splice(idx, 1);
+							scope.$apply();
+						}
 					});
 
 					// create a shallow copy of model's current state, needed to determine
