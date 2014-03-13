@@ -6,11 +6,29 @@
  * @prefix data-
  * @param {ngModel} model angular model that contains the tags that have been added
  * @param {string} placeholder placeholder text for the add tag input field
+ * @param {string} typeaheadSource name of function in parent scope that returns the typeahead query function
+ * @param {string} tagclass name of function in parent scope that returns the classes for a tag (or a string of classes to statically add)
+ * @param {string} itemvalue (default: value) name of function in parent scope that returns the value of an item (or the property that contains the value)
+ * @param {string} itemtext (defaults to value of itemvalue) name of function in parent scope that returns the display text of an item (or the property that contains the text)
  * @description
  * Creates a bootstrap-tagsinput UI element
  */
 angular.module('bootstrap-tagsinput', [])
 	.directive('bootstrapTagsinput', [function() {
+
+		//this function will create the getter function for itemValue and itemText
+		function getItemProperty(scope, property) {
+			if (!property)
+				return undefined;
+
+			if (angular.isFunction(scope.$parent[property]))
+				return scope.$parent[property];
+
+			return function(item) {
+				return (angular.isObject(item) && item.hasOwnProperty(property)) ? item[property] : item;
+			};
+		}
+
 		return {
 			restrict: 'EA',
 			scope: {
@@ -30,12 +48,13 @@ angular.module('bootstrap-tagsinput', [])
 						tagClass : angular.isFunction(scope.$parent[attrs.tagclass]) ? scope.$parent[attrs.tagclass] : function(item) { return attrs.tagclass; }
 					};
 					if (angular.isDefined(attrs.itemvalue)) {
-						options.itemValue = itemValue = attrs.itemvalue;
+						itemValue = attrs.itemvalue;
+						options.itemValue = getItemProperty(scope, attrs.itemvalue);
 					} else {
 						itemValue = 'value';
 					}
 					if (angular.isDefined(attrs.itemtext)) {
-						options.itemText = attrs.itemtext;
+						options.itemText = getItemProperty(scope, attrs.itemtext);
 					}
 					if (angular.isFunction(scope.$parent[attrs.typeaheadSource])) {
 						options.confirmKeys = [];
@@ -47,18 +66,14 @@ angular.module('bootstrap-tagsinput', [])
 
 						var addTag = $.proxy(function (obj, datum) {
 							var item ;
-							if (typeof(datum) != 'undefined' && datum.hasOwnProperty(itemValue)) {
+							if (typeof(datum) != 'undefined' && options.itemValue(datum)) {
 								//added by typeahead
-								value = datum;
+								item = datum;
 							} else {
 								//added by input
-								value = {};
-								value[itemValue] = this.tagsinput('input').typeahead('val');
-								if (options.itemText) {
-									value[options.itemText] = value[itemValue];
-								}
+								item = this.tagsinput('input').typeahead('val');
 							}
-							this.tagsinput('add', value);
+							this.tagsinput('add', item);
 							this.tagsinput('input').typeahead('val', '');
 						}, select);
 						select.tagsinput('input').typeahead(null, {
