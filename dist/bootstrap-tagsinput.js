@@ -134,7 +134,7 @@
       var self = this;
 
       if (self.objectItems) {
-        if (typeof item === "object")
+        if (self.options.itemValue(item))
           item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  self.options.itemValue(item); } )[0];
         else
           item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  item; } )[0];
