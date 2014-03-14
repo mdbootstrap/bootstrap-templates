@@ -231,9 +231,12 @@
       var typeahead = self.options.typeahead || {};
 
       // When itemValue is set, freeInput should always be false
-      if (self.objectItems)
-        self.options.freeInput = false;
-
+      //if (self.objectItems)
+      //  self.options.freeInput = false;
+	
+      self.itemValueAttr = self.options.itemValue;
+      self.itemKeyAttr = self.options.itemText;
+	
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionItemFunction(self.options, 'tagClass');
@@ -338,9 +341,24 @@
             // When key corresponds one of the confirmKeys, add current input
             // as a new tag
             if (self.options.freeInput && $.inArray(event.which, self.options.confirmKeys) >= 0) {
-              self.add($input.val());
-              $input.val('');
-              event.preventDefault();
+		// add object 
+		if (self.objectItems) {
+		    if ($input.val() !== "") {
+			var item = {};
+			item[self.itemValueAttr] = $input.val();
+			item[self.itemKeyAttr] = $input.val();		    
+			self.add(item)
+		    }
+		    else {
+			self.add(null);
+		    }
+		}
+		// add val
+		else {
+		    self.add($input.val());
+		}
+		$input.val('');
+		event.preventDefault();
             }
         }
 
