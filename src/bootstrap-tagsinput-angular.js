@@ -1,6 +1,6 @@
 angular.module('bootstrap-tagsinput', [])
 .directive('bootstrapTagsinput', [function() {
-
+  "use strict";
   function getItemProperty(scope, property) {
     if (!property)
       return undefined;
@@ -12,9 +12,15 @@ angular.module('bootstrap-tagsinput', [])
       return item[property];
     };
   }
+  var tagsInputController = ['$scope', function($scope){
+    this.getInput = function getInput(){
+        return $scope.select.tagsinput('input');
+    }
+  }];
 
   return {
     restrict: 'EA',
+    controller: tagsInputController,
     scope: {
       model: '=ngModel'
     },
@@ -25,29 +31,26 @@ angular.module('bootstrap-tagsinput', [])
         if (!angular.isArray(scope.model))
           scope.model = [];
 
-        var select = $('select', element);
+        scope.select = $('select', element);
 
-        select.tagsinput({
-          typeahead : {
-            source   : angular.isFunction(scope.$parent[attrs.typeaheadSource]) ? scope.$parent[attrs.typeaheadSource] : null
-          },
+        scope.select.tagsinput({
           itemValue: getItemProperty(scope, attrs.itemvalue),
           itemText : getItemProperty(scope, attrs.itemtext),
           tagClass : angular.isFunction(scope.$parent[attrs.tagclass]) ? scope.$parent[attrs.tagclass] : function(item) { return attrs.tagclass; }
         });
 
         for (var i = 0; i < scope.model.length; i++) {
-          select.tagsinput('add', scope.model[i]);
+          scope.select.tagsinput('add', scope.model[i]);
         }
 
-        select.on('itemAdded', function(event) {
+        scope.select.on('itemAdded', function(event) {
           scope.$apply( function(){
             if (scope.model.indexOf(event.item) === -1)
               scope.model.push(event.item);
           });
         });
 
-        select.on('itemRemoved', function(event) {
+        scope.select.on('itemRemoved', function(event) {
           scope.$apply( function(){
             var idx = scope.model.indexOf(event.item);
             if (idx !== -1)
@@ -67,15 +70,15 @@ angular.module('bootstrap-tagsinput', [])
 
           // Remove tags no longer in binded model
           for (i = 0; i < removed.length; i++) {
-            select.tagsinput('remove', removed[i]);
+            scope.select.tagsinput('remove', removed[i]);
           }
 
           // Refresh remaining tags
-          select.tagsinput('refresh');
+          scope.select.tagsinput('refresh');
 
           // Add new items in model as tags
           for (i = 0; i < added.length; i++) {
-            select.tagsinput('add', added[i]);
+            scope.select.tagsinput('add', added[i]);
           }
         }, true);
       });
