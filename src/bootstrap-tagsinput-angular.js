@@ -31,6 +31,10 @@ angular.module('bootstrap-tagsinput', [])
         if (!angular.isArray(scope.model))
           scope.model = [];
 
+        // create a shallow copy of model's current state, needed to determine
+        // diff when model changes
+        var prev = scope.model.slice();
+
         scope.select = $('select', element);
 
         scope.select.tagsinput({
@@ -45,22 +49,25 @@ angular.module('bootstrap-tagsinput', [])
 
         scope.select.on('itemAdded', function(event) {
           scope.$apply( function(){
-            if (scope.model.indexOf(event.item) === -1)
+            if (scope.model.indexOf(event.item) === -1){
               scope.model.push(event.item);
+              //element already removed from the typeahead control stop the model watcher from updating
+              prev = scope.model.slice();
+            }
           });
         });
 
         scope.select.on('itemRemoved', function(event) {
           scope.$apply( function(){
             var idx = scope.model.indexOf(event.item);
-            if (idx !== -1)
+            if (idx !== -1){
               scope.model.splice(idx, 1);
+              //element already removed from the typeahead control stop the model watcher from updating
+              prev = scope.model.slice();
+            }
           });
         });
 
-        // create a shallow copy of model's current state, needed to determine
-        // diff when model changes
-        var prev = scope.model.slice();
         scope.$watch("model", function() {
           var added = scope.model.filter(function(i) {return prev.indexOf(i) === -1;}),
               removed = prev.filter(function(i) {return scope.model.indexOf(i) === -1;}),
