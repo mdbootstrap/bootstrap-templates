@@ -100,6 +100,19 @@ describe("bootstrap-tagsinput", function() {
           });
         });
       });
+    });
+
+    describe("#90: Error in reinitialization (arg1 and arg2 are undefined)", function() {
+      describe("init tagsinput twice", function() {
+        testTagsInput('<input type="text" value="1" />', { itemValue: function(item) { return item.value; } }, function() {
+          it("should not fail if an element is reinitialized", function () {
+            this.$element.tagsinput();
+          });
+          it("should return the original instance if already initialized", function () {
+            return this.$element.tagsinput() === this;
+          });
+        });
+      });
     })
   });
 });
