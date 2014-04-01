@@ -98,6 +98,13 @@
         }
         return;
       }
+      var beforeItemAddedEvent = $.Event('beforeItemAdded', { item: item });
+      self.$element.trigger(beforeItemAddedEvent);
+      
+      if(beforeItemAddedEvent.isDefaultPrevented()){
+        return false;
+      }
+      
 
       // register item in internal array and map
       self.itemsArray.push(item);
@@ -338,9 +345,10 @@
             // When key corresponds one of the confirmKeys, add current input
             // as a new tag
             if (self.options.freeInput && $.inArray(event.which, self.options.confirmKeys) >= 0) {
-              self.add($input.val());
-              $input.val('');
-              event.preventDefault();
+              if(self.add($input.val()) !== false){
+                $input.val('');
+                event.preventDefault();
+              }
             }
         }
 
