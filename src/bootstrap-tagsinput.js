@@ -35,7 +35,8 @@
     this.inputSize = Math.max(1, this.placeholderText.length);
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
-    this.$input = $('<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
+    this.$input = $('<input size="' + this.inputSize + '" type="text" placeholder="' 
+            + this.placeholderText + '" ' + (options && options.maxLength ? 'maxlength="'+ options.maxLength +'"' : '') + ' />').appendTo(this.$container);
 
     this.$element.after(this.$container);
 
@@ -55,6 +56,13 @@
       if (self.options.maxTags && self.itemsArray.length >= self.options.maxTags)
         return;
 
+      if (self.options.maxLength && item.length > self.options.maxLength) {
+          self.$container.addClass('bootstrap-tagsinput-max-length');
+          return;
+      } else {
+          self.$container.removeClass('bootstrap-tagsinput-max-length');
+      }
+      
       // Ignore falsey values, except false
       if (item !== false && !item)
         return;
