@@ -337,7 +337,7 @@
          default:
             // When key corresponds one of the confirmKeys, add current input
             // as a new tag
-            if (self.options.freeInput && $.inArray(event.which, self.options.confirmKeys) >= 0) {
+            if (self.options.freeInput && $.inArray(event.which, self.options.confirmKeys) >= 0 && $input.val() != '') {
               self.add($input.val());
               $input.val('');
               event.preventDefault();
