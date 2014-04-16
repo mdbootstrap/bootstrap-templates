@@ -27,7 +27,9 @@
 
     this.$element = $(element);
     this.$element.hide();
-
+    if (options.freeElementSelector) {
+    	this.$freeElement = $(options.freeElementSelector);
+    }
     this.isSelect = (element.tagName === 'SELECT');
     this.multiple = (this.isSelect && element.hasAttribute('multiple'));
     this.objectItems = options && options.itemValue;
@@ -213,12 +215,24 @@
      * element. 
      */
     pushVal: function() {
-      var self = this,
-          val = $.map(self.items(), function(item) {
-            return self.options.itemValue(item).toString();
-          });
+      var self = this;
+      var val = $.map($.grep(self.items(), function(item) {
+    	  return item._freeText != true;
+      }), function(item) {
+          return self.options.itemValue(item).toString();
+      });
 
       self.$element.val(val, true).trigger('change');
+      //if text and objects are mixed, put the text items in the alternative input element
+      if (self.$freeElement) {
+          var valFreeText = $.map($.grep(self.items(), function(item) {
+        	  return item._freeText == true;
+          }), function(item) {
+              return self.options.itemText(item).toString();
+          });
+    	  self.$freeElement.val(valFreeText, true).trigger('change');
+      }
+
     },
 
     /**
@@ -231,8 +245,8 @@
       var typeahead = self.options.typeahead || {};
 
       // When itemValue is set, freeInput should always be false
-      if (self.objectItems)
-        self.options.freeInput = false;
+        if (self.objectItems && self.options.freeInput == true && !self.options.freeElementSelector)
+          throw("Object as tags and freeInput are enables, you must set the 'freeElementSelector' option");
 
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
@@ -338,7 +352,15 @@
             // When key corresponds one of the confirmKeys, add current input
             // as a new tag
             if (self.options.freeInput && $.inArray(event.which, self.options.confirmKeys) >= 0) {
-              self.add($input.val());
+			  //if we are in mixed mode (both objectItems and freeInput), create a "freeText" item
+              if (self.objectItems){
+            	  var obj = {_freeText:true}
+            	  obj[options.itemText] = $input.val();
+            	  obj[options.itemValue] = "free_input_" + $input.val();
+            	  self.add(obj);
+              }else{
+            	  self.add($input.val());
+              }
               $input.val('');
               event.preventDefault();
             }
