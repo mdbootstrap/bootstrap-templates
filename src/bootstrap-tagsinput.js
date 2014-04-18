@@ -175,18 +175,20 @@
     },
 
     /**
-     * Shows/hides all source tags.
+     * Shows/hides the source tags.
      */
     toggleSourceTags: function(action) {
-      if (action == 'hide') {
-          $('#source-tags').hide();
-          return;
-      } else if (action == 'show' && $('#source-tags').length) {
-          $('#source-tags').show();
-          return;
-      }
-
       var self = this;
+
+      if ($.trim(self.$sourceTags.html()).length ) {
+        if (action == 'hide') {
+            self.$sourceTags.hide();
+            return;
+        } else if (action == 'show') {
+            self.$sourceTags.show();
+            return;
+        }
+      }
 
       var typeahead = self.options.typeahead || {sourceTags: false};
 
