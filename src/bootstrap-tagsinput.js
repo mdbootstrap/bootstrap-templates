@@ -38,6 +38,7 @@
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
     this.$removeAll = $('<a class="remove-all"><i class="icon-remove"></a>').appendTo(this.$container);
     this.$input = $('<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
+    this.$sourceTags = $('<div id="source-tags" class="hidden"></div>').appendTo(this.$container);
 
     this.$element.after(this.$container);
 
@@ -190,31 +191,19 @@
       var typeahead = self.options.typeahead || {sourceTags: false};
 
       if (typeahead.source && typeahead.sourceTags && $.fn.typeahead) {
-        makeOptionFunction(typeahead, 'source');
+        $.each(typeahead.source(), function(i, item) {
+          if (typeof item === 'object') {
+            var text  = self.options.itemText(item);
+            var value = self.options.itemValue(item);
 
-        self.$input.typeahead({
-          source: function (query, process) {
-            function processItems(items) {
-              var texts = [];
+            var $tag = $('<span class="source-tag label" data-role="add" data-text="' + text + '" data-value="' + value + '">' + text + '</span>').appendTo(self.$sourceTags);
 
-              for (var i = 0; i < items.length; i++) {
-                var text = self.options.itemText(items[i]);
-                map[text] = items[i];
-                texts.push(text);
-              }
-              process(texts);
-            }
+          } else {
+            $('<span class="source-tag label" data-role="add">' + self.options.itemText(item) + '</span>').appendTo(self.$sourceTags);
           }
         });
 
-        var $sourceTags = $('<div id="source-tags"></div>');
-
-        self.$input.after($sourceTags);
-
-        $.each(typeahead.source(), function(i, text) {
-          var $tag = $('<span class="source-tag label" data-role="add">' + text + '</span>').appendTo($sourceTags);
-          $tag.after(' ');
-        });
+        self.$sourceTags.show();
       }
     },
 
