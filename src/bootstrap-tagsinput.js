@@ -405,7 +405,16 @@
 
       // Source tag clicked
       self.$container.on('click', '[data-role=add]', $.proxy(function(event) {
-        self.add($(event.target).html());
+        var element = $(event.target);
+        if (!element.data('text')) {
+          self.add(element.html());
+        } else {
+          var item = {};
+          item[this.objectOptions.itemText]  = element.data('text');
+          item[this.objectOptions.itemValue] = element.data('value');
+
+          self.add(item);
+        }
       }, self));
 
       // Only add existing value as tags when using strings as tags
