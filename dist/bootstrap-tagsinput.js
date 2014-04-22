@@ -30,6 +30,7 @@
 
     this.isSelect = (element.tagName === 'SELECT');
     this.multiple = (this.isSelect && element.hasAttribute('multiple'));
+    this.objectOptions = options;
     this.objectItems = options && options.itemValue;
     this.placeholderText = element.hasAttribute('placeholder') ? this.$element.attr('placeholder') : '';
     this.inputSize = Math.max(1, this.placeholderText.length);
@@ -37,6 +38,7 @@
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
     this.$removeAll = $('<a class="remove-all"><i class="icon-remove"></a>').appendTo(this.$container);
     this.$input = $('<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
+    this.$sourceTags = $('<div id="source-tags" class="hidden"></div>').appendTo(this.$container);
 
     this.$element.after(this.$container);
 
@@ -173,47 +175,37 @@
     },
 
     /**
-     * Shows/hides all source tags.
+     * Shows/hides the source tags.
      */
     toggleSourceTags: function(action) {
-      if (action == 'hide') {
-          $('#source-tags').hide();
-          return;
-      } else if (action == 'show' && $('#source-tags').length) {
-          $('#source-tags').show();
-          return;
-      }
-
       var self = this;
+
+      if ($.trim(self.$sourceTags.html()).length ) {
+        if (action == 'hide') {
+            self.$sourceTags.hide();
+            return;
+        } else if (action == 'show') {
+            self.$sourceTags.show();
+            return;
+        }
+      }
 
       var typeahead = self.options.typeahead || {sourceTags: false};
 
       if (typeahead.source && typeahead.sourceTags && $.fn.typeahead) {
-        makeOptionFunction(typeahead, 'source');
+        $.each(typeahead.source(), function(i, item) {
+          if (typeof item === 'object') {
+            var text  = self.options.itemText(item);
+            var value = self.options.itemValue(item);
 
-        self.$input.typeahead({
-          source: function (query, process) {
-            function processItems(items) {
-              var texts = [];
+            var $tag = $('<span class="source-tag label" data-role="add" data-text="' + text + '" data-value="' + value + '">' + text + '</span>').appendTo(self.$sourceTags);
 
-              for (var i = 0; i < items.length; i++) {
-                var text = self.options.itemText(items[i]);
-                map[text] = items[i];
-                texts.push(text);
-              }
-              process(texts);
-            }
+          } else {
+            $('<span class="source-tag label" data-role="add">' + self.options.itemText(item) + '</span>').appendTo(self.$sourceTags);
           }
         });
 
-        var $sourceTags = $('<div id="source-tags"></div>');
-
-        self.$input.after($sourceTags);
-
-        $.each(typeahead.source(), function(i, text) {
-          var $tag = $('<span class="source-tag label" data-role="add">' + text + '</span>').appendTo($sourceTags);
-          $tag.after(' ');
-        });
+        self.$sourceTags.show();
       }
     },
 
@@ -413,7 +405,16 @@
 
       // Source tag clicked
       self.$container.on('click', '[data-role=add]', $.proxy(function(event) {
-        self.add($(event.target).html());
+        var element = $(event.target);
+        if (!element.data('text')) {
+          self.add(element.html());
+        } else {
+          var item = {};
+          item[this.objectOptions.itemText]  = element.data('text');
+          item[this.objectOptions.itemValue] = element.data('value');
+
+          self.add(item);
+        }
       }, self));
 
       // Only add existing value as tags when using strings as tags
