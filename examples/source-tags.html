@@ -1,0 +1,32 @@
+<html>
+<head>
+    <link rel="stylesheet" href="bootstrap-2.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../dist/bootstrap-tagsinput.css">
+
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bootstrap-2.3.2/js/bootstrap.min.js"></script>
+    <script src="../dist/bootstrap-tagsinput.js"></script>
+</head>
+
+<body>
+    <select id="options" placeholder="Add tags..." multiple></select>
+
+    <script>
+        $('#options').tagsinput({
+            itemText: 'text',
+            itemValue: 'value',
+            typeahead: {
+                source: [
+                    { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    },
+                    { "value": 4 , "text": "Washington"  , "continent": "America"   },
+                    { "value": 7 , "text": "Sydney"      , "continent": "Australia" },
+                    { "value": 10, "text": "Beijing"     , "continent": "Asia"      },
+                    { "value": 13, "text": "Cairo"       , "continent": "Africa"    }
+                ],
+                sourceTags: true
+            }
+        });
+    </script>
+</body>
+
+</html>
