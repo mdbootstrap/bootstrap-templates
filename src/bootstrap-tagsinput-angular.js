@@ -42,7 +42,7 @@ angular.module('bootstrap-tagsinput', [])
                             confirmKeys: typeof attrs.confirmkeys !== 'undefined' ?
                                 attrs.confirmkeys.split(',').map(function(item) {
                                     return parseInt(item, 10);
-                                }) : []
+                                }) : [13]
                         });
 
                         for (var i = 0; i < scope.model.length; i++) {
