@@ -245,7 +245,7 @@
 
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
-      makeOptionItemFunction(self.options, 'tagClass');
+      makeOptionFunction(self.options, 'tagClass');
 
       // for backwards compatibility, self.options.source is deprecated
       if (self.options.source)
