@@ -34,12 +34,18 @@
     this.placeholderText = element.hasAttribute('placeholder') ? this.$element.attr('placeholder') : '';
     this.inputSize = Math.max(1, this.placeholderText.length);
 
+    defaultOptions.maxTags = Number(options.maxTags);
+    this.lengthOfTag = Number(options.lengthOfTag);
     this.correcter = options.correcter;
     this.validator = options.validator;
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
-    this.$input = $('<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
-
+    var inputHTML = '<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"';
+    if (this.lengthOfTag != null) {
+      inputHTML += ' maxlength="' + this.lengthOfTag + '"';
+    }
+    inputHTML += '/>';
+    this.$input = $(inputHTML).appendTo(this.$container);
     this.$element.after(this.$container);
 
     this.build(options);
