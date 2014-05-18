@@ -34,9 +34,18 @@
     this.placeholderText = element.hasAttribute('placeholder') ? this.$element.attr('placeholder') : '';
     this.inputSize = Math.max(1, this.placeholderText.length);
 
-    this.$container = $('<div class="bootstrap-tagsinput"></div>');
-    this.$input = $('<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
+    defaultOptions.maxTags = Number(options.maxTags);
+    this.lengthOfTag = Number(options.lengthOfTag);
+    this.correcter = options.correcter;
+    this.validator = options.validator;
 
+    this.$container = $('<div class="bootstrap-tagsinput"></div>');
+    var inputHTML = '<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"';
+    if (this.lengthOfTag != null) {
+      inputHTML += ' maxlength="' + this.lengthOfTag + '"';
+    }
+    inputHTML += '/>';
+    this.$input = $(inputHTML).appendTo(this.$container);
     this.$element.after(this.$container);
 
     this.build(options);
@@ -84,6 +93,11 @@
         }
       }
 
+      // correct data before validating
+      if (self.correcter) {
+        item = self.correcter(item);
+      }
+
       var itemValue = self.options.itemValue(item),
           itemText = self.options.itemText(item),
           tagClass = self.options.tagClass(item);
@@ -97,6 +111,13 @@
           self.options.onTagExists(item, $existingTag);
         }
         return;
+      }
+
+      // validator for validating input value
+      if (this.validator) {
+        if (!this.validator(item)) {
+          return;
+        }
       }
 
       // register item in internal array and map

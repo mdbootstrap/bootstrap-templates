@@ -22,6 +22,6 @@
     "select",
     "form"
   ],
-  "homepage": "http://timschlechter.github.io/bootstrap-tagsinput/examples/",
-  "download": "http://timschlechter.github.io/bootstrap-tagsinput/build/bootstrap-tagsinput.zip"
+  "download": "http://timschlechter.github.io/bootstrap-tagsinput/build/bootstrap-tagsinput.zip",
+  "homepage": "http://timschlechter.github.io/bootstrap-tagsinput/examples/"
 }
