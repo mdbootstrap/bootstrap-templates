@@ -26,6 +26,7 @@ angular.module('bootstrap-tagsinput', [])
           scope.model = [];
 
         var select = $('select', element);
+		select.attr("placeholder", attrs.placeholder);
 
         select.tagsinput({
           typeahead : {
