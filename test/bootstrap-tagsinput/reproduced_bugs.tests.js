@@ -101,5 +101,14 @@ describe("bootstrap-tagsinput", function() {
         });
       });
     })
+    
+    describe("#142: Initialization of Null Values for Multi Select field", function() {
+
+      testTagsInput('<select multiple data-role="tagsinput"></select>', function() {
+        it("Initializing an empty select shouldn't throw an error.", function() {
+            $("select[multiple][data-role=tagsinput]").tagsinput();
+        });
+      });
+    });  
   });
 });

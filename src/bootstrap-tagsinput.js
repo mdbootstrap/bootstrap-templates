@@ -429,7 +429,7 @@
 
         // Init tags from $(this).val()
         $(this).val($(this).val());
-      } else {
+      } else if(tagsinput[arg1] !== undefined) {
         // Invoke function on existing tags input
         var retVal = tagsinput[arg1](arg2);
         if (retVal !== undefined)
