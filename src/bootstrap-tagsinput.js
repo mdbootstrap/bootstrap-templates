@@ -169,9 +169,6 @@
         self.itemsArray.pop();
 
       self.pushVal();
-
-      if (self.options.maxTags && !this.isEnabled())
-        this.enable();
     },
 
     /**
