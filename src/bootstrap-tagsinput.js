@@ -36,10 +36,11 @@
     this.inputSize = Math.max(1, this.placeholderText.length);
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
-    this.$input = $('<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
+    this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
 
     this.$element.after(this.$container);
 
+    this.$input.get(0).style.setProperty('width', this.inputSize < 3 ? 3 : this.inputSize + 'em', 'important'); // to override bootstrap width !important
     this.build(options);
   }
 
@@ -348,7 +349,7 @@
         }
 
         // Reset internal input's size
-        $input.attr('size', Math.max(this.inputSize, $input.val().length));
+        $input.get(0).style.setProperty('width', Math.max(this.inputSize < 3 ? 3 : this.inputSize, $input.val().length) + 'em', 'important');
       }, self));
 
       // Remove icon clicked
