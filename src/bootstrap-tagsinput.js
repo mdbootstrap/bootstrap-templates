@@ -16,7 +16,8 @@
     confirmKeys: [13],
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
-    }
+    },
+    trimValue: false
   };
 
   /**
@@ -58,6 +59,11 @@
       // Ignore falsey values, except false
       if (item !== false && !item)
         return;
+
+      // Trim value
+      if (typeof item === "string" && self.options.trimValue) {
+        item = $.trim(item);
+      }
 
       // Throw an error when trying to add an object while the itemValue option was not set
       if (typeof item === "object" && !self.objectItems)

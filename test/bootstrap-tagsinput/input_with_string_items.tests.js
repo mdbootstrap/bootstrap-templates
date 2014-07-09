@@ -2,6 +2,14 @@ describe("bootstrap-tagsinput", function() {
 
   describe("with strings as items", function() {
 
+    testTagsInput('<input type="text" />', { trimValue: true }, function(){
+      it("trim item values", function() {
+        this.$element.tagsinput('add', ' some_tag  ');
+        this.$element.tagsinput('add', 'some_tag  ');
+        expect(this.$element.val()).toBe('some_tag');
+      });
+    });
+
     testTagsInput('<input type="text" />', function() {
       it("should hide input", function() {
         expect(this.$element.css('display')).toBe('none');
