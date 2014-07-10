@@ -106,6 +106,10 @@
         return;
       }
 
+      // if length greater than limit
+      if (self.items().toString().length + item.length + 1 > self.options.maxInputLength)
+        return;
+
       // register item in internal array and map
       self.itemsArray.push(item);
 
@@ -127,7 +131,7 @@
         self.pushVal();
 
       // Add class when reached maxTags
-      if (self.options.maxTags === self.itemsArray.length)
+      if (self.options.maxTags === self.itemsArray.length || self.items().toString().length === self.options.maxInputLength)
         self.$container.addClass('bootstrap-tagsinput-max');
 
       self.$element.trigger($.Event('itemAdded', { item: item }));
@@ -294,6 +298,11 @@
       self.$container.on('click', $.proxy(function(event) {
         self.$input.focus();
       }, self));
+
+        self.$input.on('focusout', $.proxy(function(event) {
+            self.add(self.$input.val());
+            self.$input.val('');
+        }, self));
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
         var $input = $(event.target),
