@@ -16,7 +16,8 @@
     confirmKeys: [13],
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
-    }
+    },
+    trimValue: false
   };
 
   /**
@@ -35,10 +36,11 @@
     this.inputSize = Math.max(1, this.placeholderText.length);
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
-    this.$input = $('<input size="' + this.inputSize + '" type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
+    this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
 
     this.$element.after(this.$container);
 
+    this.$input.get(0).style.setProperty('width', this.inputSize < 3 ? 3 : this.inputSize + 'em', 'important'); // to override bootstrap width !important
     this.build(options);
   }
 
@@ -58,6 +60,11 @@
       // Ignore falsey values, except false
       if (item !== false && !item)
         return;
+
+      // Trim value
+      if (typeof item === "string" && self.options.trimValue) {
+        item = $.trim(item);
+      }
 
       // Throw an error when trying to add an object while the itemValue option was not set
       if (typeof item === "object" && !self.objectItems)
@@ -109,7 +116,7 @@
       $tag.after(' ');
 
       // add <option /> if item represents a value not present in one of the <select />'s options
-      if (self.isSelect && !$('option[value="' + escape(itemValue) + '"]',self.$element)[0]) {
+      if (self.isSelect && !$('option[value="' + encodeURIComponent(itemValue) + '"]',self.$element)[0]) {
         var $option = $('<option selected>' + htmlEncode(itemText) + '</option>');
         $option.data('item', item);
         $option.attr('value', itemValue);
@@ -169,9 +176,6 @@
         self.itemsArray.pop();
 
       self.pushVal();
-
-      if (self.options.maxTags && !this.isEnabled())
-        this.enable();
     },
 
     /**
@@ -345,7 +349,7 @@
         }
 
         // Reset internal input's size
-        $input.attr('size', Math.max(this.inputSize, $input.val().length));
+        $input.get(0).style.setProperty('width', Math.max(this.inputSize < 3 ? 3 : this.inputSize, $input.val().length) + 'em', 'important');
       }, self));
 
       // Remove icon clicked
@@ -416,24 +420,27 @@
 
     this.each(function() {
       var tagsinput = $(this).data('tagsinput');
-
       // Initialize a new tags input
       if (!tagsinput) {
-        tagsinput = new TagsInput(this, arg1);
-        $(this).data('tagsinput', tagsinput);
-        results.push(tagsinput);
+          tagsinput = new TagsInput(this, arg1);
+          $(this).data('tagsinput', tagsinput);
+          results.push(tagsinput);
 
-        if (this.tagName === 'SELECT') {
-          $('option', $(this)).attr('selected', 'selected');
-        }
+          if (this.tagName === 'SELECT') {
+              $('option', $(this)).attr('selected', 'selected');
+          }
 
-        // Init tags from $(this).val()
-        $(this).val($(this).val());
+          // Init tags from $(this).val()
+          $(this).val($(this).val());
+      } else if (!arg1 && !arg2) {
+          // tagsinput already exists
+          // no function, trying to init
+          results.push(tagsinput);
       } else if(tagsinput[arg1] !== undefined) {
-        // Invoke function on existing tags input
-        var retVal = tagsinput[arg1](arg2);
-        if (retVal !== undefined)
-          results.push(retVal);
+          // Invoke function on existing tags input
+          var retVal = tagsinput[arg1](arg2);
+          if (retVal !== undefined)
+              results.push(retVal);
       }
     });
 
