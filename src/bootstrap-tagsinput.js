@@ -13,7 +13,7 @@
     },
     freeInput: true,
     maxTags: undefined,
-    confirmKeys: [13],
+    confirmKeys: [13,0],
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     },
@@ -295,7 +295,7 @@
         self.$input.focus();
       }, self));
 
-      self.$container.on('keydown', 'input', $.proxy(function(event) {
+      self.$container.on('keydown blur', 'input', $.proxy(function(event) {
         var $input = $(event.target),
             $inputWrapper = self.findInputWrapper();
 
