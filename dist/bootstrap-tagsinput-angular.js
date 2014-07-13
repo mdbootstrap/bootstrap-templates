@@ -27,7 +27,7 @@ angular.module('bootstrap-tagsinput', [])
 
         var select = $('select', element);
 
-        select.tagsinput({
+        select.tagsinput(scope.$parent[attrs.options || ''] || {
           typeahead : {
             source   : angular.isFunction(scope.$parent[attrs.typeaheadSource]) ? scope.$parent[attrs.typeaheadSource] : null
           },
