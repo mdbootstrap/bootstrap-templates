@@ -16,8 +16,7 @@
   "devDependencies": {
     "typeahead.js": "~ 0.10.3",
     "angular": "< 1.3",
-    "angular-mocks": "< 1.3",
-    "bootstrap": "~ 3.2"
+    "angular-mocks": "< 1.3"
   },
   "keywords": [
     "tags",
