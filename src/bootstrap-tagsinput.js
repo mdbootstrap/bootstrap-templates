@@ -40,7 +40,8 @@
 
     this.$element.after(this.$container);
 
-    this.$input.get(0).style.setProperty('width', this.inputSize < 3 ? 3 : this.inputSize + 'em', 'important'); // to override bootstrap width !important
+    var inputWidth = (this.inputSize < 3 ? 3 : this.inputSize) + "em";
+    this.$input.get(0).style.cssText = "width: " + inputWidth + " !important;";
     this.build(options);
   }
 
@@ -358,7 +359,8 @@
         }
 
         // Reset internal input's size
-        $input.get(0).style.setProperty('width', Math.max(this.inputSize < 3 ? 3 : this.inputSize, $input.val().length) + 'em', 'important');
+        var inputWidth = Math.max(this.inputSize < 3 ? 3 : this.inputSize, $input.val().length) + "em";
+        $input.get(0).style.cssText = "width: " + inputWidth + " !important;";
       }, self));
 
       // Remove icon clicked
