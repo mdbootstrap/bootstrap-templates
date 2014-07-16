@@ -1,7 +1,7 @@
 {
   "name": "bootstrap-tagsinput",
   "title": "Bootstrap Tags Input",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "description": "jQuery plugin providing a Twitter Bootstrap user interface for managing tags.",
   "scripts": {
     "test": "karma start --single-run --no-auto-watch"
