@@ -312,7 +312,7 @@
             $inputWrapper = self.findInputWrapper();
 
         if (self.$element.attr('disabled')) {
-            self.$input.attr('disabled', 'disabled');
+          self.$input.attr('disabled', 'disabled');
           return;
         }
 
