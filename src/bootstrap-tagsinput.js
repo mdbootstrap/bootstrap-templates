@@ -296,6 +296,9 @@
       }
 
       self.$container.on('click', $.proxy(function(event) {
+        if (! self.$element.attr('disabled')) {
+          self.$input.removeAttr('disabled');
+        }
         self.$input.focus();
       }, self));
 
@@ -309,7 +312,7 @@
             $inputWrapper = self.findInputWrapper();
 
         if (self.$element.attr('disabled')) {
-          $('.bootstrap-tagsinput input').attr('disabled', 'disabled');
+            self.$input.attr('disabled', 'disabled');
           return;
         }
 
