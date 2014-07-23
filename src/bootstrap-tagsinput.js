@@ -12,6 +12,7 @@
       return this.itemValue(item);
     },
     freeInput: true,
+    addOnBlur: true,
     maxTags: undefined,
     confirmKeys: [13],
     onTagExists: function(item, $tag) {
@@ -302,10 +303,13 @@
         self.$input.focus();
       }, self));
 
-        self.$input.on('focusout', $.proxy(function(event) {
-            self.add(self.$input.val());
-            self.$input.val('');
-        }, self));
+        if (self.options.addOnBlur) {
+          self.$input.on('focusout', $.proxy(function(event) {
+              self.add(self.$input.val());
+              self.$input.val('');
+          }, self));
+        }
+        
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
         var $input = $(event.target),
