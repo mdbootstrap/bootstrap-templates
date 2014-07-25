@@ -306,10 +306,14 @@
         self.$input.focus();
       }, self));
 
-        if (self.options.addOnBlur) {
+        if (self.options.addOnBlur && self.options.freeInput) {
           self.$input.on('focusout', $.proxy(function(event) {
-              self.add(self.$input.val());
-              self.$input.val('');
+              // HACK: only process on focusout when no typeahead opened, to
+              //       avoid adding the typeahead text as tag
+              if ($('.typeahead', self.$container).length === 0) {
+                self.add(self.$input.val());
+                self.$input.val('');
+              }
           }, self));
         }
         
