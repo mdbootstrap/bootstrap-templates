@@ -1,4 +1,4 @@
-# Bootstrap Tags Input [![Build Status](https://travis-ci.org/TimSchlechter/bootstrap-tagsinput.png?branch=master)](https://travis-ci.org/TimSchlechter/bootstrap-tagsinput)
+# Bootstrap Tags Input [![Build Status](https://travis-ci.org/TimSchlechter/bootstrap-tagsinput.svg?branch=master)](https://travis-ci.org/TimSchlechter/bootstrap-tagsinput)
 Bootstrap Tags Input is a jQuery plugin providing a Twitter Bootstrap user interface for managing tags.
 
 ## Usage
@@ -39,6 +39,10 @@ Integrates with Twitter Bootstraps' 2.3.2 typeahead, or use custom typeahead whe
 Include [bootstrap-tagsinput-angular.js](https://github.com/TimSchlechter/bootstrap-tagsinput/blob/master/src/bootstrap-tagsinput-angular.js) and register the 'bootstrap-tagsinput' in your Angular JS application to use the bootstrap-tagsinput directive. Look at [the examples page](http://timschlechter.github.io/bootstrap-tagsinput/examples/#angular) how to use the directive.
 
 ## History
+
+__0.3.13__
+* [#5: Trigger events on original input/select](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/5)
+* Loads of fixes merged with help of @janvt, @rlidwka and @kuraga: thanks for helping me out!
 
 __0.3.9__
 * [#48: Type ahead stops when entering second character](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/48)
