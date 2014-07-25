@@ -7,10 +7,22 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-zip');
   grunt.loadNpmTasks('grunt-jquerymanifest');
+  grunt.loadNpmTasks('grunt-bower-task');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
+    bower: {
+      install: {
+        targetDir: './lib',
+        layout: 'byType',
+        install: true,
+        verbose: false,
+        cleanTargetDir: false,
+        cleanBowerDir: false,
+        bowerOptions: {}
+      }
+    },
     copy: {
       build: {
         files: [
@@ -73,6 +85,7 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('install', ['bower']);
+  grunt.registerTask('unit', ['install', 'karma']);
   grunt.registerTask('build', ['unit', 'jquerymanifest', 'copy:build', 'uglify:build', 'less:build', 'zip']);  
-  grunt.registerTask('unit', ['karma']);
 };

@@ -1,3 +1,5 @@
 node_modules/
 test/reports/
 libpeerconnection.log
+/bower_components
+/lib
