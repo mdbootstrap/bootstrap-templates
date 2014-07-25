@@ -174,7 +174,7 @@ $('input').tagsinput('input').typeahead({
   prefetch: 'citynames.json'
 }).bind('typeahead:selected', $.proxy(function (obj, datum) {  
   this.tagsinput('add', datum.value);
-  this.tagsinput('input').typeahead('setQuery', '');
+  this.tagsinput('input').typeahead('val', '');
 }, $('input')));
 &lt;/script&gt;</pre>
                 </div>
@@ -221,7 +221,7 @@ $('input').tagsinput('input').typeahead({
 
 }).bind('typeahead:selected', $.proxy(function (obj, datum) {
 	this.tagsinput('add', datum);
-	this.tagsinput('input').typeahead('setQuery', '');
+	this.tagsinput('input').typeahead('val', '');
 }, $('input')));
 &lt;/script&gt;</pre>
                 </div>
@@ -277,7 +277,7 @@ $('input').tagsinput('input').typeahead({
   engine: Hogan
 }).bind('typeahead:selected', $.proxy(function (obj, datum) {  
   this.tagsinput('add', datum);
-  this.tagsinput('input').typeahead('setQuery', '');
+  this.tagsinput('input').typeahead('val', '');
 }, $('input')));
 &lt;/script&gt;</pre>
                 </div>
