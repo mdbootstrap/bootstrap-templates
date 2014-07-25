@@ -304,8 +304,10 @@
       }, self));
 
         self.$input.on('focusout', $.proxy(function(event) {
+          if (self.options.freeInput
             self.add(self.$input.val());
             self.$input.val('');
+          }
         }, self));
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
