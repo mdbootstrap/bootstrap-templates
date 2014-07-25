@@ -17,7 +17,8 @@
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     },
-    trimValue: false
+    trimValue: false,
+    validate: undefined
   };
 
   /**
@@ -53,6 +54,9 @@
      */
     add: function(item, dontPushVal) {
       var self = this;
+
+      if(self.options.validate && !self.options.validate(item))
+        return;
 
       if (self.options.maxTags && self.itemsArray.length >= self.options.maxTags)
         return;
