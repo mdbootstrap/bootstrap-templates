@@ -136,5 +136,14 @@ describe("bootstrap-tagsinput", function() {
         });
       });
     });
+
+    describe("#107: Fixed bug when removing items", function() {
+      testTagsInput('<input type="text" value="yes,no" />', function() {
+        it("should not remove items when remove a non-existing item", function() {
+            this.$element.tagsinput('remove', 'maybe');
+            expect(this.$element.tagsinput('items').length).toBe(2);
+        });
+      });
+    });
   });
 });

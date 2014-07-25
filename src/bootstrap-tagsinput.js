@@ -155,7 +155,8 @@
       if (item) {
         $('.tag', self.$container).filter(function() { return $(this).data('item') === item; }).remove();
         $('option', self.$element).filter(function() { return $(this).data('item') === item; }).remove();
-        self.itemsArray.splice($.inArray(item, self.itemsArray), 1);
+        if($.inArray(item, self.itemsArray) !== -1)
+          self.itemsArray.splice($.inArray(item, self.itemsArray), 1);
       }
 
       if (!dontPushVal)
