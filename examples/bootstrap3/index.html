@@ -500,7 +500,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
         <table class="table table-bordered table-condensed">
           <thead>
             <tr>
-              <th colspan="2">method</th>
+              <th>method</th>
               <th>description</th>
             </tr>
           </thead>
@@ -564,6 +564,60 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
                 <p>Removes tagsinput behaviour</p>
 
                 <pre class="prettyprint linenums">$('input').tagsinput('destroy');</pre>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="methods">
+        <div class="page-header">
+          <h2>Events</h2>
+        </div>
+        <table class="table table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>event</th>
+              <th>description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>beforeItemAdd</code></td>
+              <td>
+                Triggered just before an item gets added. Example:
+                <pre class="prettyprint linenums">$('input').on('beforeItemAdd', function(event) {
+  // event.item: contains the item
+  // event.cancel: set to true to prevent the item getting added
+});</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>itemAdded</code></td>
+              <td>
+                Triggered just after an item got added. Example:
+                <pre class="prettyprint linenums">$('input').on('itemAdded', function(event) {
+  // event.item: contains the item
+});</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>beforeItemRemove</code></td>
+              <td>
+                Triggered just before an item gets removed. Example:
+                <pre class="prettyprint linenums">$('input').on('beforeItemRemove', function(event) {
+  // event.item: contains the item
+  // event.cancel: set to true to prevent the item getting removed
+});</pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>itemRemoved</code></td>
+              <td>
+                Triggered just after an item got removed. Example:
+                <pre class="prettyprint linenums">$('input').on('itemRemoved', function(event) {
+  // event.item: contains the item
+});</pre>
               </td>
             </tr>
           </tbody>
