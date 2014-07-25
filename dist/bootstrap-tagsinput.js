@@ -12,7 +12,9 @@
       return this.itemValue(item);
     },
     freeInput: true,
+    addOnBlur: true,
     maxTags: undefined,
+    maxChars: 0,
     confirmKeys: [13],
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
@@ -40,7 +42,8 @@
 
     this.$element.after(this.$container);
 
-    this.$input.get(0).style.setProperty('width', this.inputSize < 3 ? 3 : this.inputSize + 'em', 'important'); // to override bootstrap width !important
+    var inputWidth = (this.inputSize < 3 ? 3 : this.inputSize) + "em";
+    this.$input.get(0).style.cssText = "width: " + inputWidth + " !important;";
     this.build(options);
   }
 
@@ -154,7 +157,8 @@
       if (item) {
         $('.tag', self.$container).filter(function() { return $(this).data('item') === item; }).remove();
         $('option', self.$element).filter(function() { return $(this).data('item') === item; }).remove();
-        self.itemsArray.splice($.inArray(item, self.itemsArray), 1);
+        if($.inArray(item, self.itemsArray) !== -1)
+          self.itemsArray.splice($.inArray(item, self.itemsArray), 1);
       }
 
       if (!dontPushVal)
@@ -244,7 +248,7 @@
 
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
-      makeOptionItemFunction(self.options, 'tagClass');
+      makeOptionFunction(self.options, 'tagClass');
 
       // for backwards compatibility, self.options.source is deprecated
       if (self.options.source)
@@ -302,10 +306,17 @@
         self.$input.focus();
       }, self));
 
-        self.$input.on('focusout', $.proxy(function(event) {
-            self.add(self.$input.val());
-            self.$input.val('');
-        }, self));
+        if (self.options.addOnBlur && self.options.freeInput) {
+          self.$input.on('focusout', $.proxy(function(event) {
+              // HACK: only process on focusout when no typeahead opened, to
+              //       avoid adding the typeahead text as tag
+              if ($('.typeahead', self.$container).length === 0) {
+                self.add(self.$input.val());
+                self.$input.val('');
+              }
+          }, self));
+        }
+        
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
         var $input = $(event.target),
@@ -356,17 +367,22 @@
             }
             break;
          default:
-            // When key corresponds one of the confirmKeys, add current input
-            // as a new tag
-            if (self.options.freeInput && $.inArray(event.which, self.options.confirmKeys) >= 0) {
-              self.add($input.val());
+            // When key corresponds one of the confirmKeys, or text.length reached maximum,
+            // add current input as a new tag
+            var text = $input.val(),
+                maxLengthReached = self.options.maxChars > 0 && text.length >= self.options.maxChars;
+            if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
+              self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
               $input.val('');
               event.preventDefault();
             }
         }
 
         // Reset internal input's size
-        $input.get(0).style.setProperty('width', Math.max(this.inputSize < 3 ? 3 : this.inputSize, $input.val().length) + 'em', 'important');
+        var textLength = $input.val().length,
+            wordSpace = Math.ceil(textLength / 5),
+            size = textLength + wordSpace + 1;
+        $input.attr('size', Math.max(this.inputSize, $input.val().length));
       }, self));
 
       // Remove icon clicked
@@ -518,6 +534,35 @@
       iCaretPos = oField.selectionStart;
     }
     return (iCaretPos);
+  }
+
+  /**
+    * Returns boolean indicates whether user has pressed an expected key combination. 
+    * @param object keyPressEvent: JavaScript event object, refer
+    *     http://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
+    * @param object lookupList: expected key combinations, as in:
+    *     [13, {which: 188, shiftKey: true}]
+    */
+  function keyCombinationInList(keyPressEvent, lookupList) {
+      var found = false;
+      $.each(lookupList, function (index, keyCombination) {
+          if (typeof (keyCombination) === 'number' && keyPressEvent.which === keyCombination) {
+              found = true;
+              return false;
+          }
+
+          if (keyPressEvent.which === keyCombination.which) {
+              var alt = !keyCombination.hasOwnProperty('altKey') || keyPressEvent.altKey === keyCombination.altKey,
+                  shift = !keyCombination.hasOwnProperty('shiftKey') || keyPressEvent.shiftKey === keyCombination.shiftKey,
+                  ctrl = !keyCombination.hasOwnProperty('ctrlKey') || keyPressEvent.ctrlKey === keyCombination.ctrlKey;
+              if (alt && shift && ctrl) {
+                  found = true;
+                  return false;
+              }
+          }
+      });
+
+      return found;
   }
 
   /**
