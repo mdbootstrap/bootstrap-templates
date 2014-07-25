@@ -14,6 +14,7 @@
     freeInput: true,
     addOnBlur: true,
     maxTags: undefined,
+    maxChars: 0,
     confirmKeys: [13],
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
@@ -362,18 +363,22 @@
             }
             break;
          default:
-            // When key corresponds one of the confirmKeys, add current input
-            // as a new tag
-            if (self.options.freeInput && $.inArray(event.which, self.options.confirmKeys) >= 0) {
-              self.add($input.val());
+            // When key corresponds one of the confirmKeys, or text.length reached maximum,
+            // add current input as a new tag
+            var text = $input.val(),
+                maxLengthReached = self.options.maxChars > 0 && text.length >= self.options.maxChars;
+            if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
+              self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
               $input.val('');
               event.preventDefault();
             }
         }
 
         // Reset internal input's size
-        var inputWidth = Math.max(this.inputSize < 3 ? 3 : this.inputSize, $input.val().length) + "em";
-        $input.get(0).style.cssText = "width: " + inputWidth + " !important;";
+        var textLength = $input.val().length,
+            wordSpace = Math.ceil(textLength / 5),
+            size = textLength + wordSpace + 1;
+        $input.attr('size', Math.max(this.inputSize, $input.val().length));
       }, self));
 
       // Remove icon clicked
@@ -525,6 +530,35 @@
       iCaretPos = oField.selectionStart;
     }
     return (iCaretPos);
+  }
+
+  /**
+    * Returns boolean indicates whether user has pressed an expected key combination. 
+    * @param object keyPressEvent: JavaScript event object, refer
+    *     http://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
+    * @param object lookupList: expected key combinations, as in:
+    *     [13, {which: 188, shiftKey: true}]
+    */
+  function keyCombinationInList(keyPressEvent, lookupList) {
+      var found = false;
+      $.each(lookupList, function (index, keyCombination) {
+          if (typeof (keyCombination) === 'number' && keyPressEvent.which === keyCombination) {
+              found = true;
+              return false;
+          }
+
+          if (keyPressEvent.which === keyCombination.which) {
+              var alt = !keyCombination.hasOwnProperty('altKey') || keyPressEvent.altKey === keyCombination.altKey,
+                  shift = !keyCombination.hasOwnProperty('shiftKey') || keyPressEvent.shiftKey === keyCombination.shiftKey,
+                  ctrl = !keyCombination.hasOwnProperty('ctrlKey') || keyPressEvent.ctrlKey === keyCombination.ctrlKey;
+              if (alt && shift && ctrl) {
+                  found = true;
+                  return false;
+              }
+          }
+      });
+
+      return found;
   }
 
   /**
