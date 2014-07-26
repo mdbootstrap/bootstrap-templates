@@ -19,7 +19,9 @@
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     },
-    trimValue: false
+    trimValue: false,
+    validate: undefined,
+    separator: ','
   };
 
   /**
@@ -57,6 +59,9 @@
     add: function(item, dontPushVal) {
       var self = this;
 
+      if(self.options.validate && !self.options.validate(item))
+        return;
+
       if (self.options.maxTags && self.itemsArray.length >= self.options.maxTags)
         return;
 
@@ -82,7 +87,7 @@
         self.remove(self.itemsArray[0]);
 
       if (typeof item === "string" && this.$element[0].tagName === 'INPUT') {
-        var items = item.split(',');
+        var items = item.split(self.options.separator);
         if (items.length > 1) {
           for (var i = 0; i < items.length; i++) {
             this.add(items[i], true);
@@ -241,7 +246,7 @@
             return self.options.itemValue(item).toString();
           });
 
-      self.$element.val(val, true).trigger('change');
+      self.$element.val(val.join(self.options.separator), true).trigger('change');
     },
 
     /**
