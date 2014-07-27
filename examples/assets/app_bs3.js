@@ -1,13 +1,40 @@
-var elt = $('.example_typeahead > > input');
+var citynames = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  prefetch: {
+    url: 'assets/citynames.json',
+    filter: function(list) {
+      return $.map(list, function(cityname) {
+        return { name: cityname }; });
+    }
+  }
+});
+citynames.initialize();
 
+var cities = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  prefetch: 'assets/cities.json'
+});
+cities.initialize();
+
+/**
+ * Typeahead
+ */
+var elt = $('.example_typeahead > > input');
 elt.tagsinput();
-elt.tagsinput('input').typeahead({
-  prefetch: 'assets/citynames.json'
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
-	this.tagsinput('add', datum.value);
-	this.tagsinput('input').typeahead('setQuery', '');
+elt.tagsinput('input').typeahead(null, {
+  name: 'citynames',
+  displayKey: 'name',
+  source: citynames.ttAdapter()
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {
+	this.tagsinput('add', datum.name);
+	this.tagsinput('input').typeahead('val', '');
 }, elt));
 
+/**
+ * Objects as tags
+ */
 elt = $('.example_objects_as_tags > > input');
 elt.tagsinput({
   itemValue: 'value',
@@ -19,17 +46,18 @@ elt.tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Austra
 elt.tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
 elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
 
-elt.tagsinput('input').typeahead({
-  valueKey: 'text',
-  prefetch: 'assets/cities.json',
-  template: '<p>{{text}}</p>',                                       
-  engine: Hogan
-
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
-	this.tagsinput('add', datum);
-	this.tagsinput('input').typeahead('setQuery', '');
+elt.tagsinput('input').typeahead(null, {
+  name: 'cities',
+  displayKey: 'text',
+  source: cities.ttAdapter()
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {
+  this.tagsinput('add', datum);
+  this.tagsinput('input').typeahead('val', '');
 }, elt));
 
+/**
+ * Categorizing tags
+ */
 elt = $('.example_tagclass > > input');
 elt.tagsinput({
   tagClass: function(item) {
@@ -50,12 +78,14 @@ elt.tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Austra
 elt.tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
 elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
 
-elt.tagsinput('input').typeahead({
-  valueKey: 'text',
-  prefetch: 'assets/cities.json',
-  template: '<p>{{text}}</p>',                                       
-  engine: Hogan
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
-	this.tagsinput('add', datum);
-	this.tagsinput('input').typeahead('setQuery', '');
+elt.tagsinput('input').typeahead(null, {
+  name: 'cities',
+  displayKey: 'text',
+  source: cities.ttAdapter()
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {
+  this.tagsinput('add', datum);
+  this.tagsinput('input').typeahead('val', '');
 }, elt));
+
+// HACK: overrule hardcoded display inline-block of typeahead.js
+$(".twitter-typeahead").css('display', 'inline');

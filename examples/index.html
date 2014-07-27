@@ -1,13 +1,14 @@
-<!DOCTYPE html>
+<DOCTYPE html>
 <html>
   <head>
     <title>Bootstrap Tags Input</title>
     <meta name="robots" content="index, follow" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="../dist/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="lib/bootstrap-3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/bootstrap-3/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="lib/bootstrap-tagsinput/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="lib/rainbow/themes/github.css">
     <link rel="stylesheet" href="assets/app.css">
 
     <script>
@@ -28,8 +29,8 @@
         <p>jQuery plugin providing a Twitter Bootstrap user interface for managing tags</p>
         <p>
             <a class="btn btn-default" role="button" href="https://github.com/timschlechter/bootstrap-tagsinput">Code on Github</a>
-            <a class="btn btn-default" role="button" href="bootstrap232/">Bootstrap 2.3.2?</a>            
-            <a class="btn btn-primary" role="button" href="http://timschlechter.github.io/bootstrap-tagsinput/build/bootstrap-tagsinput.zip">Download</a>            
+            <a class="btn btn-default" role="button" href="bootstrap-2.3.2.html">Bootstrap 2.3.2</a>            
+            <a class="btn btn-primary" role="button" href="http://timschlechter.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.zip">Download</a>            
         </p>
         <p>
           <ul class="list-inline">
@@ -89,12 +90,12 @@
               </div>
               <div id="accordion_example_markup" class="accordion-body collapse">
                 <div class="accordion-inner highlight">
-                  <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,Washington,Sydney,Beijing,Cairo&quot; data-role=&quot;tagsinput&quot; /&gt;</pre>
+                  <pre><code data-language="html">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,Washington,Sydney,Beijing,Cairo&quot; data-role=&quot;tagsinput&quot; /&gt;</code></pre>
                 </div>
               </div>
             </div>
           </div>
-           <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
+           <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val"><code data-language="html"></code></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
 
         <div class="example example_multivalue">
@@ -120,18 +121,18 @@
               </div>
               <div id="example_multivalue" class="accordion-body collapse">
                 <div class="accordion-inner">
-                  <pre class="prettyprint linenums">&lt;select multiple data-role="tagsinput"&gt;
+                  <pre><code data-language="html">&lt;select multiple data-role="tagsinput"&gt;
   &lt;option value="Amsterdam"&gt;Amsterdam&lt;/option&gt;
   &lt;option value="Washington"&gt;Washington&lt;/option&gt;
   &lt;option value="Sydney"&gt;Sydney&lt;/option&gt;
   &lt;option value="Beijing"&gt;Beijing&lt;/option&gt;
   &lt;option value="Cairo"&gt;Cairo&lt;/option&gt;
-&lt;/select&gt;</pre>
+&lt;/select&gt;</code></pre>
                 </div>
               </div>
             </div>
           </div>
-           <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("select").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("select").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
+           <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("select").val()</code></td><td><pre class="val"><code data-language="html"></code></pre></td></tr><tr><td><code>$("select").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
        
         <div class="example example_typeahead">
@@ -150,23 +151,37 @@
               </div>
               <div id="example_typeahead" class="accordion-body collapse">
                 <div class="accordion-inner">
-                  <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,Washington&quot; data-role=&quot;tagsinput&quot; /&gt;
+                  <pre><code data-language="html">&lt;input type=&quot;text&quot; value=&quot;Amsterdam,Washington&quot; data-role=&quot;tagsinput&quot; /&gt;
 &lt;script&gt;
-$('input').tagsinput();
+var citynames = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  prefetch: {
+    url: 'assets/citynames.json',
+    filter: function(list) {
+      return $.map(list, function(cityname) {
+        return { name: cityname }; });
+    }
+  }
+});
+citynames.initialize();
 
-// Adding custom typeahead support using http://twitter.github.io/typeahead.js
-$('input').tagsinput('input').typeahead({
-  prefetch: 'citynames.json'
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
-  this.tagsinput('add', datum.value);
-  this.tagsinput('input').typeahead('setQuery', '');
-}, $('input')));
-&lt;/script&gt;</pre>
+var elt = $('input');
+elt.tagsinput();
+elt.tagsinput('input').typeahead(null, {
+  name: 'citynames',
+  displayKey: 'name',
+  source: citynames.ttAdapter()
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {
+  this.tagsinput('add', datum.name);
+  this.tagsinput('input').typeahead('val', '');
+}, elt));
+&lt;/script&gt;</code></pre>
                 </div>
               </div>
             </div>                  
           </div>
-          <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
+          <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val"><code data-language="html"></code></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
 
         <div class="example example_objects_as_tags">
@@ -186,34 +201,40 @@ $('input').tagsinput('input').typeahead({
               </div>
               <div id="accordion_example_objects_as_tags" class="accordion-body collapse">
                 <div class="accordion-inner">
-                  <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; /&gt;
+                  <pre><code data-language="html">&lt;input type=&quot;text&quot; /&gt;
 &lt;script&gt;
-$('input').tagsinput({
+var cities = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  prefetch: 'assets/cities.json'
+});
+cities.initialize();
+
+var elt = $('input');
+elt.tagsinput({
   itemValue: 'value',
   itemText: 'text'
 });
-$('input').tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
-$('input').tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
-$('input').tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
-$('input').tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
-$('input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
+elt.tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
+elt.tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
+elt.tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
+elt.tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
+elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
 
-$('input').tagsinput('input').typeahead({
-  valueKey: 'text',
-  prefetch: 'assets/cities.json',
-  template: '&lt;p&gt;{{text}}&lt;/p&gt;',
-  engine: Hogan
-
+elt.tagsinput('input').typeahead(null, {
+  name: 'cities',
+  displayKey: 'text',
+  source: cities.ttAdapter()
 }).bind('typeahead:selected', $.proxy(function (obj, datum) {
   this.tagsinput('add', datum);
-  this.tagsinput('input').typeahead('setQuery', '');
-}, $('input')));
-&lt;/script&gt;</pre>
+  this.tagsinput('input').typeahead('val', '');
+}, elt));
+&lt;/script&gt;</code></pre>
                 </div>
               </div>
             </div>
           </div>
-          <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
+          <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val"><code data-language="html"></code></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
 
         <div class="example example_tagclass">
@@ -233,9 +254,17 @@ $('input').tagsinput('input').typeahead({
               </div>
               <div id="accordion_example_tagclass" class="accordion-body collapse">
                 <div class="accordion-inner">
-                  <pre class="prettyprint linenums">&lt;input type=&quot;text&quot; /&gt;
+                  <pre><code data-language="html">&lt;input type=&quot;text&quot; /&gt;
 &lt;script&gt;
-$('input').tagsinput({
+var cities = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  prefetch: 'assets/cities.json'
+});
+cities.initialize();
+
+var elt = $('input');
+elt.tagsinput({
   tagClass: function(item) {
     switch (item.continent) {
       case 'Europe'   : return 'label label-primary';
@@ -248,28 +277,26 @@ $('input').tagsinput({
   itemValue: 'value',
   itemText: 'text'
 });
-$('input').tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
-$('input').tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
-$('input').tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
-$('input').tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
-$('input').tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
+elt.tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
+elt.tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
+elt.tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
+elt.tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
+elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
 
-// Adding custom typeahead support using http://twitter.github.io/typeahead.js
-$('input').tagsinput('input').typeahead({
-  valueKey: 'text',
-  prefetch: 'cities.json',
-  template: '&lt;p&gt;{{text}}&lt;/p&gt;',                                      
-  engine: Hogan
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {  
+elt.tagsinput('input').typeahead(null, {
+  name: 'cities',
+  displayKey: 'text',
+  source: cities.ttAdapter()
+}).bind('typeahead:selected', $.proxy(function (obj, datum) {
   this.tagsinput('add', datum);
-  this.tagsinput('input').typeahead('setQuery', '');
-}, $('input')));
-&lt;/script&gt;</pre>
+  this.tagsinput('input').typeahead('val', '');
+}, elt));
+&lt;/script&gt;</code></pre>
                 </div>
               </div>
             </div>
           </div>
-          <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
+          <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val"><code data-language="html"></code></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr></tbody></table>
         </div>
 
         <!-- div id="angular" class="example example_angular" ng-app="AngularExample" ng-controller="CityTagsInputController">
@@ -295,7 +322,7 @@ $('input').tagsinput('input').typeahead({
               </div>
               <div id="example_angular" class="accordion-body collapse">
                 <div class="accordion-inner">
-                  <pre class="prettyprint linenums">&lt;bootstrap-tagsinput
+                  <pre><code data-language="html">&lt;bootstrap-tagsinput
   ng-model="cities"
   typeahead-source="queryCities"
   tagclass="getTagClass"
@@ -331,7 +358,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
       };
     }
   );
-&lt;/script&gt;</pre>
+&lt;/script&gt;</code></pre>
                 </div>
               </div>
             </div>
@@ -342,7 +369,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
             </thead>
             <tbody>
               <tr><td><code>$scope.cities</code></td><td><pre class="items prettyprint linenums">{{cities}}</td></tr>
-              <tr><td><code>$("select").val()</code></td><td><pre class="val prettyprint linenums"></pre></td></tr>
+              <tr><td><code>$("select").val()</code></td><td><pre class="val"><code data-language="html"></code></pre></td></tr>
               <tr><td><code>$("select").tagsinput('items')</code></td><td><pre class="items prettyprint linenums"></td></tr>
             </tbody>
           </table>
@@ -365,28 +392,28 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td colspan="2"><code>tagClass</code></td>
               <td>
                 <p>Classname for the tags, or a function returning a classname</p>
-                <pre class="prettyprint linenums">$('input').tagsinput({
+                <pre><code data-language="javascript">$('input').tagsinput({
   tagClass: 'big'
-});</pre>
-                <pre class="prettyprint linenums">$('input').tagsinput({
+});</code></pre>
+                <pre><code data-language="javascript">$('input').tagsinput({
   tagClass: function(item) {
     return (item.length > 10 ? 'big' : 'small');
   }
-});</pre>
+});</code></pre>
               </td>
             </tr>
             <tr>
               <td colspan="2"><code>itemValue</code></td>
               <td>
                 <p>When adding objects as tags, itemValue <em>must</em> be set to the name of the property containing the item's value, or a function returning an item's value.</p>
-                <pre class="prettyprint linenums">$('input').tagsinput({
+                <pre><code data-language="javascript">$('input').tagsinput({
     itemValue: 'id'
-});</pre>
-                <pre class="prettyprint linenums">$('input').tagsinput({
+});</code></pre>
+                <pre><code data-language="javascript">$('input').tagsinput({
   itemValue: function(item) {
     return item.id;
   }
-});</pre>
+});</code></pre>
               </td>
             </tr>
             <tr>
@@ -395,59 +422,59 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
                 <p>When adding objects as tags, you can set itemText to the name of the property of item to use for a its tag's text. You may also provide a function which returns an item's value. When this options is not set, the value of <code>itemValue</code> will be used.
 
 
-                <pre class="prettyprint linenums">$('input').tagsinput({
+                <pre><code data-language="javascript">$('input').tagsinput({
   itemText: 'label'
-});</pre>
-                <pre class="prettyprint linenums">$('input').tagsinput({
+});</code></pre>
+                <pre><code data-language="javascript">$('input').tagsinput({
   itemText: function(item) {
     return item.label;
   }
-});</pre>
+});</code></pre>
               </td>
             </tr>
             <tr>
               <td colspan="2"><code>confirmKeys</code></td>
               <td>
                 <p>Array of keycodes which will add a tag when typing in the input. (default: [13, 188], which are ENTER and comma)</p>
-                <pre class="prettyprint linenums">$('input').tagsinput({
+                <pre><code data-language="javascript">$('input').tagsinput({
   confirmKeys: [13, 44]
-});</pre>
+});</code></pre>
               </td>
             </tr>
             <tr>
               <td colspan="2"><code>maxTags</code></td>
               <td>
                 <p>When set, no more than the given number of tags are allowed to add (default: undefined). When maxTags is reached, a class 'bootstrap-tagsinput-max' is placed on the tagsinput element.</p>
-                <pre class="prettyprint linenums">$('input').tagsinput({
+                <pre><code data-language="javascript">$('input').tagsinput({
   maxTags: 3
-});</pre>
+});</code></pre>
               </td>
             </tr>  
             <tr>
               <td colspan="2"><code>maxChars</code></td>
               <td>
                 <p>Defines the maximum length of a single tag. (default: undefined)</p>
-                <pre class="prettyprint linenums">$('input').tagsinput({
+                <pre><code data-language="javascript">$('input').tagsinput({
   maxChars: 8
-});</pre>
+});</code></pre>
               </td>
             </tr>
             <tr>
               <td colspan="2"><code>trimValue</code></td>
               <td>
                 <p>When true, automatically removes all whitespace around tags. (default: false)</p>
-                <pre class="prettyprint linenums">$('input').tagsinput({
+                <pre><code data-language="javascript">$('input').tagsinput({
   trimValue: true
-});</pre>
+});</code></pre>
               </td>
             </tr> 
             <tr>
               <td colspan="2"><code>allowDuplicates</code></td>
               <td>
                 <p>When true, the same tag can be added multiple times. (default: false)</p>
-                <pre class="prettyprint linenums">$('input').tagsinput({
+                <pre><code data-language="javascript">$('input').tagsinput({
   allowDuplicates: true
-});</pre>
+});</code></pre>
               </td>
             </tr>
             <tr>
@@ -457,12 +484,12 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
                 <div class="bs-callout bs-callout-warning">
                     This is only possible when using string as tags. When itemValue option is set, this option will be ignored.
                 </div>
-                <pre class="prettyprint linenums">$('input').tagsinput({
+                <pre><code data-language="javascript">$('input').tagsinput({
   typeahead: {
     source: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo']
   },
   freeInput: true
-});</pre>
+});</code></pre>
               </td>
             </tr>
             <tr>
@@ -477,28 +504,28 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
                 <p>An array (or function returning a promise or array), which will be used as source for a typeahead.
 
 
-                <pre class="prettyprint linenums">$('input').tagsinput({
+                <pre><code data-language="javascript">$('input').tagsinput({
   typeahead: {
     source: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo']
   }
-});</pre>
-                <pre class="prettyprint linenums">$('input').tagsinput({
+});</code></pre>
+                <pre><code data-language="javascript">$('input').tagsinput({
   typeahead: {                  
     source: function(query) {
       return $.get('http://someservice.com');
     }
   }
-});</pre>
+});</code></pre>
               </td>
             </tr>
             <tr>
               <td colspan="2"><code>onTagExists</code></td>
               <td><p>Function invoked when trying to add an item which allready exists. By default, the existing tag hides and fades in.
-                <pre class="prettyprint linenums">$('input').tagsinput({
+                <pre><code data-language="javascript">$('input').tagsinput({
   onTagExists: function(item, $tag) {
     $tag.hide.fadeIn();
   }
-});</pre>
+});</code></pre>
               </td>
             </tr>          
           </tbody>
@@ -522,9 +549,9 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td>
                 <p>Adds a tag</p>
 
-                <pre class="prettyprint linenums">$('input').tagsinput('add', 'some tag');</pre>
+                <pre><code data-language="javascript">$('input').tagsinput('add', 'some tag');</code></pre>
 
-                <pre class="prettyprint linenums">$('input').tagsinput('add', { id: 1, text: 'some tag' });</pre>
+                <pre><code data-language="javascript">$('input').tagsinput('add', { id: 1, text: 'some tag' });</code></pre>
               </td>
             </tr>
             <tr>
@@ -532,9 +559,9 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td>
                 <p>Removes a tag</p>
 
-                <pre class="prettyprint linenums">$('input').tagsinput('remove', 'some tag');</pre>
+                <pre><code data-language="javascript">$('input').tagsinput('remove', 'some tag');</code></pre>
 
-                <pre class="prettyprint linenums">$('input').tagsinput('remove', { id: 1, text: 'some tag' });</pre>
+                <pre><code data-language="javascript">$('input').tagsinput('remove', { id: 1, text: 'some tag' });</code></pre>
               </td>
             </tr>
             <tr>
@@ -542,7 +569,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td>
                 <p>Removes all tags</p>
 
-                <pre class="prettyprint linenums">$('input').tagsinput('removeAll');</pre>
+                <pre><code data-language="javascript">$('input').tagsinput('removeAll');</code></pre>
               </td>
             </tr>
             <tr>
@@ -550,7 +577,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td>
                 <p>Sets focus in the tagsinput</p>
 
-                <pre class="prettyprint linenums">$('input').tagsinput('focus');</pre>
+                <pre><code data-language="javascript">$('input').tagsinput('focus');</code></pre>
               </td>
             </tr>
             <tr>
@@ -559,7 +586,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
                 <p>Returns the tagsinput's internal &lt;input /&gt;, which is used for adding tags. You could use this to add your own typeahead behaviour for example.</p>
 
 
-                <pre class="prettyprint linenums">var $elt = $('input').tagsinput('input');</pre>
+                <pre><code data-language="html">var $elt = $('input').tagsinput('input');</code></pre>
               </td>
             </tr>
             <tr>
@@ -567,7 +594,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td>
                 <p>Refreshes the tags input UI. This might be usefull when you're adding objects as tags. When an object's text changes, you'll have to refresh to update the matching tag's text.</p>
 
-                <pre class="prettyprint linenums">$('input').tagsinput('refresh');</pre>
+                <pre><code data-language="javascript">$('input').tagsinput('refresh');</code></pre>
               </td>
             </tr>
             <tr>
@@ -575,7 +602,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td>
                 <p>Removes tagsinput behaviour</p>
 
-                <pre class="prettyprint linenums">$('input').tagsinput('destroy');</pre>
+                <pre><code data-language="javascript">$('input').tagsinput('destroy');</code></pre>
               </td>
             </tr>
           </tbody>
@@ -598,38 +625,38 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td><code>beforeItemAdd</code></td>
               <td>
                 Triggered just before an item gets added. Example:
-                <pre class="prettyprint linenums">$('input').on('beforeItemAdd', function(event) {
+                <pre><code data-language="javascript">$('input').on('beforeItemAdd', function(event) {
   // event.item: contains the item
   // event.cancel: set to true to prevent the item getting added
-});</pre>
+});</code></pre>
               </td>
             </tr>
             <tr>
               <td><code>itemAdded</code></td>
               <td>
                 Triggered just after an item got added. Example:
-                <pre class="prettyprint linenums">$('input').on('itemAdded', function(event) {
+                <pre><code data-language="javascript">$('input').on('itemAdded', function(event) {
   // event.item: contains the item
-});</pre>
+});</code></pre>
               </td>
             </tr>
             <tr>
               <td><code>beforeItemRemove</code></td>
               <td>
                 Triggered just before an item gets removed. Example:
-                <pre class="prettyprint linenums">$('input').on('beforeItemRemove', function(event) {
+                <pre><code data-language="javascript">$('input').on('beforeItemRemove', function(event) {
   // event.item: contains the item
   // event.cancel: set to true to prevent the item getting removed
-});</pre>
+});</code></pre>
               </td>
             </tr>
             <tr>
               <td><code>itemRemoved</code></td>
               <td>
                 Triggered just after an item got removed. Example:
-                <pre class="prettyprint linenums">$('input').on('itemRemoved', function(event) {
+                <pre><code data-language="javascript">$('input').on('itemRemoved', function(event) {
   // event.item: contains the item
-});</pre>
+});</code></pre>
               </td>
             </tr>
           </tbody>
@@ -642,14 +669,16 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
       </div>
     </footer>
 
-    <script src="bower_components/jquery/jquery.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="bower_components/angular/angular.min.js"></script>
-    <script src="bower_components/google-code-prettify-lite/prettify.js"></script>
-    <script src="../dist/bootstrap-tagsinput.js"></script>
-    <script src="../dist/bootstrap-tagsinput-angular.js"></script>
-    <script src="bower_components/typeahead.js/dist/typeahead.min.js"></script>
-    <script src="bower_components/typeahead.js/test/vendor/hogan-2.0.0.js"></script>
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/bootstrap-3/dist/js/bootstrap.min.js"></script>
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+    <script src="lib/bootstrap-tagsinput/bootstrap-tagsinput-angular.js"></script>
+    <script src="lib/typeahead.js/dist/typeahead.bundle.js"></script>
+    <script src="lib/rainbow/js/rainbow.min.js"></script>
+    <script src="lib/rainbow/js/language/generic.js"></script>
+    <script src="lib/rainbow/js/language/html.js"></script>
+    <script src="lib/rainbow/js/language/javascript.js"></script>
     <script src="assets/app_bs3.js"></script>
     <script src="assets/app.js"></script>
   </body>

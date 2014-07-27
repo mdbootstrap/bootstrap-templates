@@ -1,5 +1,3 @@
-prettyPrint();
-
 $(function() {
   $('input, select').on('change', function(event) {
     var $element = $(event.target),
