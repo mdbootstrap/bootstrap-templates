@@ -271,7 +271,7 @@
       if (typeahead.source && $.fn.typeahead) {
         makeOptionFunction(typeahead, 'source');
 
-        self.$input.typeahead({
+        self.$input.typeahead($.extend({}, typeahead, {
           source: function (query, process) {
             function processItems(items) {
               var texts = [];
@@ -313,7 +313,7 @@
             var regex = new RegExp( '(' + this.query + ')', 'gi' );
             return text.replace( regex, "<strong>$1</strong>" );
           }
-        });
+        }));
       }
 
       self.$container.on('click', $.proxy(function(event) {
