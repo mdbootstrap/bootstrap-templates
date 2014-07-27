@@ -439,6 +439,33 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               </td>
             </tr>  
             <tr>
+              <td colspan="2"><code>maxChars</code></td>
+              <td>
+                <p>Defines the maximum length of a single tag. (default: undefined)</p>
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  maxChars: 8
+});</pre>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"><code>trimValue</code></td>
+              <td>
+                <p>When true, automatically removes all whitespace around tags. (default: false)</p>
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  trimValue: true
+});</pre>
+              </td>
+            </tr> 
+            <tr>
+              <td colspan="2"><code>allowDuplicates</code></td>
+              <td>
+                <p>When true, the same tag can be added multiple times. (default: false)</p>
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  allowDuplicates: true
+});</pre>
+              </td>
+            </tr>
+            <tr>
               <td colspan="2"><code>freeInput</code></td>
               <td>
                 <p>Allow creating tags which are not returned by typeahead's source (default: true)</p>
