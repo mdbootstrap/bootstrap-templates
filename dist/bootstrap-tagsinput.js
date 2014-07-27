@@ -15,7 +15,7 @@
     addOnBlur: true,
     maxTags: undefined,
     maxChars: 0,
-    confirmKeys: [13],
+    confirmKeys: [13, 188],
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     },
@@ -113,6 +113,12 @@
       if (self.items().toString().length + item.length + 1 > self.options.maxInputLength)
         return;
 
+      // raise beforeItemAdd arg
+      var beforeItemAddEvent = $.Event('beforeItemAdd', { item: item, cancel: false });
+      self.$element.trigger(beforeItemAddEvent);
+      if (beforeItemAddEvent.cancel)
+        return;
+
       // register item in internal array and map
       self.itemsArray.push(item);
 
@@ -155,6 +161,11 @@
       }
 
       if (item) {
+        var beforeItemRemoveEvent = $.Event('beforeItemRemove', { item: item, cancel: false });
+        self.$element.trigger(beforeItemRemoveEvent);
+        if (beforeItemRemoveEvent.cancel)
+          return;
+
         $('.tag', self.$container).filter(function() { return $(this).data('item') === item; }).remove();
         $('option', self.$element).filter(function() { return $(this).data('item') === item; }).remove();
         if($.inArray(item, self.itemsArray) !== -1)
