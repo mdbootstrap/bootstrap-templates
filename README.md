@@ -4,16 +4,10 @@ Bootstrap Tags Input is a jQuery plugin providing a Twitter Bootstrap user inter
 ## Usage
 Examples can be found [here](http://timschlechter.github.com/bootstrap-tagsinput/examples/).
 
-## Development
-This plugin got more populair than I anticipated. The last couple of months I could not find the time to maintain it, sorry for all pull requests that are not handled yet.
-I'm trying to pick things up again but could use some help. If you like to help working on this plugin please join [this conversation](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/158).
-
-
 ## Features
 * Objects as tags
 * True multi value
 * Typeahead
-* AngularJS directive included
 * Designed for Bootstrap 2.3.2 and 3
 
 ### Objects as tags
@@ -35,8 +29,13 @@ form, an array of values will be sent with the request.
 ### Typeahead support
 Integrates with Twitter Bootstraps' 2.3.2 typeahead, or use custom typeahead when using Bootstrap 3.
 
-### Angular JS directive
-Include [bootstrap-tagsinput-angular.js](https://github.com/TimSchlechter/bootstrap-tagsinput/blob/master/src/bootstrap-tagsinput-angular.js) and register the 'bootstrap-tagsinput' in your Angular JS application to use the bootstrap-tagsinput directive. Look at [the examples page](http://timschlechter.github.io/bootstrap-tagsinput/examples/#angular) how to use the directive.
+## Development
+<pre>
+npm install
+bower install
+
+grunt build
+</pre>
 
 ## History
 
