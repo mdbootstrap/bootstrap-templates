@@ -286,8 +286,11 @@
                 data = typeahead.source(query);
 
             if ($.isFunction(data.success)) {
-              // support for Angular promises
+              // support for Angular callbacks
               data.success(processItems);
+            } else if ($.isFunction(data.then)) {
+              // support for Angular promises
+              data.then(processItems);
             } else {
               // support for functions and jquery promises
               $.when(data)
