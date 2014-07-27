@@ -14,7 +14,12 @@ module.exports = function(grunt) {
     copy: {
       build: {
         files: [
-          {expand: true, flatten: true, src: ['src/*.*'], dest: 'dist/', filter: 'isFile'}
+          {expand: true, flatten: true, src: ['src/*.*'], dest: 'dist/', filter: 'isFile'},
+
+          {expand: true, flatten: false, cwd: 'bower_components/', src: ['**'], dest: 'examples/lib/'},
+          {expand: true, flatten: false, cwd: 'dist/', src: ['**'], dest: 'examples/lib/bootstrap-tagsinput'},
+
+          {expand: true, flatten: false, cwd: 'bower_components/', src: ['**'], dest: 'test/lib/'}
         ]
       }
     },
@@ -26,14 +31,15 @@ module.exports = function(grunt) {
       },
       build: {
         files: {
-          'dist/<%= pkg.name %>.min.js': 'dist/<%= pkg.name %>.js'
+          'dist/<%= pkg.name %>.min.js': 'src/<%= pkg.name %>.js',
+          'dist/<%= pkg.name %>-angular.min.js': 'src/<%= pkg.name %>-angular.js'
         }
       }
     },
     less: {
       build: {
         files: {
-          "dist/<%= pkg.name %>.css": "dist/<%= pkg.name %>.less"
+          "dist/<%= pkg.name %>.css": "src/<%= pkg.name %>.less"
         }
       }
     },
@@ -46,21 +52,11 @@ module.exports = function(grunt) {
         browsers: ['PhantomJS']
       }
     },
-    watch: {
-      scripts: {
-        files: ['src/**/*.*', 'test/**/*.js', 'examples/**/*.html'],
-        tasks: ['copy:build', 'uglify:build', 'less:build'],
-        options: {
-          spawn: false,
-          interupt: true
-        }
-      }
-    },
     zip: {
       delpoy: {
         cwd: 'dist/',
         src:  ['dist/bootstrap-tagsinput*.*'],
-        dest:  'build/<%= pkg.name %>.zip'
+        dest:  'dist/<%= pkg.name %>.zip'
       }
     },
     jquerymanifest: {
@@ -70,9 +66,19 @@ module.exports = function(grunt) {
           title: '<%= pkg.title %>'
         }
       }
+    },
+    watch: {
+      scripts: {
+        files: ['src/**/*.*', 'test/**/*.js', 'examples/**/*.html'],
+        tasks: ['copy:build', 'uglify:build', 'less:build'],
+        options: {
+          spawn: false,
+          interupt: true
+        }
+      }
     }
   });
 
-  grunt.registerTask('build', ['unit', 'jquerymanifest', 'copy:build', 'uglify:build', 'less:build', 'zip']);  
+  grunt.registerTask('build', ['unit', 'jquerymanifest', 'uglify', 'less', 'copy', 'zip']);
   grunt.registerTask('unit', ['karma']);
 };
