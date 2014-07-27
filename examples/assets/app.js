@@ -9,7 +9,7 @@ $(function() {
     var val = $element.val();
     if (val === null)
       val = "null";
-    $('pre.val', $container).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
-    $('pre.items', $container).html(JSON.stringify($element.tagsinput('items')));
+    $('code', $('pre.val', $container)).html( ($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\"") );
+    $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
   }).trigger('change');
 });
