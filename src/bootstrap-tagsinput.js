@@ -19,7 +19,8 @@
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     },
-    trimValue: false
+    trimValue: false,
+    allowDuplicates: false
   };
 
   /**
@@ -100,7 +101,7 @@
 
       // Ignore items allready added
       var existing = $.grep(self.itemsArray, function(item) { return self.options.itemValue(item) === itemValue; } )[0];
-      if (existing) {
+      if (existing && !self.options.allowDuplicates) {
         // Invoke onTagExists
         if (self.options.onTagExists) {
           var $existingTag = $(".tag", self.$container).filter(function() { return $(this).data("item") === existing; });
@@ -155,9 +156,11 @@
 
       if (self.objectItems) {
         if (typeof item === "object")
-          item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  self.options.itemValue(item); } )[0];
+          item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  self.options.itemValue(item); } );
         else
-          item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  item; } )[0];
+          item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  item; } );
+
+        item = item[item.length-1];
       }
 
       if (item) {
