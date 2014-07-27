@@ -289,8 +289,8 @@
               // support for Angular callbacks
               data.success(processItems);
             } else if ($.isFunction(data.then)) {
-                // support for Angular promises
-                data.then(processItems);
+              // support for Angular promises
+              data.then(processItems);
             } else {
               // support for functions and jquery promises
               $.when(data)
