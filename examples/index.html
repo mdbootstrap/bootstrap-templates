@@ -413,7 +413,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
             <tr>
               <td colspan="2"><code>confirmKeys</code></td>
               <td>
-                <p>Array of keycodes which will add a tag when typing in the input. (default: [13], which is ENTER)</p>
+                <p>Array of keycodes which will add a tag when typing in the input. (default: [13, 188], which are ENTER and comma)</p>
                 <pre class="prettyprint linenums">$('input').tagsinput({
   confirmKeys: [13, 44]
 });</pre>
@@ -422,12 +422,48 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
             <tr>
               <td colspan="2"><code>maxTags</code></td>
               <td>
-                <p>When set, no more than the given number of tags are allowed to add (default: undefined). When maxTags is reached, a class 'bootstrap-tagsinput-max' is placed on the tagsinput element.</p>
+                <p>When set, no more than the given number of tags are allowed to add (default: undefined). When maxTags is reached, a class 'bootstrap-tagsinput-max' is placed on the tagsinput element. (default: undefined)</p>
                 <pre class="prettyprint linenums">$('input').tagsinput({
   maxTags: 3
 });</pre>
               </td>
-            </tr>  
+            </tr>
+            <tr>
+              <td colspan="2"><code>maxChars</code></td>
+              <td>
+                <p>Defines the maximum length of a single tag. (default: undefined)</p>
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  maxChars: 8
+});</pre>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"><code>trimValue</code></td>
+              <td>
+                <p>When true, automatically removes all whitespace around tags. (default: false)</p>
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  trimValue: true
+});</pre>
+              </td>
+            </tr> 
+            <tr>
+              <td colspan="2"><code>allowDuplicates</code></td>
+              <td>
+                <p>When true, the same tag can be added multiple times. (default: false)</p>
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  allowDuplicates: true
+});</pre>
+              </td>
+            </tr>             
+            <tr>
+              <td colspan="2"><code>maxChars</code></td>
+              <td>
+                <p>Defines the maximum length of a single tag.</p>
+                <pre class="prettyprint linenums">$('input').tagsinput({
+  maxChars: 8
+});</pre>
+              </td>
+            </tr>
             <tr>
               <td colspan="2"><code>freeInput</code></td>
               <td>
