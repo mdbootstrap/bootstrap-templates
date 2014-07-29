@@ -17,9 +17,16 @@ describe("bootstrap-tagsinput", function() {
 
       it("should add tag on when pressing ENTER", function() {
         this.$tagsinput_input.val('some_tag');
-        this.$tagsinput_input.trigger($.Event('keydown', { which: 13 }));
+        this.$tagsinput_input.trigger($.Event('keypress', { which: 13 }));
         expect(this.$element.tagsinput('items').length).toBe(1);
       });
+	  
+      it("should add tag on when pressing COMMA ,", function() {
+        this.$tagsinput_input.val('some_tag');
+        this.$tagsinput_input.trigger($.Event('keypress', { which: 44 }));
+        expect(this.$element.tagsinput('items').length).toBe(1);
+      });
+
 
       describe("should not add tag", function() {
         it("when adding same item twice", function() {
@@ -196,7 +203,7 @@ describe("bootstrap-tagsinput", function() {
     testTagsInput('<input type="text" />', { confirmKeys: [9] }, function() {
       it("should add tag on when pressing TAB", function() {
         this.$tagsinput_input.val('some_tag');
-        this.$tagsinput_input.trigger($.Event('keydown', { which: 9 }));
+        this.$tagsinput_input.trigger($.Event('keypress', { which: 9 }));
         expect(this.$element.tagsinput('items').length).toBe(1);
       });
     });
