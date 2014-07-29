@@ -20,7 +20,6 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-zip');
@@ -54,13 +53,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    less: {
-      build: {
-        files: {
-          "dist/<%= pkg.name %>.css": "src/<%= pkg.name %>.less"
-        }
-      }
-    },
     karma: {
       unit: {
         configFile: 'karma.conf.js',
@@ -88,7 +80,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['src/**/*.*', 'test/**/*.js', 'examples/**/*.html'],
-        tasks: ['copy:build', 'uglify:build', 'less:build'],
+        tasks: ['copy:build', 'uglify:build'],
         options: {
           spawn: false,
           interupt: true
@@ -98,5 +90,5 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('build', ['test', 'jquerymanifest', 'zip']);
-  grunt.registerTask('test', ['uglify', 'less', 'copy', 'karma']);
+  grunt.registerTask('test', ['uglify', 'copy', 'karma']);
 };
