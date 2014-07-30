@@ -26,7 +26,7 @@ elt.tagsinput({
   typeaheadjs: {
     name: 'citynames',
     displayKey: 'name',
-    itemKey: 'name',
+    valueKey: 'name',
     source: citynames.ttAdapter()
   }
 });
