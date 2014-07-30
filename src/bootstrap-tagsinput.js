@@ -254,8 +254,6 @@
       var self = this;
 
       self.options = $.extend({}, defaultOptions, options);
-      var typeahead = self.options.typeahead || {};
-
       // When itemValue is set, freeInput should always be false
       if (self.objectItems)
         self.options.freeInput = false;
@@ -263,12 +261,11 @@
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionFunction(self.options, 'tagClass');
+      
+      // Typeahead Bootstrap version 2.3.2
+      if (self.options.typeahead) {
+        var typeahead = self.options.typeahead || {};
 
-      // for backwards compatibility, self.options.source is deprecated
-      if (self.options.source)
-        typeahead.source = self.options.source;
-
-      if (typeahead.source && $.fn.typeahead) {
         makeOptionFunction(typeahead, 'source');
 
         self.$input.typeahead($.extend({}, typeahead, {
@@ -314,6 +311,19 @@
             return text.replace( regex, "<strong>$1</strong>" );
           }
         }));
+      }
+
+      // typeahead.js
+      if (self.options.typeaheadjs) {
+          var typeaheadjs = self.options.typeaheadjs || {};
+          
+          self.$input.typeahead(null, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
+            if (typeaheadjs.itemKey)
+              self.add(datum[typeaheadjs.itemKey]);
+            else
+              self.add(datum);
+            self.$input.typeahead('val', '');
+          }, self));
       }
 
       self.$container.on('click', $.proxy(function(event) {

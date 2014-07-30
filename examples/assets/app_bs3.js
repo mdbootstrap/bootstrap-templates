@@ -22,15 +22,14 @@ cities.initialize();
  * Typeahead
  */
 var elt = $('.example_typeahead > > input');
-elt.tagsinput();
-elt.tagsinput('input').typeahead(null, {
-  name: 'citynames',
-  displayKey: 'name',
-  source: citynames.ttAdapter()
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {
-	this.tagsinput('add', datum.name);
-	this.tagsinput('input').typeahead('val', '');
-}, elt));
+elt.tagsinput({
+  typeaheadjs: {
+    name: 'citynames',
+    displayKey: 'name',
+    itemKey: 'name',
+    source: citynames.ttAdapter()
+  }
+});
 
 /**
  * Objects as tags
@@ -38,22 +37,19 @@ elt.tagsinput('input').typeahead(null, {
 elt = $('.example_objects_as_tags > > input');
 elt.tagsinput({
   itemValue: 'value',
-  itemText: 'text'
+  itemText: 'text',
+  typeaheadjs: {
+    name: 'cities',
+    displayKey: 'text',
+    source: cities.ttAdapter()
+  }
 });
+
 elt.tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
 elt.tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
 elt.tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
 elt.tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
 elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
-
-elt.tagsinput('input').typeahead(null, {
-  name: 'cities',
-  displayKey: 'text',
-  source: cities.ttAdapter()
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {
-  this.tagsinput('add', datum);
-  this.tagsinput('input').typeahead('val', '');
-}, elt));
 
 /**
  * Categorizing tags
@@ -70,22 +66,18 @@ elt.tagsinput({
     }
   },
   itemValue: 'value',
-  itemText: 'text'
+  itemText: 'text',
+  typeaheadjs: {
+    name: 'cities',
+    displayKey: 'text',
+    source: cities.ttAdapter()
+  }
 });
 elt.tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
 elt.tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
 elt.tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
 elt.tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
 elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
-
-elt.tagsinput('input').typeahead(null, {
-  name: 'cities',
-  displayKey: 'text',
-  source: cities.ttAdapter()
-}).bind('typeahead:selected', $.proxy(function (obj, datum) {
-  this.tagsinput('add', datum);
-  this.tagsinput('input').typeahead('val', '');
-}, elt));
 
 // HACK: overrule hardcoded display inline-block of typeahead.js
 $(".twitter-typeahead").css('display', 'inline');
