@@ -7,7 +7,6 @@ files = [
   JASMINE_ADAPTER,
   'test/lib/jquery/dist/jquery.min.js',
   'test/lib/angular/angular.min.js',
-  'test/lib/angular-mocks/angular-mocks.js',
   'src/bootstrap-tagsinput.js',
   'src/bootstrap-tagsinput-angular.js',
 

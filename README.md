@@ -30,15 +30,21 @@ form, an array of values will be sent with the request.
 Integrates with Twitter Bootstraps' 2.3.2 typeahead, or use custom typeahead when using Bootstrap 3.
 
 ## Development
+Install dependencies:
 <pre>
 npm install
 bower install
-
+</pre>
+Test:
+<pre>
+grunt test
+</pre>
+Build:
+<pre>
 grunt build
 </pre>
 
 ## History
-
 __0.3.13__
 * [#5: Trigger events on original input/select](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/5)
 * Loads of fixes merged with help of @janvt, @rlidwka and @kuraga: thanks for helping me out!

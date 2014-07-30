@@ -1,5 +1,23 @@
 module.exports = function(grunt) {
 
+  var lib = [
+    'angular/angular.min.js',
+    'bootstrap-2.3.2/docs/assets/css/bootstrap.css',
+    'bootstrap-2.3.2/docs/assets/css/docs.css',
+    'bootstrap-2.3.2/docs/assets/js/bootstrap.min.js',
+    'bootstrap-3/dist/css/bootstrap-theme.min.css',
+    'bootstrap-3/dist/css/bootstrap.min.css',
+    'bootstrap-3/dist/js/bootstrap.min.js',
+    'bootstrap-tagsinput/bootstrap-tagsinput.css',
+    'jquery/dist/jquery.min.js',
+    'rainbow/js/language/generic.js',
+    'rainbow/js/language/html.js',
+    'rainbow/js/language/javascript.js',
+    'rainbow/js/rainbow.min.js',
+    'rainbow/themes/github.css',
+    'typeahead.js/dist/typeahead.bundle.js'
+  ];
+
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-less');
@@ -16,10 +34,10 @@ module.exports = function(grunt) {
         files: [
           {expand: true, flatten: true, src: ['src/*.*'], dest: 'dist/', filter: 'isFile'},
 
-          {expand: true, flatten: false, cwd: 'bower_components/', src: ['**'], dest: 'examples/lib/'},
+          {expand: true, flatten: false, cwd: 'bower_components/', src: [lib], dest: 'examples/lib/'},
           {expand: true, flatten: false, cwd: 'dist/', src: ['**'], dest: 'examples/lib/bootstrap-tagsinput'},
 
-          {expand: true, flatten: false, cwd: 'bower_components/', src: ['**'], dest: 'test/lib/'}
+          {expand: true, flatten: false, cwd: 'bower_components/', src: [lib], dest: 'test/lib/'}
         ]
       }
     },
@@ -79,6 +97,6 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('build', ['unit', 'jquerymanifest', 'uglify', 'less', 'copy', 'zip']);
-  grunt.registerTask('unit', ['karma']);
+  grunt.registerTask('build', ['test', 'jquerymanifest', 'zip']);
+  grunt.registerTask('test', ['uglify', 'less', 'copy', 'karma']);
 };
