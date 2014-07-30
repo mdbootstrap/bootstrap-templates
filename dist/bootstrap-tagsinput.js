@@ -318,8 +318,8 @@
           var typeaheadjs = self.options.typeaheadjs || {};
           
           self.$input.typeahead(null, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
-            if (typeaheadjs.itemKey)
-              self.add(datum[typeaheadjs.itemKey]);
+            if (typeaheadjs.valueKey)
+              self.add(datum[typeaheadjs.valueKey]);
             else
               self.add(datum);
             self.$input.typeahead('val', '');
