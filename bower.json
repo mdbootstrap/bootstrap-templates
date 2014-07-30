@@ -1,6 +1,6 @@
 {
   "name": "bootstrap-tagsinput",
-  "version": "0.3.14",
+  "version": "0.4",
   "homepage": "https://github.com/TimSchlechter/bootstrap-tagsinput",
   "authors": [
     "Tim Schlechter"
@@ -31,7 +31,6 @@
     "bootstrap-2.3.2": "bootstrap#2.3.2",
     "angular": "~1.2.21",
     "typeahead.js": "~0.10.4",
-    "angular-mocks": "~1.2.21",
     "jasmine": "~2.0.1",
     "rainbow": "~1.1.9"
   }

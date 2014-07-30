@@ -30,42 +30,41 @@ form, an array of values will be sent with the request.
 Integrates with Twitter Bootstraps' 2.3.2 typeahead, or use custom typeahead when using Bootstrap 3.
 
 ## Development
+Install dependencies:
 <pre>
 npm install
 bower install
-
+</pre>
+Test:
+<pre>
+grunt test
+</pre>
+Build:
+<pre>
 grunt build
 </pre>
 
 ## History
-
-__0.3.13__
-* [#5: Trigger events on original input/select](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/5)
-* Loads of fixes merged with help of @janvt, @rlidwka and @kuraga: thanks for helping me out!
-
-__0.3.9__
-* [#48: Type ahead stops when entering second character](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/48)
-
-__0.3.8__
-* [#43: Add support for placeholder](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/43)
-* [#46: ie 8 compatibility, replace indexOf method](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/46)
-
-__0.3.7__
-* [#39: flash when duplicate is entered](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/39)
-
-__0.3.6__
-
-* [#34: Error in ReloadPage](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/34)
-
-__0.3.5__
-
-* [#10: confirmKeys option](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/10)
-
-__0.3.4__
-
-* [#24: Add bsTagsInput angular directive & example for bootstrap3 with typeahea...](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/24)
-* [#28: Limit number of tags, enable/disable input](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/28)
-* [#33: Avoid conflict with other selects when checking for value presence](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/33)
+- 0.4
+  - [Fix typeahead when using Bootstrap 3](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/73)
+- 0.3.13
+  -  [#5: Trigger events on original input/select](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/5)
+  -  Loads of fixes merged with help of @janvt, @rlidwka and @kuraga: thanks for helping me out!
+- 0.3.9
+  -  [#48: Type ahead stops when entering second character](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/48)
+- 0.3.8
+  -  [#43: Add support for placeholder](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/43)
+  -  [#46: ie 8 compatibility, replace indexOf method](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/46)
+- 0.3.7
+  -  [#39: flash when duplicate is entered](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/39)
+- 0.3.6
+  -  [#34: Error in ReloadPage](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/34)
+- 0.3.5
+  -  [#10: confirmKeys option](https://github.com/TimSchlechter/bootstrap-tagsinput/issues/10)
+- 0.3.4
+  -  [#24: Add bsTagsInput angular directive & example for bootstrap3 with typeahea...](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/24)
+  -  [#28: Limit number of tags, enable/disable input](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/28)
+  -  [#33: Avoid conflict with other selects when checking for value presence](https://github.com/TimSchlechter/bootstrap-tagsinput/pull/33)
 
 ## License
 This project is licensed under [MIT](https://raw.github.com/TimSchlechter/bootstrap-tagsinput/master/LICENSE "Read more about the MIT license").
