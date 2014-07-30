@@ -15,7 +15,7 @@
     addOnBlur: true,
     maxTags: undefined,
     maxChars: undefined,
-    confirmKeys: [13, 188],
+    confirmKeys: [13, 44],
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     },
@@ -254,8 +254,6 @@
       var self = this;
 
       self.options = $.extend({}, defaultOptions, options);
-      var typeahead = self.options.typeahead || {};
-
       // When itemValue is set, freeInput should always be false
       if (self.objectItems)
         self.options.freeInput = false;
@@ -263,15 +261,14 @@
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionFunction(self.options, 'tagClass');
+      
+      // Typeahead Bootstrap version 2.3.2
+      if (self.options.typeahead) {
+        var typeahead = self.options.typeahead || {};
 
-      // for backwards compatibility, self.options.source is deprecated
-      if (self.options.source)
-        typeahead.source = self.options.source;
-
-      if (typeahead.source && $.fn.typeahead) {
         makeOptionFunction(typeahead, 'source');
 
-        self.$input.typeahead({
+        self.$input.typeahead($.extend({}, typeahead, {
           source: function (query, process) {
             function processItems(items) {
               var texts = [];
@@ -313,7 +310,20 @@
             var regex = new RegExp( '(' + this.query + ')', 'gi' );
             return text.replace( regex, "<strong>$1</strong>" );
           }
-        });
+        }));
+      }
+
+      // typeahead.js
+      if (self.options.typeaheadjs) {
+          var typeaheadjs = self.options.typeaheadjs || {};
+          
+          self.$input.typeahead(null, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
+            if (typeaheadjs.itemKey)
+              self.add(datum[typeaheadjs.itemKey]);
+            else
+              self.add(datum);
+            self.$input.typeahead('val', '');
+          }, self));
       }
 
       self.$container.on('click', $.proxy(function(event) {
@@ -384,22 +394,37 @@
             }
             break;
          default:
-            // When key corresponds one of the confirmKeys, or text.length reached maximum,
-            // add current input as a new tag
-            var text = $input.val(),
-                maxLengthReached = self.options.maxChars && text.length >= self.options.maxChars;
-            if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
-              self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
-              $input.val('');
-              event.preventDefault();
-            }
-        }
+             // ignore
+         }
 
         // Reset internal input's size
         var textLength = $input.val().length,
             wordSpace = Math.ceil(textLength / 5),
             size = textLength + wordSpace + 1;
         $input.attr('size', Math.max(this.inputSize, $input.val().length));
+      }, self));
+
+      self.$container.on('keypress', 'input', $.proxy(function(event) {
+         var $input = $(event.target);
+
+         if (self.$element.attr('disabled')) {
+            self.$input.attr('disabled', 'disabled');
+            return;
+         }
+
+         var text = $input.val(),
+         maxLengthReached = self.options.maxChars && text.length >= self.options.maxChars;
+         if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
+            self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
+            $input.val('');
+            event.preventDefault();
+         }
+
+         // Reset internal input's size
+         var textLength = $input.val().length,
+            wordSpace = Math.ceil(textLength / 5),
+            size = textLength + wordSpace + 1;
+         $input.attr('size', Math.max(this.inputSize, $input.val().length));
       }, self));
 
       // Remove icon clicked
