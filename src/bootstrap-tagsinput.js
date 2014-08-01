@@ -11,6 +11,11 @@
     itemText: function(item) {
       return this.itemValue(item);
     },
+	
+	containerClass: false,
+	inputSize:true,
+	inputClass:'',
+	
     freeInput: true,
     addOnBlur: true,
     maxTags: undefined,
@@ -36,15 +41,19 @@
     this.multiple = (this.isSelect && element.hasAttribute('multiple'));
     this.objectItems = options && options.itemValue;
     this.placeholderText = element.hasAttribute('placeholder') ? this.$element.attr('placeholder') : '';
-    this.inputSize = Math.max(1, this.placeholderText.length);
+    if( options.inputSize){ this.inputSize = Math.max(1, this.placeholderText.length);}
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
+	if( options.containerClass ){ this.$container.addClass( options.containerClass ); }
     this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
-
+	
+	if( options.inputClass ){ this.$input.addClass(options.inputClass); }
+	
     this.$element.after(this.$container);
-
-    var inputWidth = (this.inputSize < 3 ? 3 : this.inputSize) + "em";
-    this.$input.get(0).style.cssText = "width: " + inputWidth + " !important;";
+	if( options.inputSize){
+		var inputWidth = (this.inputSize < 3 ? 3 : this.inputSize) + "em";
+		this.$input.get(0).style.cssText = "width: " + inputWidth + " !important;";
+	}
     this.build(options);
   }
 
