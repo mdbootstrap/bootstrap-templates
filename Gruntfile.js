@@ -1,26 +1,33 @@
 module.exports = function(grunt) {
 
-  var lib = [
-    'jquery/dist/jquery.min.js',
-    'angular/angular.min.js',
-    'typeahead.js/dist/typeahead.bundle.js'
-  ];
-
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-zip');
   grunt.loadNpmTasks('grunt-jquerymanifest');
+  grunt.loadNpmTasks('grunt-bower-task');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-
+    bower: {
+      install: {
+        options: {
+          targetDir: './lib',
+          layout: 'byType',
+          install: true,
+          verbose: true,
+          cleanTargetDir: false,
+          cleanBowerDir: true,
+          bowerOptions: {
+            forceLatest: true
+          }
+        }
+      }
+    },
     copy: {
       build: {
         files: [
-          {expand: true, flatten: true, src: ['src/*.*'], dest: 'dist/', filter: 'isFile'},
-
-          {expand: true, flatten: false, cwd: 'bower_components/', src: [lib], dest: 'test/lib/'}
+          { expand: true, flatten: true, src: ['src/*.*'], dest: 'dist/', filter: 'isFile' }
         ]
       }
     },
@@ -63,6 +70,8 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('install', ['bower']);
+  grunt.registerTask('compile', ['uglify', 'copy']);
+  grunt.registerTask('test', ['compile', 'karma']);
   grunt.registerTask('build', ['test', 'jquerymanifest', 'zip']);
-  grunt.registerTask('test', ['uglify', 'copy', 'karma']);
 };
