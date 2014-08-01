@@ -1,20 +1,8 @@
 module.exports = function(grunt) {
 
   var lib = [
-    'angular/angular.min.js',
-    'bootstrap-2.3.2/docs/assets/css/bootstrap.css',
-    'bootstrap-2.3.2/docs/assets/css/docs.css',
-    'bootstrap-2.3.2/docs/assets/js/bootstrap.min.js',
-    'bootstrap-3/dist/css/bootstrap-theme.min.css',
-    'bootstrap-3/dist/css/bootstrap.min.css',
-    'bootstrap-3/dist/js/bootstrap.min.js',
-    'bootstrap-tagsinput/bootstrap-tagsinput.css',
     'jquery/dist/jquery.min.js',
-    'rainbow/js/language/generic.js',
-    'rainbow/js/language/html.js',
-    'rainbow/js/language/javascript.js',
-    'rainbow/js/rainbow.min.js',
-    'rainbow/themes/github.css',
+    'angular/angular.min.js',
     'typeahead.js/dist/typeahead.bundle.js'
   ];
 
@@ -31,9 +19,6 @@ module.exports = function(grunt) {
       build: {
         files: [
           {expand: true, flatten: true, src: ['src/*.*'], dest: 'dist/', filter: 'isFile'},
-
-          {expand: true, flatten: false, cwd: 'bower_components/', src: [lib], dest: 'examples/lib/'},
-          {expand: true, flatten: false, cwd: 'dist/', src: ['**'], dest: 'examples/lib/bootstrap-tagsinput'},
 
           {expand: true, flatten: false, cwd: 'bower_components/', src: [lib], dest: 'test/lib/'}
         ]
