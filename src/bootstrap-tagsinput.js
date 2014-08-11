@@ -125,6 +125,12 @@
       // register item in internal array and map
       self.itemsArray.push(item);
 
+      //remove placeholder if there is an item, restore if no item(s)
+      if (self.itemsArray.length)
+        self.$input.attr('placeholder', '');
+      else
+        self.$input.attr('placeholder', self.placeholderText);
+
       // add a tag element
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
       $tag.data('item', item);
@@ -138,6 +144,12 @@
         $option.attr('value', itemValue);
         self.$element.append($option);
       }
+
+      //remove placeholder if there is an item, restore if no item(s)
+      if (self.itemsArray.length)
+        self.$input.attr('placeholder', '');
+      else
+        self.$input.attr('placeholder', self.placeholderText);
 
       if (!dontPushVal)
         self.pushVal();
@@ -263,7 +275,7 @@
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionFunction(self.options, 'tagClass');
-      
+
       // Typeahead Bootstrap version 2.3.2
       if (self.options.typeahead) {
         var typeahead = self.options.typeahead || {};
@@ -318,7 +330,7 @@
       // typeahead.js
       if (self.options.typeaheadjs) {
           var typeaheadjs = self.options.typeaheadjs || {};
-          
+
           self.$input.typeahead(null, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
             if (typeaheadjs.valueKey)
               self.add(datum[typeaheadjs.valueKey]);
@@ -345,7 +357,7 @@
               }
           }, self));
         }
-        
+
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
         var $input = $(event.target),
@@ -581,7 +593,7 @@
   }
 
   /**
-    * Returns boolean indicates whether user has pressed an expected key combination. 
+    * Returns boolean indicates whether user has pressed an expected key combination.
     * @param object keyPressEvent: JavaScript event object, refer
     *     http://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
     * @param object lookupList: expected key combinations, as in:
