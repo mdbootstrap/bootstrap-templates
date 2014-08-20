@@ -189,6 +189,12 @@
           self.itemsArray.splice($.inArray(item, self.itemsArray), 1);
       }
 
+      //remove placeholder if there is an item, restore if no item(s)
+      if (self.itemsArray.length)
+        self.$input.attr('placeholder', '');
+      else
+        self.$input.attr('placeholder', self.placeholderText);
+
       if (!dontPushVal)
         self.pushVal();
 
@@ -210,6 +216,12 @@
 
       while(self.itemsArray.length > 0)
         self.itemsArray.pop();
+
+      //remove placeholder if there is an item, restore if no item(s)
+      if (self.itemsArray.length)
+        self.$input.attr('placeholder', '');
+      else
+        self.$input.attr('placeholder', self.placeholderText);
 
       self.pushVal();
     },
