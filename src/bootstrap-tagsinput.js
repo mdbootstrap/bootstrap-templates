@@ -11,6 +11,7 @@
     itemText: function(item) {
       return this.itemValue(item);
     },
+    itemCreate: nothing,
     freeInput: true,
     addOnBlur: true,
     maxTags: undefined,
@@ -60,6 +61,11 @@
 
       if (self.options.maxTags && self.itemsArray.length >= self.options.maxTags)
         return;
+
+      // if the item to be added is a string and we're storing objects and we have an itemCreator 
+      if (typeof item === "string" && self.objectItems && $.isFunction(self.options.itemCreate)) {
+        self.options.itemCreate(item);
+      }
 
       // Ignore falsey values, except false
       if (item !== false && !item)
@@ -256,8 +262,9 @@
       var self = this;
 
       self.options = $.extend({}, defaultOptions, options);
-      // When itemValue is set, freeInput should always be false
-      if (self.objectItems)
+
+      // When itemValue is set, freeInput should always be false unless there's an itemCreate defined
+      if (self.objectItems && self.options.freeInput && !$.isFunction(self.options.itemCreate))
         self.options.freeInput = false;
 
       makeOptionItemFunction(self.options, 'itemValue');
