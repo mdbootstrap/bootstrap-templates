@@ -195,6 +195,7 @@
 
       $('.tag', self.$container).remove();
       $('option', self.$element).remove();
+      self.$container.removeClass('bootstrap-tagsinput-max');
 
       while(self.itemsArray.length > 0)
         self.itemsArray.pop();
