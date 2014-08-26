@@ -129,6 +129,7 @@
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
+      self.$container.addClass('bootstrap-tagsinput-any');
       $tag.after(' ');
 
       // add <option /> if item represents a value not present in one of the <select />'s options
@@ -184,6 +185,9 @@
       if (self.options.maxTags > self.itemsArray.length)
         self.$container.removeClass('bootstrap-tagsinput-max');
 
+      if (self.itemsArray.length === 0)
+        self.$container.removeClass('bootstrap-tagsinput-any');
+
       self.$element.trigger($.Event('itemRemoved',  { item: item }));
     },
 
@@ -195,6 +199,7 @@
 
       $('.tag', self.$container).remove();
       $('option', self.$element).remove();
+      self.$container.removeClass('bootstrap-tagsinput-any');
 
       while(self.itemsArray.length > 0)
         self.itemsArray.pop();
