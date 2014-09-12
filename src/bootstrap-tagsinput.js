@@ -420,6 +420,8 @@
             self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
             $input.val('');
             event.preventDefault();
+         }else if(!self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)){
+            event.preventDefault();
          }
 
          // Reset internal input's size
