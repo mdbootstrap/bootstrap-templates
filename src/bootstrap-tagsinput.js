@@ -15,7 +15,7 @@
     addOnBlur: true,
     maxTags: undefined,
     maxChars: undefined,
-    confirmKeys: [13, 44],
+    confirmKeys: [9, 13, 44],
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     },
@@ -256,9 +256,6 @@
       var self = this;
 
       self.options = $.extend({}, defaultOptions, options);
-      // When itemValue is set, freeInput should always be false
-      if (self.objectItems)
-        self.options.freeInput = false;
 
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
@@ -340,7 +337,17 @@
               // HACK: only process on focusout when no typeahead opened, to
               //       avoid adding the typeahead text as tag
               if ($('.typeahead, .twitter-typeahead', self.$container).length === 0) {
-                self.add(self.$input.val());
+                var item2 = self.$input.val();
+                if (self.objectItems) {
+                  var beforeFreeInputItemAdd = $.Event('beforeFreeInputItemAdd', { item: item2, cancel: true });
+                  self.$element.trigger(beforeFreeInputItemAdd);
+                  if (beforeFreeInputItemAdd.cancel)
+                    return;
+
+                  item2 = beforeFreeInputItemAdd.item;
+                }
+
+                self.add(item2);
                 self.$input.val('');
               }
           }, self));
@@ -417,7 +424,17 @@
          var text = $input.val(),
          maxLengthReached = self.options.maxChars && text.length >= self.options.maxChars;
          if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
-            self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
+            var item2 = maxLengthReached ? text.substr(0, self.options.maxChars) : text;
+            if (self.objectItems) {
+              var beforeFreeInputItemAdd = $.Event('beforeFreeInputItemAdd', { item: item2, cancel: true });
+              self.$element.trigger(beforeFreeInputItemAdd);
+              if (beforeFreeInputItemAdd.cancel)
+                return;
+
+              item2 = maxLengthReached ? beforeFreeInputItemAdd.item.substr(0, self.options.maxChars) : beforeFreeInputItemAdd.item;
+            }
+
+            self.add(item2);
             $input.val('');
             event.preventDefault();
          }
