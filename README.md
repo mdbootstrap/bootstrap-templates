@@ -7,42 +7,44 @@ This makes each freeinput tag addition attempt with a new event *beforeFreeInput
 * When itemValue is set, freeInput can still be used
 
 # Example
-    var myTags = []
 
-    var tagToken = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        local: [{'text': 'Choice1', 'value': 1}, {'text': 'Choice2', 'value': 2}, {'text': 'Choice3', 'value': 3}]
-    });
+```javascript
+var myTags = []
 
-    options = {
-        itemValue: 'value',
-        itemText: 'text',
-        trimValue: true,
-        freeInput: true,
-        typeaheadjs: {
-            hint: true,
-            highlight: true,
-            name: 'myinput',
-            displayKey: 'text',
-            source: tagToken.ttAdapter(),
-        },
-    };
+var tagToken = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    local: [{'text': 'Choice1', 'value': 1}, {'text': 'Choice2', 'value': 2}, {'text': 'Choice3', 'value': 3}]
+});
 
-    $('#myinput').tagsinput(options);
+options = {
+    itemValue: 'value',
+    itemText: 'text',
+    trimValue: true,
+    freeInput: true,
+    typeaheadjs: {
+        hint: true,
+        highlight: true,
+        name: 'myinput',
+        displayKey: 'text',
+        source: tagToken.ttAdapter(),
+    },
+};
 
-    $('#myinput').on('beforeFreeInputItemAdd', function(event) {
-        //event.item is the freeinput text
-        // we should convert that into acceptable item
-        // and change "cancel" to false that is default behaviour
-        $.newTagIds_forThisElement==undefined ? $.newTagIds_forThisElement = [1000] : ""; // I would like my new addition tags start with index 1001
-        lastId = $.newTagIds_forThisElement.pop();
-        $.newTagIds_forThisElement.push(lastId);
-        $.newTagIds_forThisElement.push(lastId+1);
-        event.item = {'text': event.item, 'value': lastId+1};
-        event.cancel = false;  
-    });
+$('#myinput').tagsinput(options);
 
+$('#myinput').on('beforeFreeInputItemAdd', function(event) {
+    //event.item is the freeinput text
+    // we should convert that into acceptable item
+    // and change "cancel" to false that is default behaviour
+    $.newTagIds_forThisElement==undefined ? $.newTagIds_forThisElement = [1000] : ""; // I would like my new addition tags start with index 1001
+    lastId = $.newTagIds_forThisElement.pop();
+    $.newTagIds_forThisElement.push(lastId);
+    $.newTagIds_forThisElement.push(lastId+1);
+    event.item = {'text': event.item, 'value': lastId+1};
+    event.cancel = false;  
+});
+```
 
 # Warning
 * Already imported tag list and new free input may collide because of new *ID*s
