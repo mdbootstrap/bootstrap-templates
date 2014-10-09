@@ -43,8 +43,6 @@
 
     this.$element.after(this.$container);
 
-    var inputWidth = (this.inputSize < 3 ? 3 : this.inputSize) + "em";
-    this.$input.get(0).style.cssText = "width: " + inputWidth + " !important;";
     this.build(options);
   }
 
@@ -95,6 +93,14 @@
         }
       }
 
+      // raise beforeItemAdd arg
+      var beforeItemAddEvent = $.Event('beforeItemAdd', { item: item, cancel: false });
+      self.$element.trigger(beforeItemAddEvent);
+      if (beforeItemAddEvent.cancel)
+        return;
+
+      item = beforeItemAddEvent.item
+
       var itemValue = self.options.itemValue(item),
           itemText = self.options.itemText(item),
           tagClass = self.options.tagClass(item);
@@ -112,12 +118,6 @@
 
       // if length greater than limit
       if (self.items().toString().length + item.length + 1 > self.options.maxInputLength)
-        return;
-
-      // raise beforeItemAdd arg
-      var beforeItemAddEvent = $.Event('beforeItemAdd', { item: item, cancel: false });
-      self.$element.trigger(beforeItemAddEvent);
-      if (beforeItemAddEvent.cancel)
         return;
 
       // register item in internal array and map
@@ -322,6 +322,7 @@
               self.add(datum[typeaheadjs.valueKey]);
             else
               self.add(datum);
+            console.log("here");
             self.$input.typeahead('val', '');
           }, self));
       }
@@ -333,16 +334,16 @@
         self.$input.focus();
       }, self));
 
-        if (self.options.addOnBlur && self.options.freeInput) {
-          self.$input.on('focusout', $.proxy(function(event) {
-              // HACK: only process on focusout when no typeahead opened, to
-              //       avoid adding the typeahead text as tag
-              if ($('.typeahead, .twitter-typeahead', self.$container).length === 0) {
-                self.add(self.$input.val());
-                self.$input.val('');
-              }
-          }, self));
-        }
+      if (self.options.addOnBlur && self.options.freeInput) {
+        self.$input.on('focusout', $.proxy(function(event) {
+          // HACK: only process on focusout when no typeahead opened, to
+          //       avoid adding the typeahead text as tag
+          if ($('.typeahead, .twitter-typeahead', self.$container).length === 0) {
+            self.add(self.$input.val());
+            self.$input.val('');
+          }
+        }, self));
+      }
         
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
@@ -416,7 +417,13 @@
          maxLengthReached = self.options.maxChars && text.length >= self.options.maxChars;
          if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
             self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
-            $input.val('');
+
+            if (self.options.typeaheadjs) {
+                $input.typeahead('val', '');
+            } else {
+                $input.val('');
+            }
+
             event.preventDefault();
          }
 
