@@ -36,15 +36,13 @@
     this.multiple = (this.isSelect && element.hasAttribute('multiple'));
     this.objectItems = options && options.itemValue;
     this.placeholderText = element.hasAttribute('placeholder') ? this.$element.attr('placeholder') : '';
-    this.inputSize = Math.max(1, this.placeholderText.length);
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
     this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
 
     this.$element.after(this.$container);
 
-    var inputWidth = (this.inputSize < 3 ? 3 : this.inputSize) + "em";
-    this.$input.get(0).style.cssText = "width: " + inputWidth + " !important;";
+    this.$input.width('1px');
     this.build(options);
   }
 
@@ -145,6 +143,8 @@
       // Add class when reached maxTags
       if (self.options.maxTags === self.itemsArray.length || self.items().toString().length === self.options.maxInputLength)
         self.$container.addClass('bootstrap-tagsinput-max');
+
+      self.resetInputSize();
 
       self.$element.trigger($.Event('itemAdded', { item: item }));
     },
@@ -263,7 +263,7 @@
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionFunction(self.options, 'tagClass');
-      
+
       // Typeahead Bootstrap version 2.3.2
       if (self.options.typeahead) {
         var typeahead = self.options.typeahead || {};
@@ -318,13 +318,18 @@
       // typeahead.js
       if (self.options.typeaheadjs) {
           var typeaheadjs = self.options.typeaheadjs || {};
-          
+
           self.$input.typeahead(null, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
             if (typeaheadjs.valueKey)
               self.add(datum[typeaheadjs.valueKey]);
             else
               self.add(datum);
             self.$input.typeahead('val', '');
+          }, self));
+
+          self.$input.typeahead(null, typeaheadjs).on('typeahead:cursorchanged', $.proxy(function (event, datum) {
+            self.$input.typeahead('val', datum[typeaheadjs.valueKey]);
+            self.updateInputSize();
           }, self));
       }
 
@@ -339,13 +344,19 @@
           self.$input.on('focusout', $.proxy(function(event) {
               // HACK: only process on focusout when no typeahead opened, to
               //       avoid adding the typeahead text as tag
-              if ($('.typeahead, .twitter-typeahead', self.$container).length === 0) {
+              if ($('.tt-suggestion', self.$container).length === 0) {
                 self.add(self.$input.val());
                 self.$input.val('');
+                self.resetInputSize();
               }
           }, self));
         }
-        
+
+      self.$container.on('keyup', 'input', $.proxy(function(event) {
+        if (event.which === 8 || event.which === 46){
+          self.updateInputSize();
+        }
+      }, self));
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
         var $input = $(event.target),
@@ -399,12 +410,8 @@
              // ignore
          }
 
-        // Reset internal input's size
-        var textLength = $input.val().length,
-            wordSpace = Math.ceil(textLength / 5),
-            size = textLength + wordSpace + 1;
-        $input.attr('size', Math.max(this.inputSize, $input.val().length));
       }, self));
+
 
       self.$container.on('keypress', 'input', $.proxy(function(event) {
          var $input = $(event.target);
@@ -421,12 +428,7 @@
             $input.val('');
             event.preventDefault();
          }
-
-         // Reset internal input's size
-         var textLength = $input.val().length,
-            wordSpace = Math.ceil(textLength / 5),
-            size = textLength + wordSpace + 1;
-         $input.attr('size', Math.max(this.inputSize, $input.val().length));
+         self.updateInputSize(String.fromCharCode(event.which));
       }, self));
 
       // Remove icon clicked
@@ -476,6 +478,32 @@
      */
     input: function() {
       return this.$input;
+    },
+
+    /**
+    * It increases or decreases the input's width when user is typing
+    */
+    updateInputSize: function(newChar){
+      newChar = newChar || "";
+      var self = this,
+          $hiddenInputText = null;
+
+      if (this.$container.next('.hidden-input-text').length === 0){
+        $hiddenInputText = $('<span>', { class: 'hidden-input-text', style: 'display: none;white-space:pre;' });
+        $.each(['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'letterSpacing', 'textTransform', 'wordSpacing', 'textIndent'], function (i, val) {
+          $hiddenInputText.get(0).style[val] = self.$input.css(val);
+        });
+        this.$container.after($hiddenInputText);
+        $hiddenInputText.hide();
+      } else {
+        $hiddenInputText = this.$container.next('.hidden-input-text');
+      }
+      $hiddenInputText.html(this.$input.val()+newChar);
+      this.$input.width($hiddenInputText.width() !== 0 ? $hiddenInputText.width() : 1);
+    },
+
+    resetInputSize: function(){
+      this.$input.width(1);
     },
 
     /**
