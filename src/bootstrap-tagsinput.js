@@ -2,6 +2,7 @@
   "use strict";
 
   var defaultOptions = {
+    containerClass: 'bootstrap-tagsinput',
     tagClass: function(item) {
       return 'label label-info';
     },
@@ -38,14 +39,15 @@
     this.placeholderText = element.hasAttribute('placeholder') ? this.$element.attr('placeholder') : '';
     this.inputSize = Math.max(1, this.placeholderText.length);
 
-    this.$container = $('<div class="bootstrap-tagsinput"></div>');
+    this.build(options);
+    
+    this.$container = $('<div class="' + this.options.containerClass + '"></div>');
     this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
 
     this.$element.after(this.$container);
 
     var inputWidth = (this.inputSize < 3 ? 3 : this.inputSize) + "em";
     this.$input.get(0).style.cssText = "width: " + inputWidth + " !important;";
-    this.build(options);
   }
 
   TagsInput.prototype = {
