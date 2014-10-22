@@ -41,7 +41,7 @@
 
     this.build(options);
     
-    this.$container = $('<div class="' + self.options.containerClass + '"></div>');
+    this.$container = $('<div class="' + this.options.containerClass + '"></div>');
     this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
 
     this.$element.after(this.$container);
