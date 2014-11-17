@@ -49,7 +49,7 @@
     this.$element.after(this.$container);
 
     if(options && options.elemControlSize) {
-      var inputWidth = options.inputSize;
+      var inputWidth = options.elemSize;
       this.$input.get(0).style.cssText = "width: " + inputWidth + " !important;";
     }
     this.build(options);
