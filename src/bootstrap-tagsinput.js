@@ -15,6 +15,7 @@
     addOnBlur: true,
     maxTags: undefined,
     maxChars: undefined,
+    separator: ',',
     confirmKeys: [13, 44],
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
@@ -83,7 +84,7 @@
         self.remove(self.itemsArray[0]);
 
       if (typeof item === "string" && this.$element[0].tagName === 'INPUT') {
-        var items = item.split(',');
+        var items = item.split(self.options.separator);
         if (items.length > 1) {
           for (var i = 0; i < items.length; i++) {
             this.add(items[i], true);
@@ -244,7 +245,7 @@
       var self = this,
           val = $.map(self.items(), function(item) {
             return self.options.itemValue(item).toString();
-          });
+          }).join(self.options.separator);
 
       self.$element.val(val, true).trigger('change');
     },
@@ -318,8 +319,9 @@
       // typeahead.js
       if (self.options.typeaheadjs) {
           var typeaheadjs = self.options.typeaheadjs || {};
+          var typeaheadjsOptions = self.options.typeaheadjsOptions || null;
           
-          self.$input.typeahead(null, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
+          self.$input.typeahead(typeaheadjsOptions, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
             if (typeaheadjs.valueKey)
               self.add(datum[typeaheadjs.valueKey]);
             else
