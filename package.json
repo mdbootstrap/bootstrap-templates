@@ -6,6 +6,7 @@
   "scripts": {
     "test": "karma start --single-run --no-auto-watch"
   },
+  "main" : "dist/bootstrap-tagsinput.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/timschlechter/bootstrap-tagsinput.git"
