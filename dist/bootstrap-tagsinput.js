@@ -121,7 +121,12 @@
         return;
 
       // register item in internal array and map
-      self.itemsArray.push(item);
+        var index = self.findInputWrapper().index();
+        if (index >= 0) {
+            self.itemsArray.splice(index, 0, item);
+        } else {
+            self.itemsArray.push(item);
+        }
 
       // add a tag element
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
