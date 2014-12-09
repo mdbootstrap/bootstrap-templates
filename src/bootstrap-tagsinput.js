@@ -80,7 +80,7 @@
 
       // If SELECT but not multiple, remove current tag
       if (self.isSelect && !self.multiple && self.itemsArray.length > 0)
-        self.remove(self.itemsArray[0]);
+        self.remove(self.itemsArray[0], false, 0);
 
       if (typeof item === "string" && this.$element[0].tagName === 'INPUT') {
         var items = item.split(',');
@@ -128,6 +128,7 @@
       // add a tag element
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
       $tag.data('item', item);
+      $tag.data('index', self.itemsArray.length - 1);
       self.findInputWrapper().before($tag);
       $tag.after(' ');
 
@@ -135,6 +136,7 @@
       if (self.isSelect && !$('option[value="' + encodeURIComponent(itemValue) + '"]',self.$element)[0]) {
         var $option = $('<option selected>' + htmlEncode(itemText) + '</option>');
         $option.data('item', item);
+        $option.data('index', self.itemsArray.length - 1);
         $option.attr('value', itemValue);
         self.$element.append($option);
       }
@@ -153,7 +155,7 @@
      * Removes the given item. Pass true to dontPushVal to prevent updating the
      * elements val()
      */
-    remove: function(item, dontPushVal) {
+    remove: function(item, dontPushVal, index) {
       var self = this;
 
       if (self.objectItems) {
@@ -171,10 +173,12 @@
         if (beforeItemRemoveEvent.cancel)
           return;
 
-        $('.tag', self.$container).filter(function() { return $(this).data('item') === item; }).remove();
-        $('option', self.$element).filter(function() { return $(this).data('item') === item; }).remove();
+        $('.tag', self.$container).filter(function() { return $(this).data('item') === item && $(this).data('index') === index; }).remove();
+        $('.tag', self.$container).each(function(newIndex) { $(this).data('index', newIndex); });
+        $('option', self.$element).filter(function() { return $(this).data('item') === item && $(this).data('index') === index; }).remove();
+        $('option', self.$element).each(function(newIndex) { $(this).data('index', newIndex); });
         if($.inArray(item, self.itemsArray) !== -1)
-          self.itemsArray.splice($.inArray(item, self.itemsArray), 1);
+          self.itemsArray.splice(index, 1);
       }
 
       if (!dontPushVal)
@@ -362,7 +366,7 @@
             if (doGetCaretPosition($input[0]) === 0) {
               var prev = $inputWrapper.prev();
               if (prev) {
-                self.remove(prev.data('item'));
+                self.remove(prev.data('item'), false, prev.data('index'));
               }
             }
             break;
@@ -372,7 +376,7 @@
             if (doGetCaretPosition($input[0]) === 0) {
               var next = $inputWrapper.next();
               if (next) {
-                self.remove(next.data('item'));
+                self.remove(next.data('item'), false, prev.data('index'));
               }
             }
             break;
@@ -434,7 +438,8 @@
         if (self.$element.attr('disabled')) {
           return;
         }
-        self.remove($(event.target).closest('.tag').data('item'));
+        $targetTag = $(event.target).closest('.tag');
+        self.remove($targetTag.data('item'), false, $targetTag.data('item'));
       }, self));
 
       // Only add existing value as tags when using strings as tags
