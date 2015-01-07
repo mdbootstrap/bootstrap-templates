@@ -103,12 +103,12 @@
 
       item = beforeItemAddEvent.item
 
-      var itemValue = self.options.itemValue(item),
-          itemText = self.options.itemText(item),
+      var itemValue = self.options.itemValue(item) || item,
+          itemText = self.options.itemText(item) || item,
           tagClass = self.options.tagClass(item);
 
-      // Ignore items allready added
-      var existing = $.grep(self.itemsArray, function(item) { return self.options.itemValue(item) === itemValue; } )[0];
+      // Ignore items already added
+      var existing = $.grep(self.itemsArray, function(item) { return self.options.itemValue(item) === itemValue || item ===itemValue; } )[0];
       if (existing && !self.options.allowDuplicates) {
         // Invoke onTagExists
         if (self.options.onTagExists) {
@@ -160,7 +160,7 @@
         if (typeof item === "object")
           item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  self.options.itemValue(item); } );
         else
-          item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  item; } );
+          item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  item || other == item; } );
 
         item = item[item.length-1];
       }
@@ -211,8 +211,8 @@
       $('.tag', self.$container).each(function() {
         var $tag = $(this),
             item = $tag.data('item'),
-            itemValue = self.options.itemValue(item),
-            itemText = self.options.itemText(item),
+            itemValue = self.options.itemValue(item) || item,
+            itemText = self.options.itemText(item) || item,
             tagClass = self.options.tagClass(item);
 
           // Update tag's class and inner text
@@ -243,7 +243,7 @@
     pushVal: function() {
       var self = this,
           val = $.map(self.items(), function(item) {
-            return self.options.itemValue(item).toString();
+            return (typeof item === 'object') ? self.options.itemValue(item).toString(): item;
           });
 
       self.$element.val(val, true).trigger('change');
@@ -256,14 +256,11 @@
       var self = this;
 
       self.options = $.extend({}, defaultOptions, options);
-      // When itemValue is set, freeInput should always be false
-      if (self.objectItems)
-        self.options.freeInput = false;
 
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionFunction(self.options, 'tagClass');
-      
+
       // Typeahead Bootstrap version 2.3.2
       if (self.options.typeahead) {
         var typeahead = self.options.typeahead || {};
@@ -317,15 +314,24 @@
 
       // typeahead.js
       if (self.options.typeaheadjs) {
-          var typeaheadjs = self.options.typeaheadjs || {};
-          
-          self.$input.typeahead(null, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
+        var typeaheadjs = self.options.typeaheadjs || {};
+        var options = typeaheadjs.options || null;
+        self.$input.typeahead(options, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
+          if (typeaheadjs.valueKey)
+            self.add(datum[typeaheadjs.valueKey]);
+          else
+            self.add(datum);
+          self.$input.typeahead('val', '');
+        }, self))
+        .on('typeahead:autocompleted', $.proxy(function (obj, datum) {
+          if(typeaheadjs.addOnAutocompleted){
             if (typeaheadjs.valueKey)
               self.add(datum[typeaheadjs.valueKey]);
             else
               self.add(datum);
             self.$input.typeahead('val', '');
-          }, self));
+          }
+        }, self));
       }
 
       self.$container.on('click', $.proxy(function(event) {
@@ -335,17 +341,15 @@
         self.$input.focus();
       }, self));
 
-        if (self.options.addOnBlur && self.options.freeInput) {
-          self.$input.on('focusout', $.proxy(function(event) {
-              // HACK: only process on focusout when no typeahead opened, to
-              //       avoid adding the typeahead text as tag
-              if ($('.typeahead, .twitter-typeahead', self.$container).length === 0) {
-                self.add(self.$input.val());
-                self.$input.val('');
-              }
-          }, self));
-        }
-        
+      if (self.options.addOnBlur && self.options.freeInput) {
+        self.$input.on('focusout', $.proxy(function(event) {
+          self.add(self.$input.val());
+          self.$input.val('');
+          if (self.options.typeaheadjs)
+            self.$input.typeahead('val', '');
+        }, self));
+      }
+
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
         var $input = $(event.target),
@@ -581,7 +585,7 @@
   }
 
   /**
-    * Returns boolean indicates whether user has pressed an expected key combination. 
+    * Returns boolean indicates whether user has pressed an expected key combination.
     * @param object keyPressEvent: JavaScript event object, refer
     *     http://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
     * @param object lookupList: expected key combinations, as in:
