@@ -101,13 +101,13 @@
       if (beforeItemAddEvent.cancel)
         return;
 
-      item = beforeItemAddEvent.item
+      item = beforeItemAddEvent.item;
 
       var itemValue = self.options.itemValue(item),
           itemText = self.options.itemText(item),
           tagClass = self.options.tagClass(item);
 
-      // Ignore items allready added
+      // Ignore items already added
       var existing = $.grep(self.itemsArray, function(item) { return self.options.itemValue(item) === itemValue; } )[0];
       if (existing && !self.options.allowDuplicates) {
         // Invoke onTagExists
@@ -122,14 +122,17 @@
       if (self.items().toString().length + item.length + 1 > self.options.maxInputLength)
         return;
 
-      // register item in internal array and map
-      self.itemsArray.push(item);
-
       // add a tag element
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
       $tag.after(' ');
+
+      // associate tag element with array element
+      item.$element = $tag;
+
+      // register item in internal array and map
+      self.itemsArray.push(item);
 
       // add <option /> if item represents a value not present in one of the <select />'s options
       if (self.isSelect && !$('option[value="' + encodeURIComponent(itemValue) + '"]',self.$element)[0]) {
@@ -234,6 +237,16 @@
      */
     items: function() {
       return this.itemsArray;
+    },
+
+    /**
+     * Returns item by value.
+     */
+    item: function(val){
+      var self = this;
+      return ( $.grep(self.itemsArray, function(item) {
+        return self.options.itemValue(item) == val;
+      }) )[0];
     },
 
     /**
