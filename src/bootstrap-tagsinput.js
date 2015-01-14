@@ -122,14 +122,17 @@
       if (self.items().toString().length + item.length + 1 > self.options.maxInputLength)
         return;
 
-      // register item in internal array and map
-      self.itemsArray.push(item);
-
       // add a tag element
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
       $tag.after(' ');
+
+      // associate tag element with array element
+      item.$element = $tag;
+
+      // register item in internal array and map
+      self.itemsArray.push(item);
 
       // add <option /> if item represents a value not present in one of the <select />'s options
       if (self.isSelect && !$('option[value="' + encodeURIComponent(itemValue) + '"]',self.$element)[0]) {
@@ -230,10 +233,31 @@
     },
 
     /**
-     * Returns the items added as tags
+     * Returns the items added as tags.
      */
     items: function() {
+      return $.map(this.itemsArray, function(tagitem){
+        var item = $.extend(true, {}, tagitem);
+        delete item.$element;
+        return item;
+      });
+    },
+
+    /**
+     * Returns the items with their corresponding HTML elements.
+     */
+    tagitems: function(){
       return this.itemsArray;
+    },
+
+    /**
+     * Returns item by value.
+     */
+    item: function(val){
+      var self = this;
+      return ( $.grep(self.itemsArray, function(item) {
+        return self.options.itemValue(item) == val;
+      }) )[0];
     },
 
     /**
