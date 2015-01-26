@@ -167,7 +167,7 @@ var citynames = new Bloodhound({
 citynames.initialize();
 
 $('input').tagsinput({
-  typeaheadjs: {
+  typeahead: {
     name: 'citynames',
     displayKey: 'name',
     valueKey: 'name',
@@ -212,7 +212,7 @@ var elt = $('input');
 elt.tagsinput({
   itemValue: 'value',
   itemText: 'text',
-  typeaheadjs: {
+  typeahead: {
     name: 'cities',
     displayKey: 'text',
     source: cities.ttAdapter()
@@ -270,7 +270,7 @@ elt.tagsinput({
   },
   itemValue: 'value',
   itemText: 'text',
-  typeaheadjs: {
+  typeahead: {
     name: 'cities',
     displayKey: 'text',
     source: cities.ttAdapter()
