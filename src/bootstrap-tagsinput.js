@@ -20,7 +20,8 @@
       $tag.hide().fadeIn();
     },
     trimValue: false,
-    allowDuplicates: false
+    allowDuplicates: false,
+    allowMovingInput: true
   };
 
   /**
@@ -355,50 +356,50 @@
           self.$input.attr('disabled', 'disabled');
           return;
         }
+        if (self.options.allowMovingInput) {
+            switch (event.which) {
+            // BACKSPACE
+            case 8:
+                if (doGetCaretPosition($input[0]) === 0) {
+                    var prev = $inputWrapper.prev();
+                    if (prev) {
+                        self.remove(prev.data('item'));
+                    }
+                }
+                break;
 
-        switch (event.which) {
-          // BACKSPACE
-          case 8:
-            if (doGetCaretPosition($input[0]) === 0) {
-              var prev = $inputWrapper.prev();
-              if (prev) {
-                self.remove(prev.data('item'));
-              }
-            }
-            break;
+            // DELETE
+            case 46:
+                if (doGetCaretPosition($input[0]) === 0) {
+                    var next = $inputWrapper.next();
+                    if (next) {
+                        self.remove(next.data('item'));
+                    }
+                }
+                break;
 
-          // DELETE
-          case 46:
-            if (doGetCaretPosition($input[0]) === 0) {
-              var next = $inputWrapper.next();
-              if (next) {
-                self.remove(next.data('item'));
-              }
+            // LEFT ARROW
+            case 37:
+                // Try to move the input before the previous tag
+                var $prevTag = $inputWrapper.prev();
+                if ($input.val().length === 0 && $prevTag[0]) {
+                    $prevTag.before($inputWrapper);
+                    $input.focus();
+                }
+                break;
+            // RIGHT ARROW
+            case 39:
+                // Try to move the input after the next tag
+                var $nextTag = $inputWrapper.next();
+                if ($input.val().length === 0 && $nextTag[0]) {
+                    $nextTag.after($inputWrapper);
+                    $input.focus();
+                }
+                break;
+            default:
+                // ignore
             }
-            break;
-
-          // LEFT ARROW
-          case 37:
-            // Try to move the input before the previous tag
-            var $prevTag = $inputWrapper.prev();
-            if ($input.val().length === 0 && $prevTag[0]) {
-              $prevTag.before($inputWrapper);
-              $input.focus();
-            }
-            break;
-          // RIGHT ARROW
-          case 39:
-            // Try to move the input after the next tag
-            var $nextTag = $inputWrapper.next();
-            if ($input.val().length === 0 && $nextTag[0]) {
-              $nextTag.after($inputWrapper);
-              $input.focus();
-            }
-            break;
-         default:
-             // ignore
-         }
-
+        }
         // Reset internal input's size
         var textLength = $input.val().length,
             wordSpace = Math.ceil(textLength / 5),
