@@ -58,9 +58,11 @@
     add: function(item, dontPushVal) {
       var self = this;
 
-      if (self.options.maxTags && self.itemsArray.length >= self.options.maxTags)
+      if (self.options.maxTags && self.itemsArray.length >= self.options.maxTags){
+        self.$input.typeahead('val', '');
         return;
-
+      }
+      
       // Ignore falsey values, except false
       if (item !== false && !item)
         return;
@@ -147,6 +149,7 @@
         self.$container.addClass('bootstrap-tagsinput-max');
 
       self.$element.trigger($.Event('itemAdded', { item: item }));
+      self.$input.typeahead('val', '');
     },
 
     /**
