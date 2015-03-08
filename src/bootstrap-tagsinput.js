@@ -261,7 +261,7 @@
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionFunction(self.options, 'tagClass');
-      
+
       // Typeahead Bootstrap version 2.3.2
       if (self.options.typeahead) {
         var typeahead = self.options.typeahead || {};
@@ -316,7 +316,7 @@
       // typeahead.js
       if (self.options.typeaheadjs) {
           var typeaheadjs = self.options.typeaheadjs || {};
-          
+
           self.$input.typeahead(null, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
             if (typeaheadjs.valueKey)
               self.add(datum[typeaheadjs.valueKey]);
@@ -343,7 +343,7 @@
               }
           }, self));
         }
-        
+
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
         var $input = $(event.target),
@@ -516,11 +516,11 @@
           results.push(tagsinput);
       } else if(tagsinput[arg1] !== undefined) {
           // Invoke function on existing tags input
-					if(tagsinput[arg1].length === 3 && arg3 !== undefined){
-						var retVal = tagsinput[arg1](arg2, null, arg3);
-					}else{
-						var retVal = tagsinput[arg1](arg2);
-					}
+            if(tagsinput[arg1].length === 3 && arg3 !== undefined){
+               var retVal = tagsinput[arg1](arg2, null, arg3);
+            }else{
+               var retVal = tagsinput[arg1](arg2);
+            }
           if (retVal !== undefined)
               results.push(retVal);
       }
@@ -583,7 +583,7 @@
   }
 
   /**
-    * Returns boolean indicates whether user has pressed an expected key combination. 
+    * Returns boolean indicates whether user has pressed an expected key combination.
     * @param object keyPressEvent: JavaScript event object, refer
     *     http://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
     * @param object lookupList: expected key combinations, as in:
