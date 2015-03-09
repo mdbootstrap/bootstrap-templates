@@ -33,7 +33,11 @@
     this.itemsArray = [];
 
     this.$element = $(element);
-    this.$element.hide();
+    this.$element.css({
+      opacity: 0,
+      position: 'absolute',
+      zIndex: -1
+    });
 
     this.isSelect = (element.tagName === 'SELECT');
     this.multiple = (this.isSelect && element.hasAttribute('multiple'));
