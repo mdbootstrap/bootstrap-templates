@@ -140,7 +140,7 @@ describe("bootstrap-tagsinput", function() {
 
         it('after last tag, should remove the last tag', function() {
           this.$tagsinput_input.trigger($.Event('keydown', { which: 8 }));
-          expect(this.$element.tagsinput('items')[0]).toBe('some');
+          expect(this.$element.tagsinput('items')[this.$element.tagsinput('items').length-1]).toBe('some');
         });
 
         it('after last tag, should remove the last tag', function() {
