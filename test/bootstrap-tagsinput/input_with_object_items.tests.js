@@ -80,5 +80,30 @@ describe("bootstrap-tagsinput", function() {
         });
       });
     });
+	
+    testTagsInput('<input type="text" />', { itemValue: function(item) { return item.value; }, itemText: function(item) { return item.text; }, itemTitle: function(item) { return item.title; } }, function() {
+	  describe("adding an item with a title", function() {
+        var item;
+        beforeEach(function() {
+          item = { value: 1, text: 'one', title: 'number one' };
+          this.$element.tagsinput('add', item);
+        });
+        it("'items' should return the item", function() {
+          expect(this.$element.tagsinput('items')[0]).toBe(item);
+        });
+        it("'items' should returns exactly 1 item", function() {
+          expect(this.$element.tagsinput('items').length).toBe(1);
+        });
+        it("val() should return the item's value", function() {
+          expect(this.$element.val()).toBe("1");
+        });
+        it("tag's text should be the item's value", function() {
+          expect($('.tag', this.$sandbox).text()).toBe("one");
+        });
+		it("tag's title should be the item's title", function() {
+		  expect($('.tag', this.$sandbox).attr('title')).toBe("number one");
+		});
+	  });
+	});
   });
 });
