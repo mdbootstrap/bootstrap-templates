@@ -167,10 +167,15 @@ citynames.initialize();
 
 $('input').tagsinput({
   typeaheadjs: {
-    name: 'citynames',
-    displayKey: 'name',
-    valueKey: 'name',
-    source: citynames.ttAdapter()
+    options: {
+      minLength: 1
+    },
+    datasets: {
+      name: 'citynames',
+      displayKey: 'name',
+      valueKey: 'name',
+      source: citynames.ttAdapter()
+    }
   }
 });
 &lt;/script&gt;</code></pre>
@@ -212,9 +217,14 @@ elt.tagsinput({
   itemValue: 'value',
   itemText: 'text',
   typeaheadjs: {
-    name: 'cities',
-    displayKey: 'text',
-    source: cities.ttAdapter()
+    options: {
+      minLength: 1
+    },
+    datasets: {
+      name: 'cities',
+      displayKey: 'text',
+      source: cities.ttAdapter()
+    }
   }
 });
 elt.tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
@@ -270,9 +280,14 @@ elt.tagsinput({
   itemValue: 'value',
   itemText: 'text',
   typeaheadjs: {
-    name: 'cities',
-    displayKey: 'text',
-    source: cities.ttAdapter()
+    options: {
+      minLength: 1
+    },
+    datasets: {
+      name: 'cities',
+      displayKey: 'text',
+      source: cities.ttAdapter()
+    }
   }
 });
 elt.tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
