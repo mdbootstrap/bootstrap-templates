@@ -319,9 +319,21 @@
 
       // typeahead.js
       if (self.options.typeaheadjs) {
-          var typeaheadjs = self.options.typeaheadjs || {};
+          var typeaheadjs = self.options.typeaheadjs || { options:{}, datasets:{} };
+          var typeaheadjsKeys = Object.keys(typeaheadjs);
+          var tempObj = {};
+          //backwards compatibility:
+          if (!('datasets' in typeaheadjsKeys)) {
+            tempObj.datasets = typeaheadjs;
+            typeaheadjs = tempObj;
+            tempObj = null;
+          }
+          //add for instantiation if not exists
+          if (!('options' in typeaheadjsKeys)) {
+            typeaheadjs.options = {};
+          }
 
-          self.$input.typeahead(null, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
+          self.$input.typeahead(typeaheadjs.options, typeaheadjs.datasets).on('typeahead:selected', $.proxy(function (obj, datum) {
             if (typeaheadjs.valueKey)
               self.add(datum[typeaheadjs.valueKey]);
             else
