@@ -322,20 +322,21 @@
           var typeaheadjs = self.options.typeaheadjs || { options:{}, datasets:{} };
           var typeaheadjsKeys = Object.keys(typeaheadjs);
           var tempObj = {};
+
           //backwards compatibility:
-          if (!('datasets' in typeaheadjsKeys)) {
+          if (typeaheadjsKeys.indexOf('datasets') < 0 && typeaheadjsKeys.indexOf('options') < 0) {
             tempObj.datasets = typeaheadjs;
             typeaheadjs = tempObj;
             tempObj = null;
           }
           //add for instantiation if not exists
-          if (!('options' in typeaheadjsKeys)) {
+          if (typeaheadjsKeys.indexOf('options') < 0) {
             typeaheadjs.options = {};
           }
 
           self.$input.typeahead(typeaheadjs.options, typeaheadjs.datasets).on('typeahead:selected', $.proxy(function (obj, datum) {
-            if (typeaheadjs.valueKey)
-              self.add(datum[typeaheadjs.valueKey]);
+            if (typeaheadjs.datasets.valueKey)
+              self.add(datum[typeaheadjs.datasets.valueKey]);
             else
               self.add(datum);
             self.$input.typeahead('val', '');
