@@ -11,9 +11,8 @@
     itemText: function(item) {
       return this.itemValue(item);
     },
-    itemTitle: function(item) {
-      return null;
-    },
+      itemScore: 1,
+      suggestedTags: [],
     freeInput: true,
     addOnBlur: true,
     maxTags: undefined,
@@ -41,14 +40,30 @@
     this.placeholderText = element.hasAttribute('placeholder') ? this.$element.attr('placeholder') : '';
     this.inputSize = Math.max(1, this.placeholderText.length);
 
-    this.$container = $('<div class="bootstrap-tagsinput"></div>');
-    this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
+      if(options.preventInput)
+        this.$container = $('<div class="bootstrap-tagsinput no_border"></div>');
+      else
+          this.$container = $('<div class="bootstrap-tagsinput"></div>');
+
+      if(options.preventInput) {
+          this.$input = $('<input type="text" style="display:none" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
+          this.$container.append('<div class="vote_box"><div class="thumbs_up fa fa-thumbs-up"></div><div class="thumbs_down fa fa-thumbs-down"></div></div>');
+      }
+      else {
+          this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
+      }
 
     this.$element.after(this.$container);
-
+$
     var inputWidth = (this.inputSize < 3 ? 3 : this.inputSize) + "em";
-    this.$input.get(0).style.cssText = "width: " + inputWidth + " !important;";
+      var hideInput = '';
+      if(options.preventInput)
+        hideInput = "display: none;"
+    this.$input.get(0).style.cssText = "width: " + inputWidth + " !important;" + hideInput;
     this.build(options);
+
+      //added by Lehel
+      //add
   }
 
   TagsInput.prototype = {
@@ -60,6 +75,7 @@
      */
     add: function(item, dontPushVal, options) {
       var self = this;
+
 
       if (self.options.maxTags && self.itemsArray.length >= self.options.maxTags)
         return;
@@ -100,10 +116,9 @@
 
       var itemValue = self.options.itemValue(item),
           itemText = self.options.itemText(item),
-          tagClass = self.options.tagClass(item),
-          itemTitle = self.options.itemTitle(item);
+          tagClass = self.options.tagClass(item);
 
-      // Ignore items allready added
+      // Ignore items already added
       var existing = $.grep(self.itemsArray, function(item) { return self.options.itemValue(item) === itemValue; } )[0];
       if (existing && !self.options.allowDuplicates) {
         // Invoke onTagExists
@@ -128,9 +143,15 @@
       self.itemsArray.push(item);
 
       // add a tag element
+        var $tag;
 
-      var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
-      $tag.data('item', item);
+        if(typeof item === "object" && item.isExistingTag) {
+            $tag = $('<div class="tag_score label">' + itemValue + '</div><div class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '</div>');
+            $tag.data('existingTag', true);
+        }
+        else
+            $tag = $('<div class="tag_score label">' + '1'  + '</div><div class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></div>');
+      $tag.data('item', item);0
       self.findInputWrapper().before($tag);
       $tag.after(' ');
 
@@ -151,6 +172,15 @@
 
       self.$element.trigger($.Event('itemAdded', { item: item, options: options }));
     },
+
+      //added by Lehel
+      getVoteVal: function(item) {
+          return $('.tag', self.$container).filter(function() { return $(this).data('item') === item; }).data('voteVal');
+      },
+
+      setVoteVal: function(item, voteVal) {
+          $('.tag', self.$container).filter(function() { return $(this).data('item') === item; }).data('voteVal', voteVal);
+      },
 
     /**
      * Removes the given item. Pass true to dontPushVal to prevent updating the
@@ -174,8 +204,9 @@
         if (beforeItemRemoveEvent.cancel)
           return;
 
-        $('.tag', self.$container).filter(function() { return $(this).data('item') === item; }).remove();
-        $('option', self.$element).filter(function() { return $(this).data('item') === item; }).remove();
+        $('.tag', self.$container).filter(function() { return $(this).data('item') === item; }).empty().remove();
+          $('.tag_score', self.$container).filter(function() { return $(this).data('item') === item; }).remove();
+        $('option', self.$container).filter(function() { return $(this).data('item') === item; }).remove();
         if($.inArray(item, self.itemsArray) !== -1)
           self.itemsArray.splice($.inArray(item, self.itemsArray), 1);
       }
@@ -196,7 +227,9 @@
     removeAll: function() {
       var self = this;
 
-      $('.tag', self.$container).remove();
+
+      $('.tag', self.$container).empty().remove();
+        $('.tag_score', self.$container).remove();
       $('option', self.$element).remove();
 
       while(self.itemsArray.length > 0)
@@ -336,7 +369,49 @@
           self.$input.removeAttr('disabled');
         }
         self.$input.focus();
+
+          var off = self.$container.offset();
+
+          //added by Lehel
+          if(self.options.selectTagCallback)
+            self.options.selectTagCallback($(event.target).closest('.tag'), $(event.target).closest('.tag').data('item'));
+
+          $(event.target).closest('.tag').addClass('tag_selected');
       }, self));
+
+        self.$container.hover(
+            //on enter
+            function() {
+
+                //break out if this preventInput
+                // 1.Tell where the icon is on the screen
+                var off = self.$container.position();
+
+                // 2.Have the top left corner of my box placed where the icon is
+                var div = $(".vote_box", self.$container);
+                div.css({ display: "block", position: "absolute", top: off.top - 25, left: off.left + 5 });
+
+                //set data for div so it knows what item it is
+                div.data('item', $(this).data('item'));
+
+                // 3.Have my box appear in that location?
+                div.show();
+
+                //set up listener for click event
+                var $thumbsup = $(".thumbs_up", div);
+                $thumbsup.click(function() {
+                    alert($(this).closest('.vote_box').data('item').toString());
+                });
+
+            },
+            //on leave
+            function() {
+
+                var div = $(".vote_box", self.$container);
+                div.hide();
+
+        });
+
 
         if (self.options.addOnBlur && self.options.freeInput) {
           self.$input.on('focusout', $.proxy(function(event) {
@@ -364,7 +439,11 @@
           case 8:
             if (doGetCaretPosition($input[0]) === 0) {
               var prev = $inputWrapper.prev();
-              if (prev) {
+                var isExistingTag = false;
+                if(prev.data('existingTag') != undefined)
+                    isExistingTag = true;
+
+              if (prev /*&& !isExistingTag*/) {
                 self.remove(prev.data('item'));
               }
             }
@@ -439,6 +518,7 @@
         }
         self.remove($(event.target).closest('.tag').data('item'));
       }, self));
+
 
       // Only add existing value as tags when using strings as tags
       if (self.options.itemValue === defaultOptions.itemValue) {
