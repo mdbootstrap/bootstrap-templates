@@ -55,7 +55,7 @@ module.exports = function(grunt) {
     },
     zip: {
       delpoy: {
-        cwd: 'dist/',
+        // cwd: 'dist/',
         src:  [
             'dist/bootstrap-tagsinput*.js',
             'dist/bootstrap-tagsinput*.css',
