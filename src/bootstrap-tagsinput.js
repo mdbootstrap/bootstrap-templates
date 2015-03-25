@@ -319,11 +319,21 @@
 
       // typeahead.js
       if (self.options.typeaheadjs) {
-          var typeaheadjs = self.options.typeaheadjs || {};
+          var typeaheadConfig = null;
+          var typeaheadDatasets = {};
 
-          self.$input.typeahead(null, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
-            if (typeaheadjs.valueKey)
-              self.add(datum[typeaheadjs.valueKey]);
+          // Determine if main configurations were passed or simply a dataset
+          var typeaheadjs = self.options.typeaheadjs;
+          if ($.isArray(typeaheadjs)) {
+            typeaheadConfig = typeaheadjs[0];
+            typeaheadDatasets = typeaheadjs[1];
+          } else {
+            typeaheadDatasets = typeaheadjs;
+          }
+
+          self.$input.typeahead(typeaheadConfig, typeaheadDatasets).on('typeahead:selected', $.proxy(function (obj, datum) {
+            if (typeaheadDatasets.valueKey)
+              self.add(datum[typeaheadDatasets.valueKey]);
             else
               self.add(datum);
             self.$input.typeahead('val', '');
