@@ -1,1 +1,0 @@
-bsTagsInput.js will be removed in a couple of weeks from this repository. Fork if you still want to keep using it.
