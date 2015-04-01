@@ -100,6 +100,50 @@ describe("bootstrap-tagsinput", function() {
           });
         });
       });
-    })
+    });
+
+    describe("#90: Error in reinitialization (arg1 and arg2 are undefined)", function() {
+      describe("init tagsinput twice", function() {
+        testTagsInput('<input type="text" value="1" />', { itemValue: function(item) { return item.value; } }, function() {
+          it("should not fail if an element is reinitialized", function () {
+            this.$element.tagsinput();
+          });
+          it("should return the original instance if already initialized", function () {
+            return this.$element.tagsinput() === this;
+          });
+        });
+      });
+    });
+    
+    describe("#142: Initialization of Null Values for Multi Select field", function() {
+      testTagsInput('<select multiple data-role="tagsinput"></select>', function() {
+        it("Initializing an empty select shouldn't throw an error.", function() {
+            $("select[multiple][data-role=tagsinput]").tagsinput();
+        });
+      });
+    });
+
+    describe("#128: Custom classes for tags don't work if entered as strings", function() {
+      testTagsInput('<input type="text" value="1" />', { tagClass: 'big' }, function() {
+        it("should have a tag with class 'big' when using tagClass option as string", function() {
+            expect($(".big", this.$tagsinput).length).toBe(1);
+        });
+      });
+
+      testTagsInput('<input type="text" value="1" />', { tagClass: function() { return 'big'; } }, function() {
+        it("should have a tag with class 'big' when using tagClass option as function", function() {
+            expect($(".big", this.$tagsinput).length).toBe(1);
+        });
+      });
+    });
+
+    describe("#107: Fixed bug when removing items", function() {
+      testTagsInput('<input type="text" value="yes,no" />', function() {
+        it("should not remove items when remove a non-existing item", function() {
+            this.$element.tagsinput('remove', 'maybe');
+            expect(this.$element.tagsinput('items').length).toBe(2);
+        });
+      });
+    });
   });
 });
