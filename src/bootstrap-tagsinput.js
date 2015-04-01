@@ -302,7 +302,10 @@
           },
           updater: function (text) {
             self.add(this.map[text]);
-            return this.map[text];
+            // we have added a new tag and we want the input field be empty
+            // let's return an empty string, then typeahead plugin will set
+            // the input val to ""
+            return "";
           },
           matcher: function (text) {
             return (text.toLowerCase().indexOf(this.query.trim().toLowerCase()) !== -1);
