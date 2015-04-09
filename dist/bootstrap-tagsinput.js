@@ -72,7 +72,7 @@
 
       // Throw an error when trying to add an object while the itemValue option was not set
       if (typeof item === "object" && !self.objectItems)
-//        throw("Can't add objects when itemValue option is not set");
+        throw("Can't add objects when itemValue option is not set");
 
       // Ignore strings only containg whitespace
       if (item.toString().match(/^\s*$/))
@@ -156,14 +156,17 @@
      * Removes the given item. Pass true to dontPushVal to prevent updating the
      * elements val()
      */
-    remove: function(item, dontPushVal) {
+    remove: function(item, dontPushVal, toend) {
       var self = this;
-      var index = self.findInputWrapper().index();
-      if (index >= 0) {
-        self.itemsArray.splice(index, 0, item);
-      } else {
-        self.itemsArray.push(item);
+      if(!toend){
+        var index = self.findInputWrapper().index();
+        if (index >= 0) {
+            self.itemsArray.splice(index, 0, item);
+        } else {
+            self.itemsArray.push(item);
+        }
       }
+      
       if (self.objectItems) {
         if (typeof item === "object")
           item = $.grep(self.itemsArray, function(other) { return self.options.itemValue(other) ==  self.options.itemValue(item); } );
@@ -193,6 +196,8 @@
         self.$container.removeClass('bootstrap-tagsinput-max');
 
       self.$element.trigger($.Event('itemRemoved',  { item: item }));
+      if (!toend)
+        self.remove(item, false, true);
     },
 
     /**
@@ -442,6 +447,10 @@
         if (self.$element.attr('disabled')) {
           return;
         }
+        var index = self.findInputWrapper().index();
+    console.log(index);
+    var $targetTag = $(event.target).closest('.tag').data('item');
+        console.log($targetTag);
         self.remove($(event.target).closest('.tag').data('item'));
       }, self));
 
