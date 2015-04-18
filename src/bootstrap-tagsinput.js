@@ -345,10 +345,16 @@
           self.$input.removeAttr('disabled');
         }
         self.$input.focus();
+        if (self.options.onFocus) {
+          self.options.onFocus(self.$container);
+        }
       }, self));
 
         if (self.options.addOnBlur && self.options.freeInput) {
           self.$input.on('focusout', $.proxy(function(event) {
+              if (self.options.onBlur) {
+                self.options.onBlur(self.$container);
+              }
               // HACK: only process on focusout when no typeahead opened, to
               //       avoid adding the typeahead text as tag
               if ($('.typeahead, .twitter-typeahead', self.$container).length === 0) {
