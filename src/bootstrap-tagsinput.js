@@ -123,7 +123,12 @@
         return;
 
       // register item in internal array and map
-      self.itemsArray.push(item);
+      var index = self.findInputWrapper().index();
+      if (index >= 0) {
+        self.itemsArray.splice(index, 0, item);
+      } else {
+        self.itemsArray.push(item);
+      }
 
       // add a tag element
 
