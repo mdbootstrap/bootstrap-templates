@@ -431,6 +431,9 @@
          if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
             self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
             $input.val('');
+            if (self.options.typeaheadjs) {
+              $input.typeahead('val', '');
+            }
             event.preventDefault();
          }
 
