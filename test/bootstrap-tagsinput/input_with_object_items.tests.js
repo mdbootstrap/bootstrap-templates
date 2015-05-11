@@ -105,5 +105,32 @@ describe("bootstrap-tagsinput", function() {
       });
     });
 
+    describe("Allow freeInput using a schema", function() {
+
+      testTagsInput('<input type="text" />', {itemValue: 'id', itemText: 'name',  freeInputSchema: {id:null, name:null, other:'default value'}}, function() {
+        it("Adding an item using freeInputSchema and without freeInputSchemaSet option set should throw an exception", function() {
+          var element = this.$element;
+          expect(function() {element.tagsinput('add', 'tag name'); }).toThrow("Can't add objects when freeInputSchemaSet option is not set");
+        });
+      });
+
+      testTagsInput('<input type="text" />', {itemValue: 'id', itemText: 'name',  freeInputSchema: {id:null, name:null, other:'default value'}, freeInputSchemaSet: function(item, value){item.id = value; item.name =  value;}}, function() {
+
+        var expectedItem = {id:'free text', name:'free text', other:'default value'};
+
+        it("should add tag on when pressing COMMA ,", function() {
+          this.$tagsinput_input.val('free text');
+          this.$tagsinput_input.trigger($.Event('keypress', { which: 44 }));
+          expect(this.$element.tagsinput('items')[0]).toEqual(expectedItem);
+        });
+
+        it("should add tag on when pressing ENTER", function() {
+          this.$tagsinput_input.val('free text');
+          this.$tagsinput_input.trigger($.Event('keypress', { which: 13 }));
+          expect(this.$element.tagsinput('items')[0]).toEqual(expectedItem);
+        });
+      });
+    });
+
   });
 });

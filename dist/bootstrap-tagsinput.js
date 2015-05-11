@@ -15,6 +15,8 @@
       return null;
     },
     freeInput: true,
+    freeInputSchema: null,
+    freeInputSchemaSet: null,
     addOnBlur: true,
     maxTags: undefined,
     maxChars: undefined,
@@ -74,6 +76,17 @@
       // Throw an error when trying to add an object while the itemValue option was not set
       if (typeof item === "object" && !self.objectItems)
         throw("Can't add objects when itemValue option is not set");
+
+      // Throw an error when trying to add an object with freeInput while the freeInputSchemaSet option was not set
+      if (typeof item === "string" && self.objectItems && typeof self.options.freeInputSchemaSet !== 'function')
+        throw("Can't add objects when freeInputSchemaSet option is not set");
+
+      // convert string to object using freeInputSchema
+      if (typeof item === "string" && self.objectItems) {
+        var defaultItem = $.extend({}, self.options.freeInputSchema);
+        self.options.freeInputSchemaSet(defaultItem, item);
+        item = defaultItem;
+      }
 
       // Ignore strings only containg whitespace
       if (item.toString().match(/^\s*$/))
@@ -237,6 +250,10 @@
       return this.itemsArray;
     },
 
+    options: function() {
+      return this.options;
+    },
+
     /**
      * Assembly value by retrieving the value of each item, and set it on the
      * element.
@@ -258,7 +275,8 @@
 
       self.options = $.extend({}, defaultOptions, options);
       // When itemValue is set, freeInput should always be false
-      if (self.objectItems)
+      //but if freeInputSchema is set objects will be created using it
+      if (self.objectItems && self.options.freeInputSchema === null)
         self.options.freeInput = false;
 
       makeOptionItemFunction(self.options, 'itemValue');
@@ -347,17 +365,16 @@
         self.$input.focus();
       }, self));
 
-        if (self.options.addOnBlur && self.options.freeInput) {
-          self.$input.on('focusout', $.proxy(function(event) {
-              // HACK: only process on focusout when no typeahead opened, to
-              //       avoid adding the typeahead text as tag
-              if ($('.typeahead, .twitter-typeahead', self.$container).length === 0) {
-                self.add(self.$input.val());
-                self.$input.val('');
-              }
-          }, self));
-        }
-
+      if (self.options.addOnBlur && self.options.freeInput) {
+        self.$input.on('focusout', $.proxy(function(event) {
+            // HACK: only process on focusout when no typeahead opened, to
+            //       avoid adding the typeahead text as tag
+            if ($('.typeahead, .twitter-typeahead', self.$container).length === 0) {
+              self.add(self.$input.val());
+              self.$input.val('');
+            }
+        }, self));
+      }
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
         var $input = $(event.target),
