@@ -145,5 +145,20 @@ describe("bootstrap-tagsinput", function() {
         });
       });
     });
+
+    describe("#351: Removing items when allowDuplicates is true", function() {
+      testTagsInput('<input type="text" value="yes,yes,no,yes" />', { allowDuplicates: true}, function() {
+        it("clicking remove button should remove exactly that tag element", function() {
+          var $tag = $('.tag:eq(1)', this.$sandbox);
+          $tag.find('[data-role=remove]').trigger('click');
+          expect($('.tag', this.$sandbox).length).toBe(3);
+        });
+        it("removing an item should maintain values order", function() {
+          var $tag = $('.tag:last', this.$sandbox);
+          $tag.find('[data-role=remove]').trigger('click');
+          expect(this.$element.tagsinput('items')).toEqual(['yes', 'yes', 'no']);
+        });
+      });
+    });
   });
 });
