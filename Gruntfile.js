@@ -6,6 +6,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-zip');
   grunt.loadNpmTasks('grunt-jquerymanifest');
   grunt.loadNpmTasks('grunt-bower-task');
+  grunt.loadNpmTasks('grunt-umd');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -31,6 +32,17 @@ module.exports = function(grunt) {
         ]
       }
     },
+    umd: {
+      file: {
+        src: 'dist/<%= pkg.name %>.js',
+        deps: {
+          default: ['$'],
+          amd: ['jquery'],
+          cjs: ['jquery'],
+          global: ['jQuery'],
+        },
+      },
+    },
     uglify: {
       options: {
         banner: '<%= pkg.banner %>',
@@ -39,8 +51,8 @@ module.exports = function(grunt) {
       },
       build: {
         files: {
-          'dist/<%= pkg.name %>.min.js': 'src/<%= pkg.name %>.js',
-          'dist/<%= pkg.name %>-angular.min.js': 'src/<%= pkg.name %>-angular.js'
+          'dist/<%= pkg.name %>.min.js': 'dist/<%= pkg.name %>.js',
+          'dist/<%= pkg.name %>-angular.min.js': 'dist/<%= pkg.name %>-angular.js'
         }
       }
     },
@@ -76,7 +88,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('install', ['bower']);
-  grunt.registerTask('compile', ['uglify', 'copy']);
+  grunt.registerTask('compile', ['copy', 'umd', 'uglify']);
   grunt.registerTask('test', ['compile', 'karma']);
   grunt.registerTask('build', ['test', 'jquerymanifest', 'zip']);
 };
