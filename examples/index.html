@@ -500,8 +500,10 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
 });</code></pre>
                 <pre><code data-language="javascript">$('input').tagsinput({
   typeahead: {
-    source: function(query) {
-      return $.get('http://someservice.com');
+    source: function(query, process) {
+      return $.get('http://someservice.com', function(data){
+          return process(data)
+      });
     }
   }
 });</code></pre>
@@ -730,4 +732,3 @@ $('#tags-input').on('beforeItemRemove', function(event) {
     <script src="assets/app_bs3.js"></script>
   </body>
 </html>
-
