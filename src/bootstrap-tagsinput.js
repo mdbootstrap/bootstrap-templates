@@ -42,7 +42,7 @@
     this.inputSize = Math.max(1, this.placeholderText.length);
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
-    this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
+	this.$input = $('<input type="text" autocomplete="off" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
 
     this.$element.before(this.$container);
 
@@ -144,8 +144,11 @@
         self.pushVal();
 
       // Add class when reached maxTags
-      if (self.options.maxTags === self.itemsArray.length || self.items().toString().length === self.options.maxInputLength)
-        self.$container.addClass('bootstrap-tagsinput-max');
+      if (self.options.maxTags === self.itemsArray.length || self.items().toString().length === self.options.maxInputLength) {
+	      self.$container.addClass( 'bootstrap-tagsinput-max' );
+	      // hide the input field after reach the limit
+	      self.$input.addClass('hide');
+      }
 
       self.$element.trigger($.Event('itemAdded', { item: item, options: options }));
     },
@@ -184,6 +187,9 @@
       // Remove class when reached maxTags
       if (self.options.maxTags > self.itemsArray.length)
         self.$container.removeClass('bootstrap-tagsinput-max');
+
+	  // in case it was hidden - show it back again
+	  self.$input.removeClass('hide');
 
       self.$element.trigger($.Event('itemRemoved',  { item: item, options: options }));
     },
@@ -302,7 +308,10 @@
           },
           updater: function (text) {
             self.add(this.map[text]);
-            return this.map[text];
+	        // when we return it, it puts the text into the inputbox
+	        // this is not necessary something we need - we want to have set it to an empty string
+	        // and we do not need it in the box at all
+            //return this.map[text];
           },
           matcher: function (text) {
             return (text.toLowerCase().indexOf(this.query.trim().toLowerCase()) !== -1);
