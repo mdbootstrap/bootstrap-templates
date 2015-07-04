@@ -34,7 +34,7 @@
     "grunt-bower-task": "~0.4.0",
     "grunt-cli": "~0.1.13",
     "grunt-contrib-copy": "~0.5.0",
-    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-uglify": "~0.9.1",
     "grunt-jquerymanifest": "~0.1.4",
     "grunt-karma": "~0.8.3",
     "grunt-zip": "~0.15.0",
