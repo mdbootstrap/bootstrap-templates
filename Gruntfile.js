@@ -55,8 +55,13 @@ module.exports = function(grunt) {
     },
     zip: {
       delpoy: {
-        cwd: 'dist/',
-        src:  ['dist/bootstrap-tagsinput*.*'],
+        // cwd: 'dist/',
+        src:  [
+            'dist/bootstrap-tagsinput*.js',
+            'dist/bootstrap-tagsinput*.css',
+            'dist/bootstrap-tagsinput*.less',
+            'dist/bootstrap-tagsinput*.map'
+         ],
         dest:  'dist/<%= pkg.name %>.zip'
       }
     },
