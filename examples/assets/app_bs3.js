@@ -67,11 +67,23 @@ elt.tagsinput({
   },
   itemValue: 'value',
   itemText: 'text',
-  typeaheadjs: {
-    name: 'cities',
-    displayKey: 'text',
-    source: cities.ttAdapter()
-  }
+  // typeaheadjs: {
+  //   name: 'cities',
+  //   displayKey: 'text',
+  //   source: cities.ttAdapter()
+  // }
+  typeaheadjs: [
+  {
+      hint: true,
+     highlight: true,
+     minLength: 2
+  },
+   {
+      name: 'cities',
+       displayKey: 'text',
+       source: cities.ttAdapter()
+   }
+  ]
 });
 elt.tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
 elt.tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
