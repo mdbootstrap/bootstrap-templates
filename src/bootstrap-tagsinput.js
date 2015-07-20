@@ -42,7 +42,9 @@
     this.inputSize = Math.max(1, this.placeholderText.length);
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
-    this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
+    this.maxCharsTotal = this.$element.attr("maxlength");
+    var charsLeft = this.maxCharsTotal ? this.maxCharsTotal - this.$element.val().length : "";
+    this.$input = $('<input type="text" maxlength="' + charsLeft + '" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
 
     this.$element.before(this.$container);
 
@@ -147,7 +149,9 @@
       if (self.options.maxTags === self.itemsArray.length || self.items().toString().length === self.options.maxInputLength)
         self.$container.addClass('bootstrap-tagsinput-max');
 
-      self.$element.trigger($.Event('itemAdded', { item: item, options: options }));
+      self.updateInputMaxLength(self);
+
+      self.$element.trigger($.Event('itemAdded', { item: item }));
     },
 
     /**
@@ -185,7 +189,9 @@
       if (self.options.maxTags > self.itemsArray.length)
         self.$container.removeClass('bootstrap-tagsinput-max');
 
-      self.$element.trigger($.Event('itemRemoved',  { item: item, options: options }));
+      self.updateInputMaxLength(self);
+
+      self.$element.trigger($.Event('itemRemoved',  { item: item }));
     },
 
     /**
@@ -501,6 +507,15 @@
         elt = elt.parentNode;
 
       return $(elt);
+    },
+    updateInputMaxLength: function (self) {
+        var charsLeft = "";
+        if (self.maxCharsTotal) {
+            charsLeft = self.maxCharsTotal - self.$element.val().length;
+            if (charsLeft > 0)
+                charsLeft = charsLeft - self.options.delimiter.length; //Save one char fot the delimiter
+            self.$input.attr('maxlength', charsLeft);
+        }
     }
   };
 
