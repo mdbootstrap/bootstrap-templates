@@ -516,7 +516,7 @@
                 charsLeft = charsLeft - self.options.delimiter.length; //Save one char fot the delimiter
             self.$input.attr('maxlength', charsLeft);
         }
-}
+    }
   };
 
   /**
