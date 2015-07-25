@@ -331,7 +331,7 @@
             typeaheadDatasets = typeaheadjs;
           }
 
-          self.$input.typeahead(typeaheadConfig, typeaheadDatasets).on('typeahead:selected', $.proxy(function (obj, datum) {
+          self.$input.typeahead(typeaheadConfig, typeaheadDatasets).on('typeahead:selected typeahead:autocompleted', $.proxy(function (obj, datum) {
             if (typeaheadDatasets.valueKey)
               self.add(datum[typeaheadDatasets.valueKey]);
             else
