@@ -319,11 +319,11 @@
 
       // typeahead.js
       if (self.options.typeaheadjs) {
-          var typeaheadjs = self.options.typeaheadjs;
-          var typeaheadConfig = typeaheadjs.options || null;
+          var typeaheadConfig = null;
           var typeaheadDatasets = {};
 
           // Determine if main configurations were passed or simply a dataset
+          var typeaheadjs = self.options.typeaheadjs;
           if ($.isArray(typeaheadjs)) {
             typeaheadConfig = typeaheadjs[0];
             typeaheadDatasets = typeaheadjs[1];
