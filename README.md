@@ -34,6 +34,9 @@ Install dependencies:
 <pre>
 npm install
 bower install
+// Choose which bootstrap package you want to use. twbs:bootstrap is a popular choice.
+meteor add twbs:bootstrap
+meteor add bootstrp:tagsinput
 </pre>
 Test:
 <pre>
