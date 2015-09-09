@@ -344,7 +344,7 @@
         if (! self.$element.attr('disabled')) {
           self.$input.removeAttr('disabled');
         }
-        if (event.toElement.tagName != "SPAN")
+        if (event.target && event.target.tagName != "SPAN")
         {
             // don't focus if clicked on the X button to close tag, makes things 
             // difficult with typeahead and populating with minSize 0
