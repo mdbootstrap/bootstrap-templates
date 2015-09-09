@@ -344,7 +344,12 @@
         if (! self.$element.attr('disabled')) {
           self.$input.removeAttr('disabled');
         }
-        self.$input.focus();
+        if (event.toElement.tagName != "SPAN")
+        {
+            // don't focus if clicked on the X button to close tag, makes things 
+            // difficult with typeahead and populating with minSize 0
+            self.$input.focus();
+        }
       }, self));
 
         if (self.options.addOnBlur && self.options.freeInput) {
