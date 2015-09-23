@@ -14,6 +14,9 @@
     itemTitle: function(item) {
       return null;
     },
+    readOnly: function(item) {
+      return false;
+    },
     freeInput: true,
     addOnBlur: true,
     maxTags: undefined,
@@ -99,7 +102,8 @@
       var itemValue = self.options.itemValue(item),
           itemText = self.options.itemText(item),
           tagClass = self.options.tagClass(item),
-          itemTitle = self.options.itemTitle(item);
+          itemTitle = self.options.itemTitle(item),
+          readOnly = self.options.readOnly(item);
 
       // Ignore items allready added
       var existing = $.grep(self.itemsArray, function(item) { return self.options.itemValue(item) === itemValue; } )[0];
@@ -126,8 +130,8 @@
       self.itemsArray.push(item);
 
       // add a tag element
-
-      var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
+      var removeTpl = !readOnly ? '<span data-role="remove"></span>' : '';
+      var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + removeTpl + '</span>');
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
       $tag.after(' ');
@@ -263,6 +267,7 @@
 
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
+      makeOptionItemFunction(self.options, 'readOnly');
       makeOptionFunction(self.options, 'tagClass');
 
       // Typeahead Bootstrap version 2.3.2
