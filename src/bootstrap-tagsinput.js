@@ -379,7 +379,14 @@
             if (doGetCaretPosition($input[0]) === 0) {
               var prev = $inputWrapper.prev();
               if (prev) {
-                self.remove(prev.data('item'));
+                if(!prev.data('item').readOnly) {
+                  self.remove(prev.data('item'));
+                } else {
+                  if ($input.val().length === 0 && prev[0]) {
+                    prev.before($inputWrapper);
+                    $input.focus();
+                  }
+                }
               }
             }
             break;
@@ -389,7 +396,14 @@
             if (doGetCaretPosition($input[0]) === 0) {
               var next = $inputWrapper.next();
               if (next) {
-                self.remove(next.data('item'));
+                if(!next.data('item').readOnly) {
+                  self.remove(next.data('item'));
+                } else {
+                  if ($input.val().length === 0 && next[0]) {
+                    next.after($inputWrapper);
+                    $input.focus();
+                  }
+                }
               }
             }
             break;
