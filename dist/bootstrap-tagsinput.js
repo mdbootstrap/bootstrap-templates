@@ -127,7 +127,7 @@
 
       // add a tag element
 
-      var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
+      var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '"><span data-role="click">' + htmlEncode(itemText) + '</span><span data-role="remove"></span></span>');
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
       $tag.after(' ');
@@ -447,6 +447,14 @@
           return;
         }
         self.remove($(event.target).closest('.tag').data('item'));
+      }, self));
+	  
+	  // Item clicked
+      self.$container.on('click', '[data-role=click]', $.proxy(function(event) {
+        if (self.$element.attr('disabled')) {
+          return;
+        }
+        self.$element.trigger($.Event('itemClicked',  { item: $(event.target).closest('.tag').data('item')}));
       }, self));
 
       // Only add existing value as tags when using strings as tags
