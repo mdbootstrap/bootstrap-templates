@@ -11,6 +11,9 @@
   line-height: 22px;
   cursor: text;
 }
+.bootstrap-tagsinput-tags {
+  display: inline-block;
+}
 .bootstrap-tagsinput input {
   border: none;
   box-shadow: none;

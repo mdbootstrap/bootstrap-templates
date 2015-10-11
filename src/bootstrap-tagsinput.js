@@ -42,6 +42,7 @@
     this.inputSize = Math.max(1, this.placeholderText.length);
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
+    this.$tagsContainer = $('<div class="bootstrap-tagsinput-tags"></div>').appendTo(this.$container);
     this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
 
     this.$element.before(this.$container);
@@ -129,7 +130,7 @@
 
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
       $tag.data('item', item);
-      self.findInputWrapper().before($tag);
+      self.$tagsContainer.append($tag);
       $tag.after(' ');
 
       // add <option /> if item represents a value not present in one of the <select />'s options
