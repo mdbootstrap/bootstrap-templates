@@ -133,7 +133,11 @@
       $tag.after(' ');
 
       // add <option /> if item represents a value not present in one of the <select />'s options
-      if (self.isSelect && !$('option[value="' + itemValue.replace(/"/g, '\\"') + '"]',self.$element)[0]) {
+      var fixedItemValue = itemValue;
+      if (typeof itemValue == 'string') {
+        fixedItemValue = itemValue.replace(/"/g, '\\"');
+      }
+      if (self.isSelect && !$('option[value="' + fixedItemValue + '"]',self.$element)[0]) {
         var $option = $('<option selected>' + htmlEncode(itemText) + '</option>');
         $option.data('item', item);
         $option.attr('value', itemValue);
