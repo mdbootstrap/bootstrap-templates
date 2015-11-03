@@ -43,6 +43,13 @@ Build:
 <pre>
 grunt build
 </pre>
+Current Library Versions:
+
+- Bootstrap: 3.3.5
+- jQuery: 2.1.4
+- Typeahead: 0.11.1
+
+Libraries for testing go in the **/lib** directory.
 
 ## History
 - 0.5
