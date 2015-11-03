@@ -1,44 +1,43 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Bootstrap Tags Input</title>
     <meta name="robots" content="index, follow" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    
-    <link rel="stylesheet" href="lib/bootstrap-3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="lib/bootstrap-3/dist/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="lib/bootstrap-tagsinput/bootstrap-tagsinput.css">
-    <link rel="stylesheet" href="lib/rainbow/themes/github.css">
-    <link rel="stylesheet" href="assets/app.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../dist/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/themes/github.css">
+    <link rel="stylesheet" href="assets/app.css">
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-42755476-1', 'timschlechter.github.io');
+    ga('create', 'UA-42755476-1', 'bootstrap-tagsinput.github.io');
     ga('send', 'pageview');
     </script>
   </head>
   <body>
-    <div id="fb-root"></div>    
+    <div id="fb-root"></div>
     <div class="jumbotron">
       <div class="container">
         <h1>Bootstrap Tags Input</h1>
         <p>jQuery plugin providing a Twitter Bootstrap user interface for managing tags</p>
         <p>
             <a class="btn btn-default" role="button" href="https://github.com/bootstrap-tagsinput/bootstrap-tagsinput">Code on Github</a>
-            <a class="btn btn-default" role="button" href="bootstrap-2.3.2.html">Bootstrap 2.3.2</a>            
-            <a class="btn btn-primary" role="button" href="https://github.com/bootstrap-tagsinput/bootstrap-tagsinput/dist/bootstrap-tagsinput.zip">Download</a>            
+            <a class="btn btn-default" role="button" href="bootstrap-2.3.2.html">Bootstrap 2.3.2</a>
+            <a class="btn btn-primary" role="button" href="http://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.zip">Download</a>
         </p>
         <p>
           <ul class="list-inline">
             <li>
-              <iframe src="//ghbtns.com/github-btn.html?user=timschlechter&repo=bootstrap-tagsinput&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+              <iframe src="//ghbtns.com/github-btn.html?user=bootstrap-tagsinput&repo=bootstrap-tagsinput&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
             </li>
             <li>
-              <iframe src="//ghbtns.com/github-btn.html?user=timschlechter&repo=bootstrap-tagsinput&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+              <iframe src="//ghbtns.com/github-btn.html?user=bootstrap-tagsinput&repo=bootstrap-tagsinput&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
             </li>
             <li>
               <a href="https://twitter.com/share" class="navbar-link twitter-share-button" data-hashtags="bootstraptagsinput">Tweet</a>
@@ -134,7 +133,7 @@
           </div>
            <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("select").val()</code></td><td><pre class="val"><code data-language="javascript"></code></pre></td></tr><tr><td><code>$("select").tagsinput('items')</code></td><td><pre class="items"><code data-language="javascript"></code></pre></td></tr></tbody></table>
         </div>
-       
+
         <div class="example example_typeahead">
           <h3>Typeahead</h3>
           Typeahead is not included in Bootstrap 3, so you'll have to include your own typeahead library. I'd recommed <a href="http://twitter.github.io/typeahead.js/">typeahead.js</a>. An example of using this is shown below.
@@ -177,7 +176,7 @@ $('input').tagsinput({
 &lt;/script&gt;</code></pre>
                 </div>
               </div>
-            </div>                  
+            </div>
           </div>
           <table class="table table-bordered table-condensed"><thead><tr><th>statement</th><th>returns</th></tr></thead><tbody><tr><td><code>$("input").val()</code></td><td><pre class="val"><code data-language="javascript"></code></pre></td></tr><tr><td><code>$("input").tagsinput('items')</code></td><td><pre class="items"><code data-language="javascript"></code></pre></td></tr></tbody></table>
         </div>
@@ -234,7 +233,7 @@ elt.tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa
         <div class="example example_tagclass">
           <h3>Categorizing tags</h3>
           <p>
-            You can set a fixed css class for your tags, or determine dynamically by provinding a custom function.
+            You can set a fixed css class for your tags, or determine dynamically by providing a custom function.
           </p>
           <div class="bs-example">
             <input type="text" />
@@ -439,7 +438,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
   maxTags: 3
 });</code></pre>
               </td>
-            </tr>  
+            </tr>
             <tr>
               <td colspan="2"><code>maxChars</code></td>
               <td>
@@ -457,7 +456,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
   trimValue: true
 });</code></pre>
               </td>
-            </tr> 
+            </tr>
             <tr>
               <td colspan="2"><code>allowDuplicates</code></td>
               <td>
@@ -500,7 +499,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
   }
 });</code></pre>
                 <pre><code data-language="javascript">$('input').tagsinput({
-  typeahead: {                  
+  typeahead: {
     source: function(query) {
       return $.get('http://someservice.com');
     }
@@ -517,7 +516,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
   }
 });</code></pre>
               </td>
-            </tr>          
+            </tr>
           </tbody>
         </table>
       </section>
@@ -542,6 +541,31 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
                 <pre><code data-language="javascript">$('input').tagsinput('add', 'some tag');</code></pre>
 
                 <pre><code data-language="javascript">$('input').tagsinput('add', { id: 1, text: 'some tag' });</code></pre>
+
+                Optionally, you can pass a 3rd parameter (object or value) to the <code>add</code> method to gain more control over the process. The parameter is exposed in the <code>options</code> attribute of the event.
+
+                <pre><code data-language="javascript">$('input').tagsinput('add', 'some tag', {preventPost: true});</code></pre>
+
+                Usage:
+
+                <pre>
+                  <code data-language="javascript">
+$('#tags-input').on('beforeItemAdd', function(event) {
+   var tag = event.item;
+   // Do some processing here
+
+   if (!event.options || !event.options.preventPost) {
+      $.ajax('/ajax-url', ajaxData, function(response) {
+         if (response.failure) {
+            // Remove the tag since there was a failure
+            // "preventPost" here will stop this ajax call from running when the tag is removed
+            $('#tags-input').tagsinput('remove', tag, {preventPost: true});
+         }
+      });
+   }
+});
+                  </code>
+                </pre>
               </td>
             </tr>
             <tr>
@@ -552,6 +576,39 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
                 <pre><code data-language="javascript">$('input').tagsinput('remove', 'some tag');</code></pre>
 
                 <pre><code data-language="javascript">$('input').tagsinput('remove', { id: 1, text: 'some tag' });</code></pre>
+
+                Optionally, you can pass a 3rd parameter (object or value) to the <code>remove</code> method to gain more control over the process. The parameter is exposed in the <code>options</code> attribute of the event.
+
+                <pre><code data-language="javascript">$('input').tagsinput('remove', 'some tag', {preventPost: true});</code></pre>
+
+                Usage:
+
+                <pre>
+                  <code data-language="javascript">
+$('#tags-input').on('beforeItemRemove', function(event) {
+   var tag = event.item;
+   // Do some processing here
+
+   if (!event.options || !event.options.preventPost) {
+      $.ajax('/ajax-url', ajaxData, function(response) {
+         if (response.failure) {
+            // Re-add the tag since there was a failure
+            // "preventPost" here will stop this ajax call from running when the tag is added
+            $('#tags-input').tagsinput('add', tag, {preventPost: true});
+         }
+      });
+   }
+});
+                  </code>
+                </pre>
+              </td>
+            </tr>
+            <tr>
+              <td><code>removeAll</code></td>
+              <td>
+                <p>Removes all tags</p>
+
+                <pre><code data-language="javascript">$('input').tagsinput('removeAll');</code></pre>
               </td>
             </tr>
             <tr>
@@ -659,18 +716,18 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
       </div>
     </footer>
 
-    <script src="lib/jquery/dist/jquery.min.js"></script>
-    <script src="lib/bootstrap-3/dist/js/bootstrap.min.js"></script>
-    <script src="lib/angular/angular.min.js"></script>
-    <script src="lib/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
-    <script src="lib/bootstrap-tagsinput/bootstrap-tagsinput-angular.js"></script>
-    <script src="lib/typeahead.js/dist/typeahead.bundle.js"></script>
-    <script src="lib/rainbow/js/rainbow.min.js"></script>
-    <script src="lib/rainbow/js/language/generic.js"></script>
-    <script src="lib/rainbow/js/language/html.js"></script>
-    <script src="lib/rainbow/js/language/javascript.js"></script>
-    <script src="assets/app_bs3.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+    <script src="../dist/bootstrap-tagsinput.min.js"></script>
+    <script src="../dist/bootstrap-tagsinput/bootstrap-tagsinput-angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/rainbow.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/generic.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/html.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/language/javascript.js"></script>
     <script src="assets/app.js"></script>
+    <script src="assets/app_bs3.js"></script>
   </body>
 </html>
 
