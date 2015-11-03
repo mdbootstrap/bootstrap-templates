@@ -1,6 +1,8 @@
 # Bootstrap Tags Input [![Build Status](https://travis-ci.org/bootstrap-tagsinput/bootstrap-tagsinput.svg?branch=master)](https://travis-ci.org/bootstrap-tagsinput/bootstrap-tagsinput)
 Bootstrap Tags Input is a jQuery plugin providing a Twitter Bootstrap user interface for managing tags.
 
+Current stable version: **v0.6.0**
+
 ## Usage
 Examples can be found [here](http://bootstrap-tagsinput.github.io/bootstrap-tagsinput/examples/).
 
@@ -52,6 +54,10 @@ Current Library Versions:
 Libraries for testing go in the **/lib** directory.
 
 ## History
+- 0.6.0
+  - [Allow form submissions when pressing enter if field is empty. Controlled by option](https://github.com/bootstrap-tagsinput/bootstrap-tagsinput/issues/368)
+  - [Ability to set different or multiple delimiters](https://github.com/bootstrap-tagsinput/bootstrap-tagsinput/issues/397)
+  - [No longer triggering itemRemoved when the field is already empty](https://github.com/bootstrap-tagsinput/bootstrap-tagsinput/issues/405)
 - 0.5
   - [Added an optional 3rd parameter to the "add" and "remove" methods](https://github.com/bootstrap-tagsinput/bootstrap-tagsinput/pull/298)
 - 0.4
