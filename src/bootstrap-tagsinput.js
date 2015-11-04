@@ -20,6 +20,8 @@
     maxChars: undefined,
     confirmKeys: [13, 44],
     delimiter: ',',
+    containerClass: '',
+    inputClass: '',
     delimiterRegex: null,
     cancelConfirmKeysOnEmpty: true,
     onTagExists: function(item, $tag) {
@@ -268,6 +270,9 @@
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionFunction(self.options, 'tagClass');
+
+      self.$container.addClass(options.containerClass);
+      self.$input.addClass(options.inputClass);
 
       // Typeahead Bootstrap version 2.3.2
       if (self.options.typeahead) {
