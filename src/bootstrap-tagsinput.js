@@ -271,8 +271,8 @@
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionFunction(self.options, 'tagClass');
 
-      self.$container.addClass(options.containerClass);
-      self.$input.addClass(options.inputClass);
+      self.$container.addClass(self.options.containerClass);
+      self.$input.addClass(self.options.inputClass);
 
       // Typeahead Bootstrap version 2.3.2
       if (self.options.typeahead) {
