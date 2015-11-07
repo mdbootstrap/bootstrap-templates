@@ -36,7 +36,12 @@
     this.itemsArray = [];
 
     this.$element = $(element);
-    this.$element.hide();
+
+    // Hide the original form element, but keep it accessible
+    this._tabindex = this.$element.attr('tabindex');
+    this.$element.addClass('bootstrap-tagsinput-hidden-accessible')
+        .attr('aria-hidden', 'true')
+        .attr('tabindex', '-1');
 
     this.isSelect = (element.tagName === 'SELECT');
     this.multiple = (this.isSelect && element.hasAttribute('multiple'));
@@ -484,7 +489,13 @@
 
       self.$container.remove();
       self.$element.removeData('tagsinput');
-      self.$element.show();
+      self.$element.removeClass('bootstrap-tagsinput-hidden-accessible')
+        .removeAttr('aria-hidden');
+      if (this._tabindex === undefined) {
+        self.$element.removeAttr('tabindex');
+      } else {
+        self.$element.attr('tabindex', this._tabindex);
+      }
     },
 
     /**

@@ -12,7 +12,9 @@ describe("bootstrap-tagsinput", function() {
 
     testTagsInput('<input type="text" />', function() {
       it("should hide input", function() {
-        expect(this.$element.css('display')).toBe('none');
+        expect(this.$element.hasClass('bootstrap-tagsinput-hidden-accessible')).toBe(true);
+        expect(this.$element.attr('aria-hidden')).toBe('true');
+        expect(this.$element.attr('tabindex')).toBe('-1');
       });
 
       it("should add tag on when pressing ENTER", function() {
