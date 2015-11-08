@@ -508,6 +508,14 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               </td>
             </tr>
             <tr>
+              <td colspan="2"><code>cancelConfirmKeysOnEmpty</code></td>
+              <td><p>Boolean value controlling whether form submissions get processed when pressing enter in a field converted to a tagsinput (default: false).
+                <pre><code data-language="javascript">$('input').tagsinput({
+  cancelConfirmKeysOnEmpty: true
+});</code></pre>
+              </td>
+            </tr>
+            <tr>
               <td colspan="2"><code>onTagExists</code></td>
               <td><p>Function invoked when trying to add an item which allready exists. By default, the existing tag hides and fades in.
                 <pre><code data-language="javascript">$('input').tagsinput({
