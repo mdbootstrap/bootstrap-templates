@@ -21,7 +21,7 @@
     confirmKeys: [13, 44],
     delimiter: ',',
     delimiterRegex: null,
-    cancelConfirmKeysOnEmpty: true,
+    cancelConfirmKeysOnEmpty: false,
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     },
@@ -441,7 +441,7 @@
 
             // If the field is empty, let the event triggered fire as usual
             if (self.options.cancelConfirmKeysOnEmpty === false) {
-               event.preventDefault();
+                event.preventDefault();
             }
          }
 
