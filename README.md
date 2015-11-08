@@ -35,7 +35,7 @@ Integrates with Twitter Bootstraps' 2.3.2 typeahead, or use custom typeahead whe
 Install dependencies:
 <pre>
 npm install
-bower install
+grunt install
 </pre>
 Test:
 <pre>
