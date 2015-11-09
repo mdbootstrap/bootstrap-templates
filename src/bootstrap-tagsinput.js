@@ -33,6 +33,7 @@
    * Constructor function
    */
   function TagsInput(element, options) {
+    this.isInit = true;
     this.itemsArray = [];
 
     this.$element = $(element);
@@ -50,6 +51,7 @@
     this.$element.before(this.$container);
 
     this.build(options);
+    this.isInit = false;
   }
 
   TagsInput.prototype = {
@@ -157,7 +159,11 @@
       if (self.options.maxTags === self.itemsArray.length || self.items().toString().length === self.options.maxInputLength)
         self.$container.addClass('bootstrap-tagsinput-max');
 
-      self.$element.trigger($.Event('itemAdded', { item: item, options: options }));
+      if (this.isInit) {
+        self.$element.trigger($.Event('itemAddedOnInit', { item: item, options: options }));
+      } else {
+        self.$element.trigger($.Event('itemAdded', { item: item, options: options }));
+      }
     },
 
     /**
