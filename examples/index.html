@@ -677,6 +677,15 @@ $('#tags-input').on('beforeItemRemove', function(event) {
           </thead>
           <tbody>
             <tr>
+              <td><code>itemAddedOnInit</code></td>
+              <td>
+                During initialization, pre-defined tags being added will cause this event to be triggered. Example:
+                <pre><code data-language="javascript">$('input').on('itemAddedOnInit', function(event) {
+  // event.item: contains the item
+});</code></pre>
+              </td>
+            </tr>
+            <tr>
               <td><code>beforeItemAdd</code></td>
               <td>
                 Triggered just before an item gets added. Example:
