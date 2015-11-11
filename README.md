@@ -1,7 +1,7 @@
 # Bootstrap Tags Input [![Build Status](https://travis-ci.org/bootstrap-tagsinput/bootstrap-tagsinput.svg?branch=master)](https://travis-ci.org/bootstrap-tagsinput/bootstrap-tagsinput)
 Bootstrap Tags Input is a jQuery plugin providing a Twitter Bootstrap user interface for managing tags.
 
-Current stable version: **v0.7.0**
+Current stable version: **v0.7.1**
 
 ## Usage
 Examples can be found [here](http://bootstrap-tagsinput.github.io/bootstrap-tagsinput/examples/).
@@ -54,6 +54,10 @@ Current Library Versions:
 Libraries for testing go in the **/lib** directory.
 
 ## History
+- 0.7.1
+  - [allowDuplicates not working](https://github.com/bootstrap-tagsinput/bootstrap-tagsinput/issues/419)
+  - [tag text appears when typeahead input looses focus](https://github.com/bootstrap-tagsinput/bootstrap-tagsinput/issues/386)
+  - [Remove duplicate method `removeAll` in manual](https://github.com/bootstrap-tagsinput/bootstrap-tagsinput/pull/427)
 - 0.7.0
   - [.tt-menu etc. styles should be included in bootstrap-tagsinput.css by default](https://github.com/bootstrap-tagsinput/bootstrap-tagsinput/issues/426)
   - [Comma character carried over to new tag input when used as separator](https://github.com/bootstrap-tagsinput/bootstrap-tagsinput/issues/422)
