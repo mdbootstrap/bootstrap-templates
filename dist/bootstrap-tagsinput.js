@@ -159,6 +159,11 @@
       if (self.options.maxTags === self.itemsArray.length || self.items().toString().length === self.options.maxInputLength)
         self.$container.addClass('bootstrap-tagsinput-max');
 
+      // If using typeahead, once the tag has been added, clear the typeahead value so it does not stick around in the input.
+      if ($('.typeahead, .twitter-typeahead', self.$container).length) {
+        self.$input.typeahead('val', '');
+      }
+
       if (this.isInit) {
         self.$element.trigger($.Event('itemAddedOnInit', { item: item, options: options }));
       } else {
