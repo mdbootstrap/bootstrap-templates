@@ -29,7 +29,7 @@
         <p>
             <a class="btn btn-default" role="button" href="https://github.com/bootstrap-tagsinput/bootstrap-tagsinput">Code on Github</a>
             <a class="btn btn-default" role="button" href="bootstrap-2.3.2.html">Bootstrap 2.3.2</a>
-            <a class="btn btn-primary" role="button" href="http://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.zip">Download</a>
+            <a class="btn btn-primary" role="button" href="https://codeload.github.com/bootstrap-tagsinput/bootstrap-tagsinput/zip/latest">Download</a>
         </p>
         <p>
           <ul class="list-inline">
@@ -508,6 +508,14 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               </td>
             </tr>
             <tr>
+              <td colspan="2"><code>cancelConfirmKeysOnEmpty</code></td>
+              <td><p>Boolean value controlling whether form submissions get processed when pressing enter in a field converted to a tagsinput (default: false).
+                <pre><code data-language="javascript">$('input').tagsinput({
+  cancelConfirmKeysOnEmpty: true
+});</code></pre>
+              </td>
+            </tr>
+            <tr>
               <td colspan="2"><code>onTagExists</code></td>
               <td><p>Function invoked when trying to add an item which allready exists. By default, the existing tag hides and fades in.
                 <pre><code data-language="javascript">$('input').tagsinput({
@@ -660,6 +668,15 @@ $('#tags-input').on('beforeItemRemove', function(event) {
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td><code>itemAddedOnInit</code></td>
+              <td>
+                During initialization, pre-defined tags being added will cause this event to be triggered. Example:
+                <pre><code data-language="javascript">$('input').on('itemAddedOnInit', function(event) {
+  // event.item: contains the item
+});</code></pre>
+              </td>
+            </tr>
             <tr>
               <td><code>beforeItemAdd</code></td>
               <td>
