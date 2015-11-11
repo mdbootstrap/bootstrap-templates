@@ -512,7 +512,7 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
               <td><p>Function invoked when trying to add an item which allready exists. By default, the existing tag hides and fades in.
                 <pre><code data-language="javascript">$('input').tagsinput({
   onTagExists: function(item, $tag) {
-    $tag.hide.fadeIn();
+    $tag.hide().fadeIn();
   }
 });</code></pre>
               </td>
