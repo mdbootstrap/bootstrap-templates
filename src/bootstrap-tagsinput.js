@@ -271,7 +271,7 @@
 
       self.$element.val(val, true);
 
-      if (triggerChange)
+      if (self.options.triggerChange)
         self.$element.trigger('change');
     },
 
