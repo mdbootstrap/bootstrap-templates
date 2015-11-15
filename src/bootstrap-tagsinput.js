@@ -17,6 +17,7 @@
     freeInput: true,
     addOnBlur: true,
     maxTags: undefined,
+    onMaxTags: $.noop,
     maxChars: undefined,
     confirmKeys: [13, 44],
     delimiter: ',',
@@ -64,8 +65,12 @@
     add: function(item, dontPushVal, options) {
       var self = this;
 
-      if (self.options.maxTags && self.itemsArray.length >= self.options.maxTags)
+      if (self.options.maxTags && self.itemsArray.length >= self.options.maxTags) {
+        if (Object.prototype.toString.call(self.options.onMaxTags) == '[object Function]') {
+          self.options.onMaxTags(item);
+        }
         return;
+      }
 
       // Ignore falsey values, except false
       if (item !== false && !item)
