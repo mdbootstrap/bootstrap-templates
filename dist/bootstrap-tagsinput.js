@@ -372,9 +372,12 @@
           self.$input.on('focusout', $.proxy(function(event) {
               // HACK: only process on focusout when no typeahead opened, to
               //       avoid adding the typeahead text as tag
-              if ($('.typeahead, .twitter-typeahead', self.$container).length === 0) {
-                self.add(self.$input.val());
-                self.$input.val('');
+              if ($('.tt-hint', self.$container).length === 0 || $('.tt-hint', self.$container).val().length === 0) {
+                  self.add(self.$input.val());
+                  if (self.options.typeaheadjs) {
+                    self.$input.typeahead('val', '');
+                    self.$input.typeahead('close');
+                  } 
               }
           }, self));
         }
