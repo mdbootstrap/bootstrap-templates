@@ -32,7 +32,8 @@
       $tag.hide().fadeIn();
     },
     trimValue: false,
-    allowDuplicates: false
+    allowDuplicates: false,
+    triggerChange: true
   };
 
   /**
@@ -103,7 +104,7 @@
           }
 
           if (!dontPushVal)
-            self.pushVal();
+            self.pushVal(self.options.triggerChange);
           return;
         }
       }
@@ -159,7 +160,7 @@
       }
 
       if (!dontPushVal)
-        self.pushVal();
+        self.pushVal(self.options.triggerChange);
 
       // Add class when reached maxTags
       if (self.options.maxTags === self.itemsArray.length || self.items().toString().length === self.options.maxInputLength)
@@ -206,7 +207,7 @@
       }
 
       if (!dontPushVal)
-        self.pushVal();
+        self.pushVal(self.options.triggerChange);
 
       // Remove class when reached maxTags
       if (self.options.maxTags > self.itemsArray.length)
@@ -227,7 +228,7 @@
       while(self.itemsArray.length > 0)
         self.itemsArray.pop();
 
-      self.pushVal();
+      self.pushVal(self.options.triggerChange);
     },
 
     /**
@@ -274,7 +275,10 @@
             return self.options.itemValue(item).toString();
           });
 
-      self.$element.val(val, true).trigger('change');
+      self.$element.val(val, true);
+
+      if (self.options.triggerChange)
+        self.$element.trigger('change');
     },
 
     /**
