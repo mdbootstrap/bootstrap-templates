@@ -5,6 +5,7 @@
     tagClass: function(item) {
       return 'label label-info';
     },
+    focusClass: 'focus',
     itemValue: function(item) {
       return item ? item.toString() : item;
     },
@@ -156,8 +157,10 @@
         self.pushVal();
 
       // Add class when reached maxTags
-      if (self.options.maxTags === self.itemsArray.length || self.items().toString().length === self.options.maxInputLength)
+      if (self.options.maxTags === self.itemsArray.length || self.items().toString().length === self.options.maxInputLength) {
         self.$container.addClass('bootstrap-tagsinput-max');
+        self.$element.trigger($.Event('maxItemsReached', { item: item, options: options }));
+    }
 
       // If using typeahead, once the tag has been added, clear the typeahead value so it does not stick around in the input.
       if ($('.typeahead, .twitter-typeahead', self.$container).length) {
@@ -379,6 +382,15 @@
           }, self));
         }
 
+      // Toggle the 'focus' css class on the container when it has focus
+      self.$container.on({
+        focusin: function() {
+          self.$container.addClass(self.options.focusClass);
+        },
+        focusout: function() {
+          self.$container.removeClass(self.options.focusClass);
+        },
+      });
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
         var $input = $(event.target),
