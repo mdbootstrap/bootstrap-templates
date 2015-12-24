@@ -342,13 +342,15 @@
       // typeahead.js
       if (self.options.typeaheadjs) {
           var typeaheadConfig = null;
-          var typeaheadDatasets = {};
+          var typeaheadDatasets = [];
 
           // Determine if main configurations were passed or simply a dataset
           var typeaheadjs = self.options.typeaheadjs;
           if ($.isArray(typeaheadjs)) {
-            typeaheadConfig = typeaheadjs[0];
-            typeaheadDatasets = typeaheadjs[1];
+            if(typeaheadjs.length > 1){
+              typeaheadConfig = typeaheadjs[0];
+              typeaheadDatasets = typeaheadjs.slice(1);
+            }
           } else {
             typeaheadDatasets = typeaheadjs;
           }
