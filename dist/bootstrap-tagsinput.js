@@ -470,7 +470,7 @@
             // Only attempt to add a tag if there is data in the field
 
             if (text.length !== 0) {
-              console.log("text.length !== 0"+text);
+              //console.log("text.length !== 0"+text);
                //self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text); ////TRP 12/24/15
 
                //<<<<< TRP 12/24/15
@@ -481,8 +481,8 @@
                  if (beforeFreeInputItemAdd.cancel)
                    return;
 
-                   console.log('beforeFreeInputItemAdd.item');
-                   console.log(beforeFreeInputItemAdd.item);
+                   //console.log('beforeFreeInputItemAdd.item');
+                   //console.log(beforeFreeInputItemAdd.item);
                  item2 = beforeFreeInputItemAdd.item;
                }
 
