@@ -266,7 +266,13 @@
     pushVal: function() {
       var self = this,
           val = $.map(self.items(), function(item) {
-            return self.options.itemValue(item).toString();
+            //return self.options.itemValue(item).toString();
+            if(typeof self.options.itemValue(item) !== 'undefined'){
+                return self.options.itemValue(item).toString();
+            }
+            else{
+
+            }
           });
 
       self.$element.val(val, true).trigger('change');
@@ -280,8 +286,8 @@
 
       self.options = $.extend({}, defaultOptions, options);
       // When itemValue is set, freeInput should always be false
-      if (self.objectItems)
-        self.options.freeInput = false;
+      if (self.objectItems);
+        //self.options.freeInput = false; //TRP 12/24/15
 
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
@@ -369,16 +375,16 @@
         self.$input.focus();
       }, self));
 
-        if (self.options.addOnBlur && self.options.freeInput) {
-          self.$input.on('focusout', $.proxy(function(event) {
-              // HACK: only process on focusout when no typeahead opened, to
-              //       avoid adding the typeahead text as tag
-              if ($('.typeahead, .twitter-typeahead', self.$container).length === 0) {
-                self.add(self.$input.val());
-                self.$input.val('');
-              }
-          }, self));
-        }
+      if (self.options.addOnBlur && self.options.freeInput) {
+         self.$input.on('focusout', $.proxy(function(event) {
+             // HACK: only process on focusout when no typeahead opened, to
+             //       avoid adding the typeahead text as tag
+             if ($('.typeahead, .twitter-typeahead', self.$container).length === 0) {
+               self.add(self.$input.val());
+               self.$input.val('');
+             }
+         }, self));
+       }
 
       // Toggle the 'focus' css class on the container when it has focus
       self.$container.on({
@@ -459,17 +465,40 @@
 
          var text = $input.val(),
          maxLengthReached = self.options.maxChars && text.length >= self.options.maxChars;
+
          if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
             // Only attempt to add a tag if there is data in the field
+            //console.log("TRUE===self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)===FALSE");
+
             if (text.length !== 0) {
-               self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
-               $input.val('');
+              console.log("text.length !== 0"+text);
+               //self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text); ////TRP 12/24/15
+
+               var item2 = self.$input.val();
+               if (self.objectItems) {
+                 var beforeFreeInputItemAdd = $.Event('beforeFreeInputItemAdd', { item: item2, cancel: true });
+                 self.$element.trigger(beforeFreeInputItemAdd);
+                 if (beforeFreeInputItemAdd.cancel)
+                   return;
+
+                   console.log('beforeFreeInputItemAdd.item');
+                   console.log(beforeFreeInputItemAdd.item);
+                 item2 = beforeFreeInputItemAdd.item;
+               }
+
+               self.add(item2);
+               self.$input.val('');
+               //  $input.val(''); //TRP 12/24/15
             }
 
             // If the field is empty, let the event triggered fire as usual
             if (self.options.cancelConfirmKeysOnEmpty === false) {
+                //console.log("self.options.cancelConfirmKeysOnEmpty === false");
                 event.preventDefault();
             }
+         }
+         else{
+           //console.log("FALSE===self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)");
          }
 
          // Reset internal input's size
@@ -642,10 +671,15 @@
     *     [13, {which: 188, shiftKey: true}]
     */
   function keyCombinationInList(keyPressEvent, lookupList) {
+    console.log('keyPressEvent');
+    console.log(keyPressEvent);
+    console.log('lookupList');
+    console.log(lookupList);
       var found = false;
       $.each(lookupList, function (index, keyCombination) {
           if (typeof (keyCombination) === 'number' && keyPressEvent.which === keyCombination) {
               found = true;
+              //console.log('line 657 found: true, return false');
               return false;
           }
 
@@ -655,11 +689,14 @@
                   ctrl = !keyCombination.hasOwnProperty('ctrlKey') || keyPressEvent.ctrlKey === keyCombination.ctrlKey;
               if (alt && shift && ctrl) {
                   found = true;
+                  //console.log('line 666 found: true, return false');
                   return false;
               }
           }
       });
 
+      //console.log('found: ');
+      //console.log(found);
       return found;
   }
 
