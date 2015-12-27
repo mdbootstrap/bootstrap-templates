@@ -86,8 +86,11 @@
         return;
 
       // If SELECT but not multiple, remove current tag
-      if (self.isSelect && !self.multiple && self.itemsArray.length > 0)
-        self.remove(self.itemsArray[0]);
+      if (self.isSelect && !self.multiple && self.itemsArray.length > 0){
+          console.log("If SELECT but not multiple, remove current tag");
+          self.remove(self.itemsArray[0]);
+      }
+
 
       if (typeof item === "string" && this.$element[0].tagName === 'INPUT') {
         var delimiter = (self.options.delimiterRegex) ? self.options.delimiterRegex : self.options.delimiter;
@@ -411,7 +414,17 @@
             if (doGetCaretPosition($input[0]) === 0) {
               var prev = $inputWrapper.prev();
               if (prev.length) {
-                self.remove(prev.data('item'));
+                var prev_item = prev.data('item');
+                // <<<<< TRP 12/27/15
+                if((typeof prev_item === 'string' && prev_item ==$input.val()) || (typeof prev_item === 'object' && prev_item.name == $input.val())){
+                  //console.log('remove b/c same name=value');
+                  self.remove(prev.data('item'));
+                }
+                else{
+                  //console.log('DONT remove b/c NOT sames name=value');
+                }
+                // >>>> TRP 12/27/15
+
               }
             }
             break;
@@ -421,6 +434,10 @@
             if (doGetCaretPosition($input[0]) === 0) {
               var next = $inputWrapper.next();
               if (next.length) {
+                console.log('case=46, $input.val()');
+                console.log($input.val());
+                console.log("next.data('item')");
+                console.log(next.data('item'));
                 self.remove(next.data('item'));
               }
             }
@@ -510,6 +527,7 @@
         if (self.$element.attr('disabled')) {
           return;
         }
+        console.log('click data-remove');
         self.remove($(event.target).closest('.tag').data('item'));
       }, self));
 
