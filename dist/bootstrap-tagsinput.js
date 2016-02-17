@@ -1,3 +1,8 @@
+/*
+ * bootstrap-tagsinput v0.7.1
+ * 
+ */
+
 (function ($) {
   "use strict";
 
