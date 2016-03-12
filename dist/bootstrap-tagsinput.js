@@ -96,6 +96,16 @@
         }
       }
 
+      var deletable = true;
+      if (item !== null) {
+          if (item.substring(item.length - 3) === '[0]') {
+              deletable = false;
+              item = item.substring(0, item.length - 3);
+          } else if (item.substring(item.length - 3) === '[1]') {
+              item = item.substring(0, item.length - 3);
+          }
+      }
+      
       var itemValue = self.options.itemValue(item),
           itemText = self.options.itemText(item),
           tagClass = self.options.tagClass(item),
@@ -126,8 +136,12 @@
       self.itemsArray.push(item);
 
       // add a tag element
-
-      var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '"><span data-role="click">' + htmlEncode(itemText) + '</span><span data-role="remove"></span></span>');
+      
+      var tagHTML = '<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '"><span data-role="click">' + htmlEncode(itemText) + '</span>';
+      if (deletable) {
+          tagHTML += '<span data-role="remove"></span>';
+      }
+      var $tag = $(tagHTML + '</span>');
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
       $tag.after(' ');
