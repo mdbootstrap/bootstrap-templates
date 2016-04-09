@@ -11,6 +11,29 @@
   line-height: 22px;
   cursor: text;
 }
+.bootstrap-tagsinput .autocomplete {
+  width: 220px;
+  margin-top: 24px;
+  margin-left: 5px;
+  position: fixed;
+  display: none;
+  z-index: 1000;
+}
+.bootstrap-tagsinput.autocompleteActive .autocomplete {
+  display: block;
+}
+.bootstrap-tagsinput .autocomplete span.completeTag {
+  width: 100%;
+  overflow: hidden;
+  display: block;
+  white-space: nowrap;
+  text-align: left;
+  font-size: 14px;
+  padding-left: 2px;
+}
+.bootstrap-tagsinput .autocomplete span.completeTag:hover {
+  cursor: pointer;
+}
 .bootstrap-tagsinput input {
   border: none;
   box-shadow: none;

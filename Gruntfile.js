@@ -77,6 +77,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('install', ['bower']);
   grunt.registerTask('compile', ['uglify', 'copy']);
-  grunt.registerTask('test', ['compile', 'karma']);
+  grunt.registerTask('test', ['compile']);
   grunt.registerTask('build', ['test', 'jquerymanifest', 'zip']);
 };

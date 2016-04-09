@@ -6,7 +6,7 @@
       return 'label label-info';
     },
     itemValue: function(item) {
-      return item ? item.toString() : item;
+      return item.title;
     },
     itemText: function(item) {
       return this.itemValue(item);
@@ -23,7 +23,8 @@
       $tag.hide().fadeIn();
     },
     trimValue: false,
-    allowDuplicates: false
+    allowDuplicates: false,
+    deleteWithKeys: true
   };
 
   /**
@@ -41,7 +42,7 @@
     this.placeholderText = element.hasAttribute('placeholder') ? this.$element.attr('placeholder') : '';
     this.inputSize = Math.max(1, this.placeholderText.length);
 
-    this.$container = $('<div class="bootstrap-tagsinput"></div>');
+    this.$container = $('<div class="bootstrap-tagsinput"><div class="autocomplete"></div></div>');
     this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
 
     this.$element.before(this.$container);
@@ -59,6 +60,8 @@
     add: function(item, dontPushVal, options) {
       var self = this;
 
+      self.$container.removeClass('autocompleteActive');
+
       if (self.options.maxTags && self.itemsArray.length >= self.options.maxTags)
         return;
 
@@ -67,16 +70,12 @@
         return;
 
       // Trim value
-      if (typeof item === "string" && self.options.trimValue) {
-        item = $.trim(item);
+      if (typeof item === "object" && self.options.trimValue) {
+        item.title = $.trim(item.title);
       }
 
-      // Throw an error when trying to add an object while the itemValue option was not set
-      if (typeof item === "object" && !self.objectItems)
-        throw("Can't add objects when itemValue option is not set");
-
       // Ignore strings only containg whitespace
-      if (item.toString().match(/^\s*$/))
+      if (typeof item === "object" && item.title.match(/^\s*$/))
         return;
 
       // If SELECT but not multiple, remove current tag
@@ -84,26 +83,22 @@
         self.remove(self.itemsArray[0]);
 
       if (typeof item === "string" && this.$element[0].tagName === 'INPUT') {
-        var items = item.split(',');
-        if (items.length > 1) {
-          for (var i = 0; i < items.length; i++) {
-            this.add(items[i], true);
-          }
-
-          if (!dontPushVal)
-            self.pushVal();
-          return;
+        try{
+          var items = JSON.parse(item.replace(/''/g, '"'));
+        } catch (e) {
+          var items = [{
+            title: item,
+            deletable: true,
+            user: null
+          }];
         }
-      }
+        for (var i = 0; i < items.length; i++) {
+          this.add(items[i], true);
+        }
 
-      var deletable = true;
-      if (item !== null) {
-          if (item.substring(item.length - 3) === '[0]') {
-              deletable = false;
-              item = item.substring(0, item.length - 3);
-          } else if (item.substring(item.length - 3) === '[1]') {
-              item = item.substring(0, item.length - 3);
-          }
+        if (!dontPushVal)
+          self.pushVal();
+        return;
       }
       
       var itemValue = self.options.itemValue(item),
@@ -138,10 +133,14 @@
       // add a tag element
       
       var tagHTML = '<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '"><span data-role="click">' + htmlEncode(itemText) + '</span>';
-      if (deletable) {
-          tagHTML += '<span data-role="remove"></span>';
+      if (item.deletable) {
+        tagHTML += '<span data-role="remove"></span>';
       }
-      var $tag = $(tagHTML + '</span>');
+      tagHTML += '</span>'
+      if (item.hover != null) {
+        tagHTML = '<abbr title="' + htmlEncode(item.hover) + '">' + tagHTML + '</abbr>';
+      }
+      var $tag = $(tagHTML);
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
       $tag.after(' ');
@@ -372,6 +371,18 @@
           }, self));
         }
 
+      self.$input.on('focusout', $.proxy(function() {
+        window.setTimeout(function() {
+          self.$container.removeClass('autocompleteActive');
+        }, 100);
+      }, self));
+
+      self.$input.on('focusin', $.proxy(function() {
+        if (self.$input.val().length > 1 && self.$container.children().first().find('div div').first().html() != '') {
+          self.$container.addClass('autocompleteActive');
+        }
+      }, self));
+
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
         var $input = $(event.target),
@@ -385,7 +396,7 @@
         switch (event.which) {
           // BACKSPACE
           case 8:
-            if (doGetCaretPosition($input[0]) === 0) {
+            if (doGetCaretPosition($input[0]) === 0 && self.options.deleteWithKeys) {
               var prev = $inputWrapper.prev();
               if (prev) {
                 self.remove(prev.data('item'));
@@ -395,7 +406,7 @@
 
           // DELETE
           case 46:
-            if (doGetCaretPosition($input[0]) === 0) {
+            if (doGetCaretPosition($input[0]) === 0 && self.options.deleteWithKeys) {
               var next = $inputWrapper.next();
               if (next) {
                 self.remove(next.data('item'));
@@ -453,6 +464,42 @@
             wordSpace = Math.ceil(textLength / 5),
             size = textLength + wordSpace + 1;
          $input.attr('size', Math.max(this.inputSize, $input.val().length));
+      }, self));
+
+      self.$container.on('keyup', 'input', $.proxy(function(event) {
+        var $input = $(event.target);
+
+        if (self.$element.attr('disabled')) {
+          self.$input.attr('disabled', 'disabled');
+          return;
+        }
+
+        var text = $input.val()
+
+        var updateAutocomplete = $.Event('updateAutocomplete', { text: text, updateAutocomplete: function (autocomplete) {
+          if (autocomplete.length !== 0) {
+            self.$container.addClass('autocompleteActive');
+            var autocompleteList = '';
+            autocomplete.forEach(function(tag) {
+              autocompleteList += '<span class="completeTag">' + tag.replace(new RegExp( '(' + text + ')', 'gi' ), '<span class="tagPart">$1</span>') + '</span>';
+            });
+            var position = self.$container.position();
+            self.$container.children().first().css({"left": self.$container.offsetLeft + 5 + 'px', "top": self.$container.offsetTop + 20 + 'px'});
+            var autocompleteElement = self.$container.children().first().find('div div').first();
+            autocompleteElement.html(autocompleteList);
+
+            autocompleteElement.children().each(function() {
+              $(this).click(function() {
+                self.add($(this).text());
+                self.$input.val('');
+              });
+            });
+          } else {
+            self.$container.removeClass('autocompleteActive');
+            self.$container.children().first().find('div div').first().html('');
+          }
+        } });
+        self.$element.trigger(updateAutocomplete);
       }, self));
 
       // Remove icon clicked
