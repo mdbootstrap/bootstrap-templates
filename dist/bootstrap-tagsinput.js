@@ -100,7 +100,7 @@
           self.pushVal();
         return;
       }
-      
+
       var itemValue = self.options.itemValue(item),
           itemText = self.options.itemText(item),
           tagClass = self.options.tagClass(item),
@@ -131,15 +131,16 @@
       self.itemsArray.push(item);
 
       // add a tag element
-      
-      var tagHTML = '<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '"><span data-role="click">' + htmlEncode(itemText) + '</span>';
+      var title   = '<span data-role="click">' + htmlEncode(itemText) + '</span>'
+      var tagHTML = '<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">';
+      if (item.hover != null) {
+        title = '<abbr title="' + htmlEncode(item.hover) + '">' + title + '</abbr>';
+      }
+      tagHTML += title;
       if (item.deletable) {
         tagHTML += '<span data-role="remove"></span>';
       }
-      tagHTML += '</span>'
-      if (item.hover != null) {
-        tagHTML = '<abbr title="' + htmlEncode(item.hover) + '">' + tagHTML + '</abbr>';
-      }
+      tagHTML += '</span>';
       var $tag = $(tagHTML);
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
@@ -474,7 +475,7 @@
           return;
         }
 
-        var text = $input.val()
+        var text = $input.val();
 
         var updateAutocomplete = $.Event('updateAutocomplete', { text: text, updateAutocomplete: function (autocomplete) {
           if (autocomplete.length !== 0) {
@@ -483,7 +484,7 @@
             autocomplete.forEach(function(tag) {
               autocompleteList += '<span class="completeTag">' + tag.replace(new RegExp( '(' + text + ')', 'gi' ), '<span class="tagPart">$1</span>') + '</span>';
             });
-            var position = self.$container.position();
+
             self.$container.children().first().css({"left": self.$container.offsetLeft + 5 + 'px', "top": self.$container.offsetTop + 20 + 'px'});
             var autocompleteElement = self.$container.children().first().find('div div').first();
             autocompleteElement.html(autocompleteList);
