@@ -274,8 +274,9 @@
           val = $.map(self.items(), function(item) {
             return self.options.itemValue(item).toString();
           });
+      var delimiter = (self.options.delimiterRegex) ? self.options.delimiterRegex : self.options.delimiter;
 
-      self.$element.val(val, true);
+      self.$element.val(val.join(delimiter), true);
 
       if (self.options.triggerChange)
         self.$element.trigger('change');
