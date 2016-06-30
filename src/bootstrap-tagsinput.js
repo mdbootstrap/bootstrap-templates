@@ -141,12 +141,13 @@
       $tag.after(' ');
 
       if (self.isSelect) {
-        // add <option /> if item represents a value not present in one of the <select />'s options
         // Check to see if the tag exists in its raw or uri-encoded form
-        if(!(
+        var optionExists = (
             $('option[value="' + encodeURIComponent(itemValue) + '"]', self.$element).length ||
             $('option[value="' + htmlEncode(itemValue) + '"]', self.$element).length
-        )){
+        );
+        // add <option /> if item represents a value not present in one of the <select />'s options
+        if(!optionExists){
           var $option = $('<option selected>' + htmlEncode(itemText) + '</option>');
           $option.data('item', item);
           $option.attr('value', itemValue);
