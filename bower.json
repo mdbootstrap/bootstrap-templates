@@ -27,7 +27,7 @@
     "test"
   ],
   "dependencies": {
-    "jquery": "~2.1.1"
+    "jquery": "~2.*"
   },
   "devDependencies": {
     "bootstrap-3": "bootstrap#~3.2.0",
