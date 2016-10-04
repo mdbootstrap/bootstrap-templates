@@ -346,14 +346,14 @@
       // typeahead.js
       if (self.options.typeaheadjs) {
 
-    	   // Determine if main configurations were passed or simply a dataset
+          // Determine if main configurations were passed or simply a dataset
           var typeaheadjs = self.options.typeaheadjs;
           if (!$.isArray(typeaheadjs)) {
-        	typeaheadjs = array( null, typeaheadjs);
+              typeaheadjs = [null, typeaheadjs];
           }
           var valueKey = typeaheadjs[1].valueKey; // We should test typeaheadjs.size >= 1
           var f_datum = valueKey ? function (datum) { return datum[valueKey];  }
-          						 : function (datum) {  return datum;  }
+                                 : function (datum) {  return datum;  }
           $.fn.typeahead.apply(self.$input,typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
               self.add( f_datum(datum) );
               self.$input.typeahead('val', '');
