@@ -427,6 +427,15 @@ angular.module('AngularExample', ['bootstrap-tagsinput'])
                 <p>Array of keycodes which will add a tag when typing in the input. (default: [13, 188], which are ENTER and comma)</p>
                 <pre><code data-language="javascript">$('input').tagsinput({
   confirmKeys: [13, 44]
+}); </code></pre>
+              </td>
+            </tr>
+            <tr>
+                <td colspan="2"><code>delimiter</code></td>
+                <td>
+                    <p>Define which character (or array of characters) will be the delimiter (default: ',' ). It will be used to split the content after pressing the confirmKeys.</p>
+                <pre><code data-language="javascript">$('input').tagsinput({
+  delimiter: '-'
 });</code></pre>
               </td>
             </tr>
