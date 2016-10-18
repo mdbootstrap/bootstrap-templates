@@ -28,7 +28,8 @@
     },
     trimValue: false,
     allowDuplicates: false,
-    triggerChange: true
+    triggerChange: true,
+    focusOnItemRemoved: true,
   };
 
   /**
@@ -491,6 +492,10 @@
 
       // Remove icon clicked
       self.$container.on('click', '[data-role=remove]', $.proxy(function(event) {
+        if (!self.options.focusOnItemRemoved) {
+          event.stopPropagation();
+          event.preventDefault();
+        }
         if (self.$element.attr('disabled')) {
           return;
         }
