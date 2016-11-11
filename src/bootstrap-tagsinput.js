@@ -1,6 +1,6 @@
 (function ($) {
   "use strict";
-
+  
   var defaultOptions = {
     tagClass: function(item) {
       return 'label label-info';
@@ -21,6 +21,7 @@
     maxChars: undefined,
     confirmKeys: [13, 44],
     delimiter: ',',
+	cutSpace:false, //-- Cut space and create new tags (Corta los espacios en blanco en nuevos tags) 
     delimiterRegex: null,
     cancelConfirmKeysOnEmpty: false,
     onTagExists: function(item, $tag) {
@@ -91,7 +92,10 @@
         self.remove(self.itemsArray[0]);
 
       if (typeof item === "string" && this.$element[0].tagName === 'INPUT') {
-        var delimiter = (self.options.delimiterRegex) ? self.options.delimiterRegex : self.options.delimiter;
+        var delimiter = (self.options.delimiterRegex) ? self.options.delimiterRegex : self.options.delimiter;		
+		// You might want to create separate tags (space)
+		if (self.options.cutSpace === true){item = item.replace(/\s/g, delimiter);}		
+		
         var items = item.split(delimiter);
         if (items.length > 1) {
           for (var i = 0; i < items.length; i++) {
@@ -134,7 +138,6 @@
       self.itemsArray.push(item);
 
       // add a tag element
-
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
