@@ -122,24 +122,24 @@
 	  self.$element.trigger(beforeItemAddEvent);	  	  
       if (beforeItemAddEvent.cancel) 
         return;
-	
+
       // register item in internal array and map
       self.itemsArray.push(item);	
-	  	  	 
-	  // read var beforeItemAddEvent with new value
-	  var itemText = beforeItemAddEvent.item.toString(); // Get text from event (BeforeItemAddEvent)
-	  if (beforeItemAddEvent.tagClass !== undefined){ var tagClass = beforeItemAddEvent.tagClass; }
 	  
-	  var items = item.split(delimiter);	  
-	  if (items.length > 1) {
-		  for (var i = 0; i < items.length; i++) {
-			this.add(items[i], true);
-		  }
+	  // read var beforeItemAddEvent with new value
+	  var item = beforeItemAddEvent.item; // Get text from event (BeforeItemAddEvent)	  
+	  var itemText = self.options.itemText(item); 
+	  if (beforeItemAddEvent.tagClass !== undefined){ var tagClass = beforeItemAddEvent.tagClass; }
+		  var items = item.toString().split(delimiter);	  
+		  if (items.length > 1) {
+			  for (var i = 0; i < items.length; i++) {
+				this.add(items[i], true);
+			  }
 
-	  if (!dontPushVal)
-		self.pushVal(self.options.triggerChange);
-		return;
-      }
+		  if (!dontPushVal)
+			self.pushVal(self.options.triggerChange);
+			return;
+		  }	  
       // add a tag element
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
       $tag.data('item', item);
