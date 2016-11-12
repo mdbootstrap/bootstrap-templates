@@ -94,6 +94,18 @@
         var delimiter = (self.options.delimiterRegex) ? self.options.delimiterRegex : self.options.delimiter;		
 		// You might want to create separate tags (space)
 		if (self.options.cutSpace === true){item = item.replace(/\s/g, delimiter);}		
+		  
+		  var items = item.toString().split(delimiter);	  
+		  
+		  if (items.length > 1) {			  
+			  for (var i = 0; i < items.length; i++) {							
+				this.add(items[i], true);
+			  }
+
+			  if (!dontPushVal)
+				self.pushVal(self.options.triggerChange);
+				return;
+		  }		
       }
 
       var itemValue = self.options.itemValue(item),
@@ -129,17 +141,22 @@
 	  // read var beforeItemAddEvent with new value
 	  var item = beforeItemAddEvent.item; // Get text from event (BeforeItemAddEvent)	  
 	  var itemText = self.options.itemText(item); 
+	  
 	  if (beforeItemAddEvent.tagClass !== undefined){ var tagClass = beforeItemAddEvent.tagClass; }
+	  if (item != undefined){
+		  		  
 		  var items = item.toString().split(delimiter);	  
-		  if (items.length > 1) {
-			  for (var i = 0; i < items.length; i++) {
+		  
+		  if (items.length > 1) {			  
+			  for (var i = 0; i < items.length; i++) {							
 				this.add(items[i], true);
 			  }
 
-		  if (!dontPushVal)
-			self.pushVal(self.options.triggerChange);
-			return;
+			  if (!dontPushVal)
+				self.pushVal(self.options.triggerChange);
+				return;
 		  }	  
+	  }
       // add a tag element
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
       $tag.data('item', item);
