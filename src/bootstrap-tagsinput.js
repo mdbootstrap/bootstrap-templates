@@ -22,6 +22,7 @@
     confirmKeys: [13, 44],
     delimiter: ',',
 	cutSpace:false, //-- Cut space and create new tags (Corta los espacios en blanco en nuevos tags) 
+	exclude:[],     //-- exclude content on tags
     delimiterRegex: null,
     cancelConfirmKeysOnEmpty: false,
     onTagExists: function(item, $tag) {
@@ -97,10 +98,13 @@
 		  
 		  var items = item.toString().split(delimiter);	  
 		  
+		  
 		  if (items.length > 1) {			  
 			  for (var i = 0; i < items.length; i++) {							
-				this.add(items[i], true);
-			  }
+			    if (self.options.exclude.indexOf(items[i]) < 0){
+					this.add(items[i], true);
+				}
+			  } 
 
 			  if (!dontPushVal)
 				self.pushVal(self.options.triggerChange);
@@ -148,8 +152,10 @@
 		  var items = item.toString().split(delimiter);	  
 		  
 		  if (items.length > 1) {			  
-			  for (var i = 0; i < items.length; i++) {							
+			  for (var i = 0; i < items.length; i++) {		
+				
 				this.add(items[i], true);
+				
 			  }
 
 			  if (!dontPushVal)
