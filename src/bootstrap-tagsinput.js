@@ -1,6 +1,6 @@
 (function ($) {
   "use strict";
-
+  
   var defaultOptions = {
     tagClass: function(item) {
       return 'label label-info';
@@ -21,6 +21,7 @@
     maxChars: undefined,
     confirmKeys: [13, 44],
     delimiter: ',',
+	cutSpace:false, //-- Cut space and create new tags (Corta los espacios en blanco en nuevos tags) 
     delimiterRegex: null,
     cancelConfirmKeysOnEmpty: false,
     onTagExists: function(item, $tag) {
@@ -64,8 +65,7 @@
      * updating the elements val()
      */
     add: function(item, dontPushVal, options) {
-      var self = this;
-
+      var self = this;	
       if (self.options.maxTags && self.itemsArray.length >= self.options.maxTags)
         return;
 
@@ -91,17 +91,9 @@
         self.remove(self.itemsArray[0]);
 
       if (typeof item === "string" && this.$element[0].tagName === 'INPUT') {
-        var delimiter = (self.options.delimiterRegex) ? self.options.delimiterRegex : self.options.delimiter;
-        var items = item.split(delimiter);
-        if (items.length > 1) {
-          for (var i = 0; i < items.length; i++) {
-            this.add(items[i], true);
-          }
-
-          if (!dontPushVal)
-            self.pushVal(self.options.triggerChange);
-          return;
-        }
+        var delimiter = (self.options.delimiterRegex) ? self.options.delimiterRegex : self.options.delimiter;		
+		// You might want to create separate tags (space)
+		if (self.options.cutSpace === true){item = item.replace(/\s/g, delimiter);}		
       }
 
       var itemValue = self.options.itemValue(item),
@@ -125,16 +117,30 @@
         return;
 
       // raise beforeItemAdd arg
-      var beforeItemAddEvent = $.Event('beforeItemAdd', { item: item, cancel: false, options: options});
-      self.$element.trigger(beforeItemAddEvent);
-      if (beforeItemAddEvent.cancel)
+	  var beforeItemAddEvent = $.Event('beforeItemAdd', { item: item, cancel: false, options: options});	  
+	  
+	  self.$element.trigger(beforeItemAddEvent);	  	  
+      if (beforeItemAddEvent.cancel) 
         return;
-
+	
       // register item in internal array and map
-      self.itemsArray.push(item);
+      self.itemsArray.push(item);	
+	  	  	 
+	  // read var beforeItemAddEvent with new value
+	  var itemText = beforeItemAddEvent.item.toString(); // Get text from event (BeforeItemAddEvent)
+	  if (beforeItemAddEvent.tagClass !== undefined){ var tagClass = beforeItemAddEvent.tagClass; }
+	  
+	  var items = item.split(delimiter);	  
+	  if (items.length > 1) {
+		  for (var i = 0; i < items.length; i++) {
+			this.add(items[i], true);
+		  }
 
+	  if (!dontPushVal)
+		self.pushVal(self.options.triggerChange);
+		return;
+      }
       // add a tag element
-
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
@@ -597,7 +603,7 @@
   };
 
   $.fn.tagsinput.Constructor = TagsInput;
-
+  
   /**
    * Most options support both a string or number as well as a function as
    * option value. This function makes sure that the option with the given
