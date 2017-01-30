@@ -131,7 +131,8 @@
         return;
 
       // register item in internal array and map
-      self.itemsArray.push(item);
+      var $inputWrapper = self.findInputWrapper();
+      self.itemsArray.splice($inputWrapper.index(), 0, item);
 
       // add a tag element
 
