@@ -1,8 +1,3 @@
-/*
- * bootstrap-tagsinput v0.7.1 by Tim Schlechter
- *
- */
-
 angular.module('bootstrap-tagsinput', [])
 .directive('bootstrapTagsinput', [function() {
 

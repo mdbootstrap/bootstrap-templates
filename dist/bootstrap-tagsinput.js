@@ -1,3 +1,8 @@
+/*
+ * bootstrap-tagsinput v0.8.0
+ * 
+ */
+
 (function ($) {
   "use strict";
 
@@ -27,7 +32,8 @@
       $tag.hide().fadeIn();
     },
     trimValue: false,
-    allowDuplicates: false
+    allowDuplicates: false,
+    triggerChange: true
   };
 
   /**
@@ -98,7 +104,7 @@
           }
 
           if (!dontPushVal)
-            self.pushVal();
+            self.pushVal(self.options.triggerChange);
           return;
         }
       }
@@ -154,7 +160,7 @@
       }
 
       if (!dontPushVal)
-        self.pushVal();
+        self.pushVal(self.options.triggerChange);
 
       // Add class when reached maxTags
       if (self.options.maxTags === self.itemsArray.length || self.items().toString().length === self.options.maxInputLength)
@@ -201,7 +207,7 @@
       }
 
       if (!dontPushVal)
-        self.pushVal();
+        self.pushVal(self.options.triggerChange);
 
       // Remove class when reached maxTags
       if (self.options.maxTags > self.itemsArray.length)
@@ -222,7 +228,7 @@
       while(self.itemsArray.length > 0)
         self.itemsArray.pop();
 
-      self.pushVal();
+      self.pushVal(self.options.triggerChange);
     },
 
     /**
@@ -269,7 +275,10 @@
             return self.options.itemValue(item).toString();
           });
 
-      self.$element.val(val, true).trigger('change');
+      self.$element.val(val, true);
+
+      if (self.options.triggerChange)
+        self.$element.trigger('change');
     },
 
     /**
@@ -341,25 +350,20 @@
 
       // typeahead.js
       if (self.options.typeaheadjs) {
-          var typeaheadConfig = null;
-          var typeaheadDatasets = {};
 
           // Determine if main configurations were passed or simply a dataset
           var typeaheadjs = self.options.typeaheadjs;
-          if ($.isArray(typeaheadjs)) {
-            typeaheadConfig = typeaheadjs[0];
-            typeaheadDatasets = typeaheadjs[1];
-          } else {
-            typeaheadDatasets = typeaheadjs;
+          if (!$.isArray(typeaheadjs)) {
+              typeaheadjs = [null, typeaheadjs];
           }
+          var valueKey = typeaheadjs[1].valueKey; // We should test typeaheadjs.size >= 1
+          var f_datum = valueKey ? function (datum) { return datum[valueKey];  }
+                                 : function (datum) {  return datum;  }
+          $.fn.typeahead.apply(self.$input,typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
+              self.add( f_datum(datum) );
+              self.$input.typeahead('val', '');
+            }, self));
 
-          self.$input.typeahead(typeaheadConfig, typeaheadDatasets).on('typeahead:selected', $.proxy(function (obj, datum) {
-            if (typeaheadDatasets.valueKey)
-              self.add(datum[typeaheadDatasets.valueKey]);
-            else
-              self.add(datum);
-            self.$input.typeahead('val', '');
-          }, self));
       }
 
       self.$container.on('click', $.proxy(function(event) {
