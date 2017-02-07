@@ -6,6 +6,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-zip');
   grunt.loadNpmTasks('grunt-jquerymanifest');
   grunt.loadNpmTasks('grunt-bower-task');
+	grunt.loadNpmTasks('grunt-serve');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -72,7 +73,8 @@ module.exports = function(grunt) {
           title: '<%= pkg.title %>'
         }
       }
-    }
+    },
+    serve: {}
   });
 
   grunt.registerTask('install', ['bower']);

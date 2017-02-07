@@ -37,6 +37,7 @@
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-jquerymanifest": "~0.1.4",
     "grunt-karma": "~0.8.3",
+    "grunt-serve": "^0.1.6",
     "grunt-zip": "~0.15.0",
     "karma": "~0.12.19",
     "karma-jasmine": "~0.1.5",
