@@ -7,6 +7,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-jquerymanifest');
 	grunt.loadNpmTasks('grunt-bower-task');
 	grunt.loadNpmTasks('grunt-banner');
+	grunt.loadNpmTasks('grunt-serve');
 
   	grunt.initConfig({
     	pkg: grunt.file.readJSON('package.json'),
@@ -90,7 +91,8 @@ module.exports = function(grunt) {
 					src: [ 'versioned/*.*' ]
 				}
 			}
-		}
+		},
+		serve: {}
   	});
 
   	grunt.registerTask('install', ['bower']);
