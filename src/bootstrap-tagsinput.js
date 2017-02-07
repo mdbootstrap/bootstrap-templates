@@ -168,7 +168,7 @@
 
       // If using typeahead, once the tag has been added, clear the typeahead value so it does not stick around in the input.
       if ($('.typeahead, .twitter-typeahead', self.$container).length) {
-        self.$input.typeahead('val', '');
+         setTimeout(function () { self.$input.val(''); }, 0);
       }
 
       if (this.isInit) {
