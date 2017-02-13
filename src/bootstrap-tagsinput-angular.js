@@ -39,6 +39,10 @@ angular.module('bootstrap-tagsinput', [])
           },
           itemValue: getItemProperty(scope, attrs.itemvalue),
           itemText : getItemProperty(scope, attrs.itemtext),
+          maxTags: !isNaN(attrs.maxTags) ? attrs.maxTags : undefined,
+          maxChars: !isNaN(attrs.maxChars) ? attrs.maxChars : undefined,
+          trimValue: attrs.trimValue === 'true' ? true : false,
+          allowDuplicates: attrs.allowDuplicates === 'true' ? true : false,
           confirmKeys : getItemProperty(scope, attrs.confirmkeys) ? JSON.parse(attrs.confirmkeys) : [13],
           tagClass : angular.isFunction(scope.$parent[attrs.tagclass]) ? scope.$parent[attrs.tagclass] : function(item) { return attrs.tagclass; }
         });
