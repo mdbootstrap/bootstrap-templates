@@ -329,16 +329,6 @@
           updater: function (text) {
             self.add(this.map[text]);
             return '';
-          },
-          matcher: function (text) {
-            return (text.toLowerCase().indexOf(this.query.trim().toLowerCase()) !== -1);
-          },
-          sorter: function (texts) {
-            return texts.sort();
-          },
-          highlighter: function (text) {
-            var regex = new RegExp( '(' + this.query + ')', 'gi' );
-            return text.replace( regex, "<strong>$1</strong>" );
           }
         }));
       }
