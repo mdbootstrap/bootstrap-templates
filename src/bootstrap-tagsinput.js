@@ -291,7 +291,7 @@
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionFunction(self.options, 'tagClass');
 
-      // Typeahead Bootstrap version 2.3.2
+      // Bootstrap-3-Typeahead (https://github.com/bassjobsen/Bootstrap-3-Typeahead)
       if (self.options.typeahead) {
         var typeahead = self.options.typeahead || {};
 
@@ -328,7 +328,7 @@
           },
           updater: function (text) {
             self.add(this.map[text]);
-            return this.map[text];
+            return '';
           },
           matcher: function (text) {
             return (text.toLowerCase().indexOf(this.query.trim().toLowerCase()) !== -1);
