@@ -50,7 +50,7 @@
     this.multiple = (this.isSelect && element.hasAttribute('multiple'));
     this.objectItems = options && options.itemValue;
     this.placeholderText = element.hasAttribute('placeholder') ? this.$element.attr('placeholder') : '';
-    this.inputSize = Math.max(1, this.placeholderText.length);
+    this.inputSize = Math.max(40, this.placeholderText.length);
 
     this.$container = $('<div class="bootstrap-tagsinput"></div>');
     this.$input = $('<input type="text" placeholder="' + this.placeholderText + '"/>').appendTo(this.$container);
@@ -350,31 +350,20 @@
 
       // typeahead.js
       if (self.options.typeaheadjs) {
-        // Determine if main configurations were passed or simply a dataset
-        var typeaheadjs = self.options.typeaheadjs;
-        if (!$.isArray(typeaheadjs)) {
-            typeaheadjs = [null, typeaheadjs];
-        }
 
-        $.fn.typeahead.apply(self.$input, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum, name) {
-          var index = 0;
-          typeaheadjs.some(function(dataset, _index) {
-            if (dataset.name === name) {
-              index = _index;
-              return true;
-            }
-            return false;
-          });
-
-          // @TODO Dep: https://github.com/corejavascript/typeahead.js/issues/89
-          if (typeaheadjs[index].valueKey) {
-            self.add(datum[typeaheadjs[index].valueKey]);
-          } else {
-            self.add(datum);
+          // Determine if main configurations were passed or simply a dataset
+          var typeaheadjs = self.options.typeaheadjs;
+          if (!$.isArray(typeaheadjs)) {
+              typeaheadjs = [null, typeaheadjs];
           }
+          var valueKey = typeaheadjs[1].valueKey; // We should test typeaheadjs.size >= 1
+          var f_datum = valueKey ? function (datum) { return datum[valueKey];  }
+                                 : function (datum) {  return datum;  }
+          $.fn.typeahead.apply(self.$input,typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
+              self.add( f_datum(datum) );
+              self.$input.typeahead('val', '');
+            }, self));
 
-          self.$input.typeahead('val', '');
-        }, self));
       }
 
       self.$container.on('click', $.proxy(function(event) {
