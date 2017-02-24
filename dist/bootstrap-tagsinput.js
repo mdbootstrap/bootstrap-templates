@@ -350,20 +350,31 @@
 
       // typeahead.js
       if (self.options.typeaheadjs) {
+        // Determine if main configurations were passed or simply a dataset
+        var typeaheadjs = self.options.typeaheadjs;
+        if (!$.isArray(typeaheadjs)) {
+            typeaheadjs = [null, typeaheadjs];
+        }
 
-          // Determine if main configurations were passed or simply a dataset
-          var typeaheadjs = self.options.typeaheadjs;
-          if (!$.isArray(typeaheadjs)) {
-              typeaheadjs = [null, typeaheadjs];
+        $.fn.typeahead.apply(self.$input, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum, name) {
+          var index = 0;
+          typeaheadjs.some(function(dataset, _index) {
+            if (dataset.name === name) {
+              index = _index;
+              return true;
+            }
+            return false;
+          });
+
+          // @TODO Dep: https://github.com/corejavascript/typeahead.js/issues/89
+          if (typeaheadjs[index].valueKey) {
+            self.add(datum[typeaheadjs[index].valueKey]);
+          } else {
+            self.add(datum);
           }
-          var valueKey = typeaheadjs[1].valueKey; // We should test typeaheadjs.size >= 1
-          var f_datum = valueKey ? function (datum) { return datum[valueKey];  }
-                                 : function (datum) {  return datum;  }
-          $.fn.typeahead.apply(self.$input,typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
-              self.add( f_datum(datum) );
-              self.$input.typeahead('val', '');
-            }, self));
 
+          self.$input.typeahead('val', '');
+        }, self));
       }
 
       self.$container.on('click', $.proxy(function(event) {
