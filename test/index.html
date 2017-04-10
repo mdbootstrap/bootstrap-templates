@@ -5,27 +5,51 @@
     <meta name="robots" content="noindex, nofollow" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     
-    <link rel="stylesheet" href="lib/jasmine/lib/jasmine-core/jasmine.css"/>
+    <link rel="stylesheet" type="text/css" href="../lib/bootstrap-3/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../src/bootstrap-tagsinput.css">
+<!--     <link rel="stylesheet" href="lib/jasmine/lib/jasmine-core/jasmine.css"/>
     
     <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="lib/angular/angular.min.js"></script>
-    <script type="text/javascript" src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="lib/jasmine/lib/jasmine-core/jasmine.js"></script>
     <script type="text/javascript" src="lib/jasmine/lib/jasmine-core/jasmine-html.js"></script>
-    <script type="text/javascript" src="lib/jasmine/lib/jasmine-core/boot.js"></script>
+    <script type="text/javascript" src="lib/jasmine/lib/jasmine-core/boot.js"></script> -->
 
+    <script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap-3/bootstrap.min.js"></script>
     <script type="text/javascript" src="../src/bootstrap-tagsinput.js"></script>    
-    <script type="text/javascript" src="../src/bootstrap-tagsinput-angular.js"></script>
+<!--     <script type="text/javascript" src="../src/bootstrap-tagsinput-angular.js"></script> -->
 
-    <script type="text/javascript" src="helpers.js"></script>
+    <script type="text/javascript" src="helpers.js"></script><!-- 
     <script type="text/javascript" src="bootstrap-tagsinput/input_with_string_items.tests.js"></script>
     <script type="text/javascript" src="bootstrap-tagsinput/input_with_object_items.tests.js"></script>
     <script type="text/javascript" src="bootstrap-tagsinput/select_with_string_items.tests.js"></script>
     <script type="text/javascript" src="bootstrap-tagsinput/select_with_object_items.tests.js"></script>
     <script type="text/javascript" src="bootstrap-tagsinput/reproduced_bugs.tests.js"></script>
     <script type="text/javascript" src="bootstrap-tagsinput/events.tests.js"></script>
-    <script type="text/javascript" src="bootstrap-tagsinput-angular.tests.js"></script>
+    <script type="text/javascript" src="bootstrap-tagsinput-angular.tests.js"></script> -->
   </head>
   <body>
+
+    <textarea id="mobileList"></textarea>
+
+  <script type="text/javascript">
+  $(function(){
+    $("#mobileList").tagsinput({
+        width : "100%",
+        height: '80px',
+        confirmKeys: [13, 186],
+        trimValue: true,
+        itemValue: 'text',
+        tagClass: function(item){
+            if(!item.NO)
+                item.NO = $('.bootstrap-tagsinput .tag.label').length
+            var arr = ["label label-primary", "label label-danger", "label label-success", "label label-warning", "label label-default"]
+            return arr[item.NO%arr.length]
+        }
+    })
+  })
+  </script>
   </body>
 </html>

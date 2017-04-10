@@ -284,8 +284,8 @@
 
       self.options = $.extend({}, defaultOptions, options);
       // When itemValue is set, freeInput should always be false
-      if (self.objectItems)
-        self.options.freeInput = false;
+      // if (self.objectItems)
+      //   self.options.freeInput = false;
 
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
@@ -472,6 +472,16 @@
          if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
             // Only attempt to add a tag if there is data in the field
             if (text.length !== 0) {
+              if(self.objectItems){
+                var k = self.objectItems,
+                    o = new Object()
+                if(maxLengthReached)
+                  o[k] = text.substr(0, self.options.maxChars)
+                else
+                  o[k] = text
+
+                self.add(o)
+              } else
                self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
                $input.val('');
             }
