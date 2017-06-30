@@ -141,16 +141,17 @@
       $tag.after(' ');
 
       // Check to see if the tag exists in its raw or uri-encoded form
+	  var escapedItemValue = escapeString(itemValue);
       var optionExists = (
         $('option[value="' + encodeURIComponent(itemValue) + '"]', self.$element).length ||
-        $('option[value="' + htmlEncode(itemValue) + '"]', self.$element).length
+        $('option[value="' + htmlEncode(escapedItemValue) + '"]', self.$element).length
       );
 
       // add <option /> if item represents a value not present in one of the <select />'s options
       if (self.isSelect && !optionExists) {
         var $option = $('<option selected>' + htmlEncode(itemText) + '</option>');
         $option.data('item', item);
-        $option.attr('value', itemValue);
+        $option.attr('value', escapedItemValue);
         self.$element.append($option);
       }
 
@@ -626,6 +627,22 @@
       return '';
     }
   }
+  
+   var entityMap = {
+		"&": "&amp;",
+		"<": "&lt;",
+		">": "&gt;",
+		'"': '&quot;',
+		"'": '&#39;',
+		"/": '&#x2F;',
+		"\\": '&#x5C'
+	};
+	
+	function escapeString(str){
+		return String(str).replace(/[&<>"'\/\\]/g, function (s) {
+			return entityMap[s];
+		});
+	}
 
   /**
    * Returns the position of the caret in the given input field
