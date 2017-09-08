@@ -1,6 +1,6 @@
 {
   "name": "bootstrap-tagsinput",
-  "version": "0.5.0",
+  "version": "0.8.0",
   "homepage": "https://github.com/TimSchlechter/bootstrap-tagsinput",
   "authors": [
     "Tim Schlechter",
@@ -27,7 +27,7 @@
     "test"
   ],
   "dependencies": {
-    "jquery": "~2.1.1"
+    "jquery": ">=1.9.0"
   },
   "devDependencies": {
     "bootstrap-3": "bootstrap#~3.2.0",
