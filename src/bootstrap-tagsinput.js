@@ -23,6 +23,9 @@
     delimiter: ',',
     delimiterRegex: null,
     cancelConfirmKeysOnEmpty: false,
+    padMinlen: 0,
+    padChar: undefined,
+    padFix: 'prefix',
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     },
@@ -56,6 +59,18 @@
     this.isInit = false;
   }
 
+ /**
+ * Function to add the prefix or post fix char
+ */
+ function charPad (str, max, chr, fix) {
+  str = str.toString();
+  if (fix === "prefix") {
+    return str.length < max ? charPad(chr + str, max) : str;
+  } else {
+    return str.length < max ? charPad(str + chr, max) : str;
+  }
+}
+
   TagsInput.prototype = {
     constructor: TagsInput,
 
@@ -77,7 +92,12 @@
       if (typeof item === "string" && self.options.trimValue) {
         item = $.trim(item);
       }
-
+      
+	    // prefix or post fix the desired character upto specified minimum length of tag
+      if (self.options.padMinlen > 0 && self.options.padChar) {
+        item = charPad(item, self.options.padMinlen, self.options.padChar, self.options.padFix);
+      }
+      
       // Throw an error when trying to add an object while the itemValue option was not set
       if (typeof item === "object" && !self.objectItems)
         throw("Can't add objects when itemValue option is not set");
