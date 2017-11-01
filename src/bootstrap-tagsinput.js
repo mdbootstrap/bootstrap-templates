@@ -117,8 +117,7 @@
           for (var i = 0; i < items.length; i++) {
             this.add(items[i], true);
           }
-var delimiter = (self.options.delimiterRegex) ? self.options.delimiterRegex : self.options.delimiter;
-self.$element.val(val.join(delimiter)).trigger('change');
+
           if (!dontPushVal)
             self.pushVal(self.options.triggerChange);
           return;
