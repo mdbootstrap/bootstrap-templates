@@ -117,7 +117,8 @@
           for (var i = 0; i < items.length; i++) {
             this.add(items[i], true);
           }
-
+var delimiter = (self.options.delimiterRegex) ? self.options.delimiterRegex : self.options.delimiter;
+self.$element.val(val.join(delimiter)).trigger('change');
           if (!dontPushVal)
             self.pushVal(self.options.triggerChange);
           return;
@@ -289,11 +290,12 @@
           val = $.map(self.items(), function(item) {
             return self.options.itemValue(item).toString();
           });
-
+      var delimiter = (self.options.delimiterRegex) ? self.options.delimiterRegex : self.options.delimiter;
+	    
       self.$element.val(val, true);
 
       if (self.options.triggerChange)
-        self.$element.trigger('change');
+        self.$element.val(val.join(delimiter)).trigger('change');
     },
 
     /**
