@@ -1,3 +1,8 @@
+/*
+ * bootstrap-tagsinput v0.8.0
+ * 
+ */
+
 (function ($) {
   "use strict";
 
@@ -21,6 +26,7 @@
     maxChars: undefined,
     confirmKeys: [13, 44],
     delimiter: ',',
+    delimiterBreakline: true,
     delimiterRegex: null,
     cancelConfirmKeysOnEmpty: false,
     onTagExists: function(item, $tag) {
@@ -254,6 +260,28 @@
     },
 
     /**
+     * Set breaklines equals delimiter
+     */
+    handlePasteBreaklines: function(e) {
+      e.preventDefault();
+      var clipboardData, pastedData,
+        self = this;
+      
+      self.options = $.extend({}, defaultOptions, options);
+      
+      clipboardData = e.clipboardData || window.clipboardData;
+      pastedData = clipboardData.getData('Text');
+      
+      for (var i = 0; i < pastedData.length; i++) {
+        if (pastedData.charCodeAt(i) == 10) {
+          pastedData = pastedData.substring(0, i) + self.options.delimiter + pastedData.substring(i + 1);
+        }
+      }
+
+      e.target.value += pastedData;
+    },
+
+    /**
      * Returns the items added as tags
      */
     items: function() {
@@ -370,6 +398,14 @@
 
           self.$input.typeahead('val', '');
         }, self));
+      }
+
+      if (self.options.delimiterBreakline) {
+        var pasteInput = document.querySelectorAll('.bootstrap-tagsinput input');
+        for (var i = 0; i < pasteInput.length; i++) {
+          pasteInput[i].removeEventListener('paste', self.handlePasteBreaklines);
+          pasteInput[i].addEventListener('paste', self.handlePasteBreaklines);
+        }
       }
 
       self.$container.on('click', $.proxy(function(event) {

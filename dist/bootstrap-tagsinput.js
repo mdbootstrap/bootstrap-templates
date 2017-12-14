@@ -3,6 +3,11 @@
  * 
  */
 
+/*
+ * bootstrap-tagsinput v0.8.0
+ * 
+ */
+
 (function ($) {
   "use strict";
 
@@ -26,6 +31,7 @@
     maxChars: undefined,
     confirmKeys: [13, 44],
     delimiter: ',',
+    delimiterBreakline: true,
     delimiterRegex: null,
     cancelConfirmKeysOnEmpty: false,
     onTagExists: function(item, $tag) {
@@ -259,6 +265,28 @@
     },
 
     /**
+     * Set breaklines equals delimiter
+     */
+    handlePasteBreaklines: function(e) {
+      e.preventDefault();
+      var clipboardData, pastedData,
+        self = this;
+      
+      self.options = $.extend({}, defaultOptions, options);
+      
+      clipboardData = e.clipboardData || window.clipboardData;
+      pastedData = clipboardData.getData('Text');
+      
+      for (var i = 0; i < pastedData.length; i++) {
+        if (pastedData.charCodeAt(i) == 10) {
+          pastedData = pastedData.substring(0, i) + self.options.delimiter + pastedData.substring(i + 1);
+        }
+      }
+
+      e.target.value += pastedData;
+    },
+
+    /**
      * Returns the items added as tags
      */
     items: function() {
@@ -350,20 +378,39 @@
 
       // typeahead.js
       if (self.options.typeaheadjs) {
+        // Determine if main configurations were passed or simply a dataset
+        var typeaheadjs = self.options.typeaheadjs;
+        if (!$.isArray(typeaheadjs)) {
+            typeaheadjs = [null, typeaheadjs];
+        }
 
-          // Determine if main configurations were passed or simply a dataset
-          var typeaheadjs = self.options.typeaheadjs;
-          if (!$.isArray(typeaheadjs)) {
-              typeaheadjs = [null, typeaheadjs];
+        $.fn.typeahead.apply(self.$input, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum, name) {
+          var index = 0;
+          typeaheadjs.some(function(dataset, _index) {
+            if (dataset.name === name) {
+              index = _index;
+              return true;
+            }
+            return false;
+          });
+
+          // @TODO Dep: https://github.com/corejavascript/typeahead.js/issues/89
+          if (typeaheadjs[index].valueKey) {
+            self.add(datum[typeaheadjs[index].valueKey]);
+          } else {
+            self.add(datum);
           }
-          var valueKey = typeaheadjs[1].valueKey; // We should test typeaheadjs.size >= 1
-          var f_datum = valueKey ? function (datum) { return datum[valueKey];  }
-                                 : function (datum) {  return datum;  }
-          $.fn.typeahead.apply(self.$input,typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum) {
-              self.add( f_datum(datum) );
-              self.$input.typeahead('val', '');
-            }, self));
 
+          self.$input.typeahead('val', '');
+        }, self));
+      }
+
+      if (self.options.delimiterBreakline) {
+        var pasteInput = document.querySelectorAll('.bootstrap-tagsinput input');
+        for (var i = 0; i < pasteInput.length; i++) {
+          pasteInput[i].removeEventListener('paste', self.handlePasteBreaklines);
+          pasteInput[i].addEventListener('paste', self.handlePasteBreaklines);
+        }
       }
 
       self.$container.on('click', $.proxy(function(event) {
