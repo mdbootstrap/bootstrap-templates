@@ -272,14 +272,13 @@
       var clipboardData, pastedData,
         self = this;
       
-      self.options = $.extend({}, defaultOptions, options);
       
       clipboardData = e.clipboardData || window.clipboardData;
       pastedData = clipboardData.getData('Text');
       
       for (var i = 0; i < pastedData.length; i++) {
         if (pastedData.charCodeAt(i) == 10) {
-          pastedData = pastedData.substring(0, i) + self.options.delimiter + pastedData.substring(i + 1);
+          pastedData = pastedData.substring(0, i) + defaultOptions.delimiter + pastedData.substring(i + 1);
         }
       }
 
