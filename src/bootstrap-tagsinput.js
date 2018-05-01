@@ -23,6 +23,7 @@
     delimiter: ',',
     delimiterRegex: null,
     cancelConfirmKeysOnEmpty: false,
+    toUpperCase: false,
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     },
@@ -76,6 +77,11 @@
       // Trim value
       if (typeof item === "string" && self.options.trimValue) {
         item = $.trim(item);
+      }
+
+      // To Upper case
+      if(typeof item === "string" && self.options.toUpperCase) {
+        item = item.toUpperCase();
       }
 
       // Throw an error when trying to add an object while the itemValue option was not set
