@@ -1,8 +1,3 @@
-/*
- * bootstrap-tagsinput v0.8.0
- * 
- */
-
 (function ($) {
   "use strict";
 
@@ -27,20 +22,23 @@
     confirmKeys: [13, 44],
     delimiter: ',',
     delimiterRegex: null,
-    cancelConfirmKeysOnEmpty: false,
+    cancelConfirmKeysOnEmpty: true,
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     },
     trimValue: false,
     allowDuplicates: false,
-    triggerChange: true
+    triggerChange: true,
+    // JMFA:
+    compareItemObject: 'value', // JMFA: allowed values: text, value, both
+    // end JMFA
   };
 
   /**
    * Constructor function
    */
   function TagsInput(element, options) {
-    this.isInit = true;
+	this.isInit = true;
     this.itemsArray = [];
 
     this.$element = $(element);
@@ -57,7 +55,14 @@
 
     this.$element.before(this.$container);
 
-    this.build(options);
+    // JMFA: to save custom item value and text properties name
+    this.newItemValue = null;
+    this.newItemText = null;
+    // end JMFA
+    // JMFA: the constructor (this function) is called ONLY one time, so, we need to merge possible initial options with default options.
+    // JMFA: NOTE: initial options are only possible on manual initialization
+    // JMFA: OLD CODE: this.build(options);
+    this.build($.extend({}, defaultOptions, options));	// JMFA: New code 
     this.isInit = false;
   }
 
@@ -104,18 +109,38 @@
           }
 
           if (!dontPushVal)
-            self.pushVal(self.options.triggerChange);
+            self.pushVal();
           return;
         }
+     // JMFA: if type of "item" is "string" but we use objects, an object is created from string value
+        if(self.objectItems){
+        	item = {[self.newItemValue]: item, [self.newItemText]: item}; // [] is es6 sintax  
+        }
+        // end JMFA
       }
-
+      
       var itemValue = self.options.itemValue(item),
           itemText = self.options.itemText(item),
           tagClass = self.options.tagClass(item),
           itemTitle = self.options.itemTitle(item);
-
+      
       // Ignore items allready added
-      var existing = $.grep(self.itemsArray, function(item) { return self.options.itemValue(item) === itemValue; } )[0];
+      var existing = $.grep(self.itemsArray, function(item) {
+      // JMFA: to compare new object items with existing ones, we need to select how we want to compare
+    	  if(self.objectItems){
+    		  if(self.options.compareItemObject.toLowerCase() == 'both'){
+    			  return self.options.itemValue(item) === itemValue && self.options.itemText(item) === itemText;
+    		  }else if(self.options.compareItemObject.toLowerCase() == 'value'){
+    			  return self.options.itemValue(item) === itemValue;
+    		  }else if(self.options.compareItemObject.toLowerCase() == 'text'){
+    			  return self.options.itemText(item) === itemText;
+    		  }else
+    			  return false;    		  
+    	  }else
+      // end JMFA
+    		  return self.options.itemValue(item) === itemValue; 
+      } )[0];
+      
       if (existing && !self.options.allowDuplicates) {
         // Invoke onTagExists
         if (self.options.onTagExists) {
@@ -150,7 +175,7 @@
         $('option[value="' + encodeURIComponent(itemValue) + '"]', self.$element).length ||
         $('option[value="' + htmlEncode(itemValue) + '"]', self.$element).length
       );
-
+      
       // add <option /> if item represents a value not present in one of the <select />'s options
       if (self.isSelect && !optionExists) {
         var $option = $('<option selected>' + htmlEncode(itemText) + '</option>');
@@ -160,21 +185,21 @@
       }
 
       if (!dontPushVal)
-        self.pushVal(self.options.triggerChange);
+        self.pushVal();
 
       // Add class when reached maxTags
       if (self.options.maxTags === self.itemsArray.length || self.items().toString().length === self.options.maxInputLength)
         self.$container.addClass('bootstrap-tagsinput-max');
 
-      // If using typeahead, once the tag has been added, clear the typeahead value so it does not stick around in the input.
+   // If using typeahead, once the tag has been added, clear the typeahead value so it does not stick around in the input.
       if ($('.typeahead, .twitter-typeahead', self.$container).length) {
         self.$input.typeahead('val', '');
       }
-
+      
       if (this.isInit) {
-        self.$element.trigger($.Event('itemAddedOnInit', { item: item, options: options }));
+          self.$element.trigger($.Event('itemAddedOnInit', { item: item, options: options }));
       } else {
-        self.$element.trigger($.Event('itemAdded', { item: item, options: options }));
+          self.$element.trigger($.Event('itemAdded', { item: item, options: options }));
       }
     },
 
@@ -207,7 +232,7 @@
       }
 
       if (!dontPushVal)
-        self.pushVal(self.options.triggerChange);
+        self.pushVal();
 
       // Remove class when reached maxTags
       if (self.options.maxTags > self.itemsArray.length)
@@ -228,7 +253,7 @@
       while(self.itemsArray.length > 0)
         self.itemsArray.pop();
 
-      self.pushVal(self.options.triggerChange);
+      self.pushVal();
     },
 
     /**
@@ -276,9 +301,9 @@
           });
 
       self.$element.val(val, true);
-
+      
       if (self.options.triggerChange)
-        self.$element.trigger('change');
+    	  self.$element.trigger('change');
     },
 
     /**
@@ -287,14 +312,20 @@
     build: function(options) {
       var self = this;
 
-      self.options = $.extend({}, defaultOptions, options);
+      self.options = $.extend({}, self.options, options); // JMFA: New code: merge CURRENT options with new ones, but NEVER default options with new ones
+      // JMFA: old code: self.options = $.extend({}, defaultOptions, options);
       // When itemValue is set, freeInput should always be false
-      if (self.objectItems)
-        self.options.freeInput = false;
-
-      makeOptionItemFunction(self.options, 'itemValue');
-      makeOptionItemFunction(self.options, 'itemText');
+      // JMFA: Now, we can enter new object items from text, so these next two lines are useless
+      // JMFA: if (self.objectItems)
+      // JMFA:  self.options.freeInput = false;
+      
+      // JMFA: argument for this function is now "self" instead of "self.options" to have access to "newItemValue" and "newItemText" properties
+      makeOptionItemFunction(self, 'itemValue');
+      makeOptionItemFunction(self, 'itemText');
       makeOptionFunction(self.options, 'tagClass');
+      // JMFA: This is the main "quid" of the problem when using objects: we *MUST* update "self.objectItems" every time we call "build" since "itemValue" may have changed
+      self.objectItems = self.options && (self.options.itemValue !== defaultOptions.itemValue);
+      // fin JMFA
 
       // Typeahead Bootstrap version 2.3.2
       if (self.options.typeahead) {
@@ -383,16 +414,15 @@
               }
           }, self));
         }
-
-      // Toggle the 'focus' css class on the container when it has focus
-      self.$container.on({
-        focusin: function() {
-          self.$container.addClass(self.options.focusClass);
-        },
-        focusout: function() {
-          self.$container.removeClass(self.options.focusClass);
-        },
-      });
+     // Toggle the 'focus' css class on the container when it has focus
+        self.$container.on({
+          focusin: function() {
+            self.$container.addClass(self.options.focusClass);
+          },
+          focusout: function() {
+            self.$container.removeClass(self.options.focusClass);
+          },
+        });
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {
         var $input = $(event.target),
@@ -404,46 +434,46 @@
         }
 
         switch (event.which) {
-          // BACKSPACE
-          case 8:
-            if (doGetCaretPosition($input[0]) === 0) {
-              var prev = $inputWrapper.prev();
-              if (prev.length) {
-                self.remove(prev.data('item'));
-              }
+        // BACKSPACE
+        case 8:
+          if (doGetCaretPosition($input[0]) === 0) {
+            var prev = $inputWrapper.prev();
+            if (prev.length) {
+              self.remove(prev.data('item'));
             }
-            break;
+          }
+          break;
 
-          // DELETE
-          case 46:
-            if (doGetCaretPosition($input[0]) === 0) {
-              var next = $inputWrapper.next();
-              if (next.length) {
-                self.remove(next.data('item'));
-              }
+        // DELETE
+        case 46:
+          if (doGetCaretPosition($input[0]) === 0) {
+            var next = $inputWrapper.next();
+            if (next.length) {
+              self.remove(next.data('item'));
             }
-            break;
+          }
+          break;
 
-          // LEFT ARROW
-          case 37:
-            // Try to move the input before the previous tag
-            var $prevTag = $inputWrapper.prev();
-            if ($input.val().length === 0 && $prevTag[0]) {
-              $prevTag.before($inputWrapper);
-              $input.focus();
-            }
-            break;
-          // RIGHT ARROW
-          case 39:
-            // Try to move the input after the next tag
-            var $nextTag = $inputWrapper.next();
-            if ($input.val().length === 0 && $nextTag[0]) {
-              $nextTag.after($inputWrapper);
-              $input.focus();
-            }
-            break;
-         default:
-             // ignore
+        // LEFT ARROW
+        case 37:
+          // Try to move the input before the previous tag
+          var $prevTag = $inputWrapper.prev();
+          if ($input.val().length === 0 && $prevTag[0]) {
+            $prevTag.before($inputWrapper);
+            $input.focus();
+          }
+          break;
+        // RIGHT ARROW
+        case 39:
+          // Try to move the input after the next tag
+          var $nextTag = $inputWrapper.next();
+          if ($input.val().length === 0 && $nextTag[0]) {
+            $nextTag.after($inputWrapper);
+            $input.focus();
+          }
+          break;
+       default:
+    	   //ignore
          }
 
         // Reset internal input's size
@@ -472,7 +502,7 @@
 
             // If the field is empty, let the event triggered fire as usual
             if (self.options.cancelConfirmKeysOnEmpty === false) {
-                event.preventDefault();
+               event.preventDefault();
             }
          }
 
@@ -543,7 +573,7 @@
         elt = elt.parentNode;
 
       return $(elt);
-    }
+    },
   };
 
   /**
@@ -580,6 +610,11 @@
           if (retVal !== undefined)
               results.push(retVal);
       }
+      // JMFA: if arg1 is an object (ie., we are setting params or options), we call "build" function with options from "arg1" to set custom options.
+      else if(typeof arg1 == 'object'){
+    	  tagsinput["build"](arg1);
+      }
+      // end JMFA
     });
 
     if ( typeof arg1 == 'string') {
@@ -597,9 +632,20 @@
    * option value. This function makes sure that the option with the given
    * key in the given options is wrapped in a function
    */
-  function makeOptionItemFunction(options, key) {
+  // JMFA: argument is now "self" instead of "self.options" to have access to private properties "newItemValue" and "newItemText"
+  function makeOptionItemFunction(self, key) {
+	// JMFA: so we define "options" variable from "self.options" to keep the function unchagned
+	var options = self.options;
+	// end JMFA
     if (typeof options[key] !== 'function') {
       var propertyName = options[key];
+      // JMFA: we save custom properties name
+      if(key == 'itemValue'){
+   		  self.newItemValue = propertyName;
+      }else if(key =='itemText'){
+   		  self.newItemText = propertyName;
+      }
+      // end JMFA
       options[key] = function(item) { return item[propertyName]; };
     }
   }
