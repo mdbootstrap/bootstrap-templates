@@ -337,7 +337,13 @@
             return texts.sort();
           },
           highlighter: function (text) {
-            var regex = new RegExp( '(' + this.query + ')', 'gi' );
+
+            var safeQuery = this.query;
+            var matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
+
+            safeQuery = safeQuery.replace(matchOperatorsRe, '\\$&');
+
+            var regex = new RegExp( '(' + safeQuery + ')', 'gi' );
             return text.replace( regex, "<strong>$1</strong>" );
           }
         }));
