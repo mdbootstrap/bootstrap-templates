@@ -297,7 +297,25 @@
 
         makeOptionFunction(typeahead, 'source');
 
-        self.$input.typeahead($.extend({}, typeahead, {
+        self.$input.typeahead($.extend({
+          sorter: function (texts) {
+            return texts.sort();
+          },
+          highlighter: function (item) {
+            var regexEscapedQuery = this.query.replace(/[\-\[\]\/{}()*+?.\\^$|]/g, "\\$&");
+            var regexQuery = new RegExp('(' + regexEscapedQuery + ')', "gi");
+
+            var node = $('<div></div>').html(item);
+            var textNodes = node.find('*').add(node).contents().filter(function () { return this.nodeType === 3; });
+            textNodes.replaceWith(function() {
+              return $(this).text().replace(regexQuery, function (match, text) {
+                return $('<strong></strong>').text(text)[0].outerHTML;
+              });
+            });
+
+            return node.html();
+          }
+        }, typeahead, {
           source: function (query, process) {
             function processItems(items) {
               var texts = [];
@@ -332,13 +350,6 @@
           },
           matcher: function (text) {
             return (text.toLowerCase().indexOf(this.query.trim().toLowerCase()) !== -1);
-          },
-          sorter: function (texts) {
-            return texts.sort();
-          },
-          highlighter: function (text) {
-            var regex = new RegExp( '(' + this.query + ')', 'gi' );
-            return text.replace( regex, "<strong>$1</strong>" );
           }
         }));
       }
