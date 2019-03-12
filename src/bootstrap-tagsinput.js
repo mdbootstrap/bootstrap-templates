@@ -131,7 +131,7 @@
         return;
 
       // register item in internal array and map
-      self.itemsArray.push(item);
+      self.itemsArray.splice(self.findInputWrapper().index(), 0, item);
 
       // add a tag element
 
