@@ -135,16 +135,22 @@
 
       // add a tag element
 
-      var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
+      var $tag = $('<span id="' + htmlEncode(itemValue) + '" class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
       $tag.after(' ');
-
-      // Check to see if the tag exists in its raw or uri-encoded form
-      var optionExists = (
-        $('option[value="' + encodeURIComponent(itemValue) + '"]', self.$element).length ||
-        $('option[value="' + htmlEncode(itemValue) + '"]', self.$element).length
-      );
+      //additional events
+      var span = $tag[0];
+      span.onclick = function(){
+        self.$element.trigger($.Event('tagClicked', { item: item, span: span }));
+      };
+      span.onmouseover = function(){
+        self.$element.trigger($.Event('tagMouseOver', { item: item, span: span }));
+      };
+      
+      span.onmouseout = function(){
+        self.$element.trigger($.Event('tagMouseOut', { item: item, span: span }));
+      };
 
       // add <option /> if item represents a value not present in one of the <select />'s options
       if (self.isSelect && !optionExists) {
