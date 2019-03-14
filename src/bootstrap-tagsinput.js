@@ -135,15 +135,17 @@
 
       // add a tag element
 
-      var $tag = $('<span id="' + htmlEncode(itemValue) + '" class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
+      var $tag = $('<span class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
       $tag.after(' ');
+      
       //additional events
       var span = $tag[0];
       span.onclick = function(){
         self.$element.trigger($.Event('tagClicked', { item: item, span: span }));
       };
+      
       span.onmouseover = function(){
         self.$element.trigger($.Event('tagMouseOver', { item: item, span: span }));
       };
