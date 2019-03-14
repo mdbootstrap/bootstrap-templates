@@ -471,6 +471,14 @@
             size = textLength + wordSpace + 1;
         $input.attr('size', Math.max(this.inputSize, $input.val().length));
       }, self));
+      
+      self.$container.on('keyup', 'input', $.proxy(function(event) {
+        if(event.keyCode !== 13 && event.keyCode !== 38 && event.keyCode !== 40){
+          var $input = $(event.target);
+          var digBegin = $.Event('inputHasChanged', { val: $input.val() });
+          self.$element.trigger(digBegin);
+        }
+      }, self));
 
       self.$container.on('keypress', 'input', $.proxy(function(event) {
          var $input = $(event.target);
