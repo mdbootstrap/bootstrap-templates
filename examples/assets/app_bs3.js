@@ -23,12 +23,17 @@ cities.initialize();
  */
 var elt = $('.example_typeahead > > input');
 elt.tagsinput({
-  typeaheadjs: {
+    typeaheadjs: [
+  {
+    highlight: true,
+    //other options
+  },
+  {
     name: 'citynames',
     displayKey: 'name',
     valueKey: 'name',
     source: citynames.ttAdapter()
-  }
+  }]
 });
 
 /**
